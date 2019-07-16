@@ -1,2 +1,4 @@
-version = '0.1'
-description = 'All the primitive'
+
+__all__ = ['style', 'Map']
+
+from .map import Map
