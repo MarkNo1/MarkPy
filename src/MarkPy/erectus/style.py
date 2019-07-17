@@ -13,16 +13,16 @@ _COLORS_ = [ dict(a=a,b=b,c=c)
 Colorizer = lambda a, b, c : f'{a};{b};{c}'
 
 # Get the Color from the Color Table
-ColorizeFromTable = lambda code : Colorizer(**code)
+ColorizeFromTable = lambda color : Colorizer(**color)
 
 # Get Text with Added Color
-ColorizeInternal = lambda color, text : f'\x1b[%sm{text}\x1b[0m' % (color)
+ColorizeInternal = lambda color_id, text : f'\x1b[%sm{text}\x1b[0m' % (color_id)
 
 # Get Style with human code
-Colorize = lambda color, text: ColorizeInternal(_COLOR_TABLE_[style], text)
+Colorize = lambda color_id, text: ColorizeInternal(_COLOR_TABLE_[color_id], text)
 
 # COLORS TABLE
-_COLOR_TABLE_ = dict( (idx,code) for idx, code in enumerate(list(map(ColorizeFromTable, _COLORS_))))
+_COLOR_TABLE_ = dict( (idx,code_id) for idx, code_id in enumerate(list(map(ColorizeFromTable, _COLORS_))))
 
 # Print all avaible styles
 ShowAllStyles = lambda : print('STYLES TABLES\n\n' + '\t'.join([ColorizeInternal(style_code,human_code)
