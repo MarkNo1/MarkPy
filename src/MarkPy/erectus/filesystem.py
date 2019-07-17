@@ -25,9 +25,12 @@ isf=isFile
 isDir = lambda x : os.path.isdir(x)
 isd=isDir
 
-# Create File
+# Create empty File
 mkfile = lambda file : write(file, '') if not exists(file) else None
 mf=mkfile
+
+# Create File with x  as content
+New = lambda file, x : write(file, x)
 
 # Create Folder
 mkdir = lambda folder : os.makedirs(folder, exist_ok=True)
