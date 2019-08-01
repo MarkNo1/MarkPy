@@ -19,7 +19,7 @@ ColorizeFromTable = lambda color : Colorizer(**color)
 ColorizeInternal = lambda color_id, text : f'\x1b[%sm{text}\x1b[0m' % (color_id)
 
 # Get Style with human code
-Colorize = lambda color_id, text: ColorizeInternal(_COLOR_TABLE_[color_id], text)
+Colorize = lambda color_id, text: ColorizeInternal(_COLOR_TABLE_[color_id], str(text))
 
 # COLORS TABLE
 _COLOR_TABLE_ = dict( (idx,code_id) for idx, code_id in enumerate(list(map(ColorizeFromTable, _COLORS_))))
