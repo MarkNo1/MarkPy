@@ -57,7 +57,9 @@ class Atom(object):
 
     '''
 
-    def __init__(self, Name):
+    NameSpace = []
+
+    def __init__(self, Name = 'Undefined'):
         '''
             Init:
             _____
@@ -66,13 +68,13 @@ class Atom(object):
 
 
         '''
-        self.Name = Name
 
-        self.Proton = ProtonType(1)
-        self.Neutron = NeutronType(1)
-        self.Electron = ElectronType(1)
+        self.NameSpace + [ Name ]
 
-        self.Energy = CalculateEnergy()
 
         self.Dimension = 1e12
         self.VDimension = 56
+
+
+    def has_attribute(self, attribute):
+        return hasattr(self, attribute)
