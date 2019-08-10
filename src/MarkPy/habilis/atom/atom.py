@@ -59,7 +59,7 @@ class Atom(object):
 
     NameSpace = []
 
-    def __init__(self, Name = 'Undefined'):
+    def __init__(self, Name = 'Atom'):
         '''
             Init:
             _____
@@ -68,13 +68,21 @@ class Atom(object):
 
 
         '''
-
+        self.Name = Name
         self.NameSpace + [ Name ]
 
-
-        self.Dimension = 1e12
+        self.Dimension = 1e-12
         self.VDimension = 56
 
-
+    @property
+    def Name(self):
+        return Name
+    @Name.setter
+    def Name(self, Name):
+        self.Name = Name
+    @Name.deleter
+    def Name(self, Name):
+        self.Name = Name
+        
     def has_attribute(self, attribute):
         return hasattr(self, attribute)

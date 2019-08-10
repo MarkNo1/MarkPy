@@ -1,3 +1,6 @@
+import cProfile
+import timeit
+
 class Profiler(object):
     '''
         Version v0.0.1                                           (TM)
@@ -10,9 +13,12 @@ class Profiler(object):
                             Initially as *args was expected only string.
     '''
 
-    def __init__(self):
-        import cProfile
-
-
     def __call__(self, *args):
-        cProfile.run( f'{args[0]}({ ",".join([ args[i] for i in range(1 , len(args) )])})')
+        return cProfile.run(str(args))
+
+
+    def functionsCalls(self, code= 'p = Profiler()'):
+        return self.__call__(code)
+
+    def timeit(self, code='p = Profiler()', number=10):
+        return timeit.timeit(code, number=number)

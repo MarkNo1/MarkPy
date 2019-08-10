@@ -1,5 +1,6 @@
 ## TIME
-from time import gmtime, strftime
+from time import gmtime, strftime, time_ns
+
 
 # Now
 now = lambda : gmtime()
