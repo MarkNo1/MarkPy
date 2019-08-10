@@ -1,28 +1,16 @@
-from MarkPy import Property
-
-
-
-
+from MarkPy import Property, time_ns
 
 
 if __name__ == "__main__":
 	print('Defining Class')
+
 	class PTest:
-		def __init__(self, Name='PropertyTest'):
-			self.p1 = Property('p1', 1)
-			self.p2 = Property('p2', 2)
-			self.p3 = Property('p3', 3)
+		p1 = Property('P1')
+		p2 = Property('P2')
+
 
 	print('Creating Instance Class')
 	pt = PTest()
-	print('Printing Class')
-	print(pt)
-	print('Print p1')
-	print(pt.p1)
-	print('Assign something to p2')
-	pt.p2 = 28
-	print('Print p3')
-	print(pt.p3)
 
 
 ### OUTPUT #################################################
