@@ -20,5 +20,5 @@ class Profiler(object):
     def functionsCalls(self, code= 'p = Profiler()'):
         return self.__call__(code)
 
-    def timeit(self, code='p = Profiler()', number=10):
-        return timeit.timeit(code, number=number)
+    def timeit(self, code='p = Profiler()', number=10, setup='pass'):
+        return timeit.timeit(code, number=number, setup=setup)

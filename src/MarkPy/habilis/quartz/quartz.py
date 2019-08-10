@@ -3,6 +3,7 @@ from MarkPy.erectus import time_ns, pwd, path, isFile
 
 class Path(object):
     def __init__(self, filename, folder):
+        super().__init__()
         if __debug__:
             print(f'Path {folder}\{filename} - Ini')
         self.path = path(folder, filename)
@@ -20,10 +21,10 @@ class File(Path):
                 __________
 
     '''
-    def __init__(self, filename, folder=pwd()):
+    def __init__(self, filename, folder):
         if __debug__:
             print(f'File {filename} - Ini')
-        super().__init__(filename, folder)
+        Path.__init__(self, filename, folder)
 
     def getter(self):
         if __debug__:
@@ -76,32 +77,37 @@ class State(File):
             __________
 
     '''
+    counter = Incremental()
 
     def __init__(self, Name):
         if __debug__:
-            print('State - Ini')
-        super().__init__(Name)
-        self.Cicle = Cicle
-        self.Time = Time
-        self.Action = Action
-        self.Status = Status
-        self.counter = Incremental()
+            print(f'State {Name} - Ini')
+        File.__init__(self, Name, pwd())
+        self.Cicle = -1
+        self.Time = time_ns()
+        self.Action = 'Born'
+        self.Status = 'Initialization'
+        self.Name = Name
+
+
+    def init_state(self):
+        self.state = self.state
 
     def getter(self):
         if __debug__:
-            print('State - Get')
+            print(f'State {self.Name} - Get')
         return [self.Time, self.Cicle, self.Action, self.Status]
 
     def setter(self, state):
         if __debug__:
-            print('State - Set')
+            print(f'State {self.Name} - Set')
 
         assert isinstance(state, list) and  2 < len(state) < 5 , f"CheckStateInpute: {state}"
         self.update(state)
 
     def deleter(self):
         if __debug__:
-            print('State - Del')
+            print(f'State {self.Name} - Del')
 
         del self.Time
         del self.Cicle
@@ -119,9 +125,11 @@ class State(File):
         self.Status = NewState[self.counter]
         self.Action = NewState[self.counter]
 
+    def state_to_str(self,state):
+        return ' , '.join([str(t) for t in state]) + '\n'
 
     def __str__(self):
-        return f'State: {self.Time}, {self.Cicle}, {self.Action}, {self.Status}\n'
+        return f'State {self.Name}: {self.Time}, {self.Cicle}, {self.Action}, {self.Status}\n'
 
     state = property(getter,setter,deleter, 'State Quartz')
 
@@ -137,26 +145,26 @@ class Logger(State):
     '''
     def __init__(self, Name, folder=pwd()):
         if __debug__:
-            print('StateLogger - Ini')
-        super(State, self).__init__(Name)
-
-        self.state = [-1, 'Init', 'Created']
+            print(f'Logger {Name} - Ini')
+        State.__init__(self, Name)
+        self.Name = Name
+        self.statelog = self.statelog
 
 
     def getter(self):
         if __debug__:
-            print('StateLogger - Get')
+            print(f'Logger {self.Name} - Get')
         return self.state
 
     def setter(self, state):
         if __debug__:
-            print('StateLogger - Set')
+            print(f'Logger {self.Name} - Set')
         self.state = state
-        self.file = str(self.state)
+        self.file = self.state_to_str(self.state)
 
     def deleter(self):
         if __debug__:
-            print('StateLogger - Del')
+            print(f'Logger {self.Name} - Del')
 
     statelog = property(getter,setter,deleter, 'StateLogger Quartz')
 
@@ -176,21 +184,21 @@ class Property(Logger):
     '''
 
     def __init__(self,  Name='Default', Value=None):
-        super().__init__(Name)
         if __debug__:
-            print('Property - Ini')
+            print(f'Property{Name} - Ini')
+        Logger.__init__(self, Name)
         self.Value = Value
         self.Name = Name
 
     def __get__(self, Instance, Owner):
         if __debug__:
-            print('Property - Get')
+            print(f'Property{self.Name} - Get')
         self.statelog = [ 0, 'Get', self.Value]
         return self.Value
 
     def __set__(self, Instance, Value):
         if __debug__:
-            print('Property - Set')
+            print(f'Property{self.Name} - Set')
 
         self.Value = Value
         self.statelog = [ 0, 'Set', self.Value]
@@ -198,7 +206,7 @@ class Property(Logger):
 
     def __del__(self):
         if __debug__:
-            print('Property - Del')
+            print(f'Property{self.Name} - Del')
 
     def __str__(self):
         return f'Property: {self.Name}'
