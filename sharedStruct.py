@@ -21,9 +21,18 @@ if __name__ == '__main__':
     s = Array('c', b'hello world', lock=lock)
     A = Array(Point, [(1.875,-6.25), (-5.75,2.0), (2.375,9.5)], lock=lock)
 
+    print("Before")
+
+    print(n.value)
+    print(x.value)
+    print(s.value)
+    print([(a.x, a.y) for a in A])
+
     p = Process(target=modify, args=(n, x, s, A))
     p.start()
+
     p.join()
+    print("After")
 
     print(n.value)
     print(x.value)
