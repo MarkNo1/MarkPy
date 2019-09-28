@@ -1,14 +1,19 @@
-from MarkPy.erectus import time_ns, pwd, path, isFile
+from MarkPy.erectus import time_ns, pwd, path, isFile, exists, mkdir
 
 
 class Path(object):
     def __init__(self, filename, folder):
         super().__init__()
-        if __debug__:
-            print(f'Path {folder}\{filename} - Ini')
+        # if __debug__:
+        #     print(f'Path {folder}\{filename} - Ini')
         self.path = path(folder, filename)
         self.filename = filename
         self.folder = folder
+        self.sanitize()
+
+    def sanitize(self):
+        if not exists(self.folder):
+            mkdir(self.folder)
 
 
 
@@ -22,25 +27,26 @@ class File(Path):
 
     '''
     def __init__(self, filename, folder):
-        if __debug__:
-            print(f'File {filename} - Ini')
+        # if __debug__:
+        #     print(f'File {filename} - Ini')
         Path.__init__(self, filename, folder)
 
     def getter(self):
-        if __debug__:
-            print(f'File {self.filename} - Get')
+        # if __debug__:
+        #     print(f'File {self.filename} - Get')
         with open(self.path, 'r+') as fd:
             return fd.read()
 
     def setter(self, Text):
-        if __debug__:
-            print(f'File {self.filename} - Set')
+        # if __debug__:
+        #     print(f'File {self.filename} - Set')
         with open(self.path, 'a+') as fd:
             return fd.write(str(Text))
 
     def deleter(self):
-        if __debug__:
-            print(f'File {self.filename} - Del')
+        pass
+        # if __debug__:
+        #     print(f'File {self.filename} - Del')
 
     file = property(getter,setter,deleter, 'File Quartz')
 
@@ -77,12 +83,12 @@ class State(File):
             __________
 
     '''
-    counter = Incremental()
+    incremental = Incremental()
 
-    def __init__(self, Name):
-        if __debug__:
-            print(f'State {Name} - Ini')
-        File.__init__(self, Name, pwd())
+    def __init__(self, Name, Folder):
+        # if __debug__:
+        #     print(f'State {Name} - Ini')
+        File.__init__(self, Name, Folder)
         self.Cicle = -1
         self.Time = time_ns()
         self.Action = 'Born'
@@ -94,20 +100,20 @@ class State(File):
         self.state = self.state
 
     def getter(self):
-        if __debug__:
-            print(f'State {self.Name} - Get')
+        # if __debug__:
+        #     print(f'State {self.Name} - Get')
         return [self.Time, self.Cicle, self.Action, self.Status]
 
     def setter(self, state):
-        if __debug__:
-            print(f'State {self.Name} - Set')
+        # if __debug__:
+        #     print(f'State {self.Name} - Set')
 
         assert isinstance(state, list) and  2 < len(state) < 5 , f"CheckStateInpute: {state}"
         self.update(state)
 
     def deleter(self):
-        if __debug__:
-            print(f'State {self.Name} - Del')
+        # if __debug__:
+        #     print(f'State {self.Name} - Del')
 
         del self.Time
         del self.Cicle
@@ -115,15 +121,15 @@ class State(File):
         del self.Action
 
     def update(self, NewState):
-        self.counter = 0
+        self.incremental = 0
         if len(NewState) == 4:
-            self.Time = NewState[self.counter]
+            self.Time = NewState[self.incremental]
         else:
              self.Time = time_ns()
 
-        self.Cicle = NewState[self.counter]
-        self.Status = NewState[self.counter]
-        self.Action = NewState[self.counter]
+        self.Cicle = NewState[self.incremental]
+        self.Action = NewState[self.incremental]
+        self.Status = NewState[self.incremental]
 
     def state_to_str(self,state):
         return ' , '.join([str(t) for t in state]) + '\n'
@@ -143,28 +149,29 @@ class Logger(State):
             __________
 
     '''
-    def __init__(self, Name, folder=pwd()):
-        if __debug__:
-            print(f'Logger {Name} - Ini')
-        State.__init__(self, Name)
+    def __init__(self, Name, Folder=pwd()):
+        # if __debug__:
+        #     print(f'Logger {Name} - Ini')
+        State.__init__(self, Name, Folder)
         self.Name = Name
         self.statelog = self.statelog
 
 
     def getter(self):
-        if __debug__:
-            print(f'Logger {self.Name} - Get')
+        # if __debug__:
+        #     print(f'Logger {self.Name} - Get')
         return self.state
 
     def setter(self, state):
-        if __debug__:
-            print(f'Logger {self.Name} - Set')
+        # if __debug__:
+        #     print(f'Logger {self.Name} - Set')
         self.state = state
         self.file = self.state_to_str(self.state)
 
     def deleter(self):
-        if __debug__:
-            print(f'Logger {self.Name} - Del')
+        pass
+        # if __debug__:
+        #     print(f'Logger {self.Name} - Del')
 
     statelog = property(getter,setter,deleter, 'StateLogger Quartz')
 
@@ -182,31 +189,36 @@ class Property(Logger):
         __________
 
     '''
+    Cicle = Incremental()
 
-    def __init__(self,  Name='Default', Value=None):
-        if __debug__:
-            print(f'Property{Name} - Ini')
-        Logger.__init__(self, Name)
+
+    def __init__(self,  Name='Default', Folder=pwd(), Value=None):
+        # if __debug__:
+        #     print(f'Property{Name} - Ini')
+        Logger.__init__(self, Name, Folder)
         self.Value = Value
         self.Name = Name
+        self.Cicle = 0
+
 
     def __get__(self, Instance, Owner):
-        if __debug__:
-            print(f'Property{self.Name} - Get')
-        self.statelog = [ 0, 'Get', self.Value]
+        # if __debug__:
+        #     print(f'Property{self.Name} - Get')
+        self.statelog = [ self.Cicle, 'Gett', self.Value]
         return self.Value
 
     def __set__(self, Instance, Value):
-        if __debug__:
-            print(f'Property{self.Name} - Set')
+        # if __debug__:
+        #     print(f'Property{self.Name} - Set')
 
         self.Value = Value
-        self.statelog = [ 0, 'Set', self.Value]
+        self.statelog = [ self.Cicle, 'Sett', self.Value]
 
 
     def __del__(self):
-        if __debug__:
-            print(f'Property{self.Name} - Del')
+        # if __debug__:
+        #     print(f'Property{self.Name} - Del')
+        self.statelog = [ self.Cicle, 'Died', self.Value]
 
     def __str__(self):
         return f'Property: {self.Name}'
