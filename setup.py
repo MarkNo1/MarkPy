@@ -1,26 +1,26 @@
 from setuptools import setup, find_namespace_packages
 
-setup(name="MarkPy.neanderthal",
-      version="0.0.1",
-      package_dir={'': 'src'},
-      packages=find_namespace_packages(where='src'))
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
 
-setup(name="MarkPy.erectus",
-      version="0.0.1",
-      package_dir={'': 'src'},
-      packages=find_namespace_packages(where='src'))
+with open('README.md') as f:
+    readme = f.read()
 
-setup(name="MarkPy.habilis",
-      version="0.0.1",
-      package_dir={'': 'src'},
-      packages=find_namespace_packages(where='src'))
+with open('LICENSE') as f:
+    license = f.read()
 
-setup(name="MarkPy.sapiens",
-      version="0.0.1",
-      package_dir={'': 'src'},
-      packages=find_namespace_packages(where='src'))
 
-setup(name="MarkPy.sapiensapiens",
-      version="0.0.1",
-      package_dir={'': 'src'},
-      packages=find_namespace_packages(where='src'))
+setup(
+    name='MarkPy',
+    author='MarkNo1',
+    # url='https://github.com/MarkNo1-github/TournamentDiscordBot',+
+    version='0.0.3',
+    license=license,
+    description='MrkPy LIB',
+    long_description=readme,
+    packages=find_namespace_packages(include=['MarkPy','MarkPy.*']),
+    # entry_points ={'console_scripts': ['tdbm = tdbm.manager:main']},
+    install_requires=requirements,
+    include_package_data=True,
+    python_requires='>=3.8'
+)

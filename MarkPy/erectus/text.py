@@ -2,11 +2,8 @@ import re
 
 
 
-def replace(text, target, changer, count=None): 
+def replace(text, target, changer, count=None):
     return text.replace(target, changer, count)
-
-def between(text, start, end):
-    return re.match(r"^.*{}'(.*)'\].*$", str)
 
 
 def between(text, start, end):

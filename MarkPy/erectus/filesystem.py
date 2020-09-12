@@ -7,34 +7,27 @@ r=read
 
 # Write File
 write = lambda file, text: open(file, 'w').write(text)
-w=write
 
 # Append File
 append = lambda file, text: open(file, 'a').write(text)
-a=append
 
 # Check Existance
 exists = lambda file : os.path.exists(file)
-e=exists
 
 # Is File
 isFile = lambda x : os.path.isfile(x)
-isf=isFile
 
 # Is Dir
 isDir = lambda x : os.path.isdir(x)
-isd=isDir
 
 # Create empty File
 mkfile = lambda file : write(file, '') if not exists(file) else None
-mf=mkfile
 
 # Create File with x  as content
 New = lambda file, x : write(file, x)
 
 # Create Folder
 mkdir = lambda folder : os.makedirs(folder, exist_ok=True)
-md=mkdir
 
 # Remove Folder
 rmd = lambda folder : shutil.rmtree(folder)
@@ -47,15 +40,12 @@ rm = lambda fd : rmf(fd) if isFile(fd) else rmd(fd)
 
 # Joint Path
 path = lambda *args : os.path.join(*list(args))
-p=path
 
 # List folder
 list_folder = lambda path : os.listdir(path)
-lsd=list_folder
 
 # File Descriptor
 file_descriptor = lambda file : open(file, 'r')
-fd=file_descriptor
 
 # Current path
 current_path = lambda : os.getcwd()
@@ -77,10 +67,10 @@ disk_usage = shutil.disk_usage
 module_path = lambda module : parent_dir(module.__file__)
 
 # Dimensions
-b = 1
-by = 8 * b
-Kby = 1024 * by
-Mby = 1024 * Kby
-Gby = 1024 * Mby
-Tby = 1024 * Gby
-Eby = 1024 * Tby
+bit = 1
+byte = 8 * bit
+Kbyte = 1024 * byte
+Mbyte = 1024 * Kbyte
+Gbyte = 1024 * Mbyte
+Tbyte = 1024 * Gbyte
+Ebyte = 1024 * Tbyte
