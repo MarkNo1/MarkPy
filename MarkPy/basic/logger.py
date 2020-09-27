@@ -6,57 +6,68 @@ from logging import Formatter
 from .atom import Atom
 
 
-# Log Format
-Format = '''{%(pathname)s:%(lineno)d}\t%(levelname).4s\t%(asctime)s\t%(process)d\t%(name)s\t%(message)s'''
-
-# Every Day
-FileRotation = 'd'
-
-__version__ = '1.0.0'
-
 class BaseLogger(Atom):
-    def __init__(self, name, level=logging.DEBUG):
-        Atom.__init__(self, name, self.__class__)
-        # Logger
-        self.__logger__ = logging.getLogger(name)
-        # Set Level default DEBUG
-        self.__logger__.setLevel(level)
+
+    __hasBaseLogger__ = False
+
+    def __init__(self, level=logging.DEBUG):
+        Atom.__init__(self, 'BaseLogger', self.__class__)
+        if not self.__hasBaseLogger__:
+            # Logger
+            self.__logger__ = logging.getLogger(self.__name__)
+            # Set Level
+            self.__logger__.setLevel(level)
+            # Do not re-init
+            self.__hasBaseLogger__ = True
+
+    def registerAtom(self, atom_name, atom_version):
+        self.newAtom(atom_name, atom_version)
+        self.log = logging.LoggerAdapter(self.__logger__ , dict(atom_name=self.__name__, atom_version=self.__version__))
+
+    def _set_format(self):
+        return Formatter('''{<%(pathname)s-%(lineno)d>%(process)d<%(atom_name)s-v%(atom_version)s> \t%(levelname).4s\t%(asctime)s:\t%(message)s''')
+
 
     def __call__(self):
-        return self.__logger__
-
-    def log(self):
-        return self.__logger__
+        return self.log
 
 
 class ConsoleLogger(BaseLogger):
-    def __init__(self, name, level=logging.DEBUG):
-        BaseLogger.__init__(self, name, level)
+    __console_logger_version__ = 3
+    def __init__(self, level=logging.DEBUG):
+        BaseLogger.__init__(self, level)
+        self.registerAtom('Console', self.__console_logger_version__)
         # Logger
-        self.__console_handler__ = logging.StreamHandler()
-        self.__console_handler__.setFormatter(Formatter(Format))
-        self.__logger__.addHandler(self.__console_handler__)
+        if not self.__logger__.hasHandlers():
+            self.__console_handler__ = logging.StreamHandler()
+            self.__console_handler__.setFormatter(self._set_format())
+            self.__logger__.addHandler(self.__console_handler__)
 
 
 class FileLogger(BaseLogger):
-    def __init__(self, name, log_file, level=logging.DEBUG):
-        BaseLogger.__init__(self, name, level)
+    __file_logger_version__ = 5
+    def __init__(self, log_file, level=logging.DEBUG, rotation = 'd'):
+        BaseLogger.__init__(self, level)
+        self.registerAtom('File', self.__file_logger_version__)
         # Logger
-        self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when= FileRotation, backupCount=5)
-        self.__file_handler__.setFormatter(Formatter(Format))
+        self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation , backupCount=5)
+        self.__file_handler__.setFormatter(self._set_format())
         self.__logger__.addHandler(self.__file_handler__)
 
 
 class Logger(ConsoleLogger, FileLogger):
-    def __init__(self, name, file=None, level=logging.DEBUG):
-        ConsoleLogger.__init__(self, name, level)
-        FileLogger.__init__(self, name, Path(file) if file else Path.cwd() / Path(f'{name}.log'), level)
+    __logger_version__ = 6
+    def __init__(self, file=None, level=logging.DEBUG):
+        ConsoleLogger.__init__(self, level)
+        FileLogger.__init__(self, Path(file) if file else Path.cwd() / Path(f'{file}.log'), level)
+        self.registerAtom('Logger', self.__logger_version__ )
+
 
 
 def test_logger():
-    console_logger = ConsoleLogger('console_logger')
-    file_logger = ConsoleLogger('file_logger')
-    logger = Logger('logger')
+    console_logger = ConsoleLogger()
+    file_logger = FileLogger('FileLogger.test')
+    logger = Logger()
 
     # Console Logger
     console_logger().info("** Testing ConsoleLogger Class **")
