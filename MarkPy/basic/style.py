@@ -1,4 +1,7 @@
+from .atom import Atom
+
 import emoji
+
 
 class ColorTable():
     def __init__(self):
@@ -27,9 +30,15 @@ class EmojyTable():
         return len(self._table_)
 
 
-class Style:
+class Style(Atom):
+
+    __style_version__ = 3
     _colors_ = ColorTable()
     _emoji_ = EmojyTable()
+
+    def __init__(self):
+        Atom.__init__(self, 'Style', self.__class__)
+        self.newAtom('Style', self.__style_version__)
 
     def _colorize_(self, colorCode, text):
         return f'\x1b[%sm{text}\x1b[0m' % (colorCode)
