@@ -1,4 +1,4 @@
-from MarkPy.logger import Logger
+from .logger import Logger
 
 from pathlib import Path
 

@@ -3,7 +3,7 @@ import logging
 from logging.handlers import TimedRotatingFileHandler
 from logging import Formatter
 
-from MarkPy.atom import Atom
+from .atom import Atom
 
 
 # Log Format

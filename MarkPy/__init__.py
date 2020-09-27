@@ -1,9 +1,6 @@
 from pathlib import Path
 
-from . import atom
-from . import filesystem
-from . import logger
-from . import time
+from . import basic
 
 # DEFAULT PACKAGE FOLDER
 DEFAULT_PACKAGE_FOLDER = Path().home() / '.MarkPy'

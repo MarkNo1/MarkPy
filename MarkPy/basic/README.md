@@ -4,33 +4,28 @@ Basic common python code used multiples time and integrated in the library MarkP
 ___
 ## Atom:
 Base class used in all the rest of the classes.
-
+* Atom
 ___
-## Color:
-Color class.
+## Style:
+Style class to change color of console text or use emoji.
+* Style
 
 
+## Filesystem:
+* File:
+  Method:
+    To-do:
+    * size
+    * delete
+    * empty
 
-## Files:
-* filesystem
-*
+* Folder:
+  Method:
+  * list_folders
+  * list_files
+  * delete_folder
+  * delete_file
+  * empty_folder
 
-Wrapper for manage files and Folders with a integrated fileLogger.
-
-## Folder
-Method:
-* list_folders
-* list_files
-* delete_folder
-* delete_file
-* empty_folder
-
-  To-do:
-  * size
-
-## File
-Method:
-  To-do:
-  * size
-  * delete
-  * empty
+    To-do:
+    * size
