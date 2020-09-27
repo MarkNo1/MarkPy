@@ -1,7 +1,9 @@
-from . import neanderthal
-from . import erectus
-from . import habilis
-from . import sapiens
-from . import sapiensapiens
+from pathlib import Path
 
-name = "MarkPy"
+from . import atom
+from . import filesystem
+from . import logger
+from . import time
+
+# DEFAULT PACKAGE FOLDER
+DEFAULT_PACKAGE_FOLDER = Path().home() / '.MarkPy'
