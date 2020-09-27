@@ -2,6 +2,26 @@ from .logger import Logger
 
 from pathlib import Path
 
+# ParentPathCreationNewFileNotFound
+class FileException(Exception):
+    def __init__(self):
+        self.log.error(f"({self.name}): Parent path not exist of  {self.style.red(self.__file__)}")
+
+
+class File(Logger):
+    def __init__(self, name, path=None):
+        Atom.__init__(self, name)
+        self.__file__ = Path(path) / name if path else Path.cwd() / name
+        if not self.__file__.exists():
+            raise
+            with open(self.__file__, 'w') as fd:
+                fd.write('')
+        Logger.__init__(self, f'File.{self.__file__}', self.__file__.parent / f'{folder}.logs')
+        LogFile.__init__(self)
+        self.__log_file_created__()
+
+
+
 
 class LogFile():
 

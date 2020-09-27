@@ -2,30 +2,23 @@
 Basic common python code used multiples time and integrated in the library MarkPy.
 
 ___
-## Atom:
+## Atom v2:
 Base class used in all the rest of the classes.
 * Atom
 ___
-## Style:
+## Style v:
 Style class to change color of console text or use emoji.
 * Style
 
+___
+## Logger (Reworked) :
+Logger class to emit logs in three ways.
 
+* ConsoleLogger
+* FileLogger
+* Logger
+___
 ## Filesystem:
-* File:
-  Method:
-    To-do:
-    * size
-    * delete
-    * empty
 
-* Folder:
-  Method:
-  * list_folders
-  * list_files
-  * delete_folder
-  * delete_file
-  * empty_folder
-
-    To-do:
-    * size
+* File
+* Folder
