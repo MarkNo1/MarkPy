@@ -81,9 +81,9 @@ class FileLogger(BaseLogger):
 
 class Logger(ConsoleLogger, FileLogger):
     __logger_version__ = 6
-    def __init__(self, fileName=None, path=Path().cwd(), level=logging.DEBUG):
+    def __init__(self, fileName='Logger', path=Path().cwd(), level=logging.DEBUG):
         ConsoleLogger.__init__(self, level)
-        FileLogger.__init__(self, Path(path) / f'{fileName}.log', level)
+        FileLogger.__init__(self, Path(path) / Path(fileName), level)
         self.newLogAtom('Logger', self.__logger_version__ )
         self.initialized()
 
