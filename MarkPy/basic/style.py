@@ -5,7 +5,7 @@ import emoji
 
 class ColorTable():
 
-    _common_ = list(range(79, 85))
+    _base_colors_ = [1940, 1950]
     _sequence_ = -1
 
     def __init__(self):
@@ -24,12 +24,10 @@ class ColorTable():
         return self._table_[colorID]
 
     def get_sequential_color(self):
-        if self._sequence_ > len(self._common_) - 1:
-            self._sequence_ = -1
-        return self._common_[self._sequence_]
+        return self._base_colors_[self._sequence_]
 
     def increase_sequence(self):
-        self._sequence_ +=1
+        self._sequence_ = ( self._sequence_ + 1 ) % 2
 
 
 
@@ -145,11 +143,15 @@ class Style(Atom):
     def blightblue(self, text):
         return self.color(46, text)
 
+    def ugrey(self, text):
+        return self.color(11954, text)
+
     def mark(self):
         return self.emoji(3086)
 
     def denied(self):
         return self.emoji(2169)
+
 
 def test_style():
     s = Style()

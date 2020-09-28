@@ -11,10 +11,10 @@ class BaseLogger(Style):
     __hasBaseLogger__ = False
 
     def __init__(self, level=logging.DEBUG):
-        Style.__init__(self)
-        self.newAtom(self.sequential('BaseLogger'), self.sequential(self.__base_logger_version__))
-        self.next_sequential()
         if not self.__hasBaseLogger__:
+            Style.__init__(self)
+            self.newAtom(self.sequential('BaseLogger'), self.sequential(self.__base_logger_version__))
+            self.next_sequential()
             # Logger
             self.__logger__ = logging.getLogger(self.__name__)
             # Set Level
@@ -28,10 +28,13 @@ class BaseLogger(Style):
         self.log = logging.LoggerAdapter(self.__logger__ , dict(atom_name=self.__name__, atom_version=self.__version__))
 
     def _set_format(self):
-        return Formatter('''[%(asctime)s]<%(pathname)s-%(lineno)d>%(process)d | %(atom_name)s-v%(atom_version)s> \t%(levelname).4s:\t%(message)s''')
+        return Formatter('''[%(asctime)s]<%(pathname)s-%(lineno)d>%(process)d |%(atom_name)sV%(atom_version)s> \t%(levelname).4s:\t%(message)s''')
 
     def __call__(self):
         return self.log
+
+    def __del__(self):
+        self.destructed()
 
     def error(self, text):
         return self.red(text)
@@ -45,38 +48,44 @@ class BaseLogger(Style):
     def highlight(self, text):
         return self.blue(text)
 
+    def initialized(self):
+        self.log.debug(self.ugrey(f'Initialized'))
+
+    def destructed(self):
+        self.log.debug(self.ugrey(f'Destructed'))
+
 class ConsoleLogger(BaseLogger):
     __console_logger_version__ = 3
     def __init__(self, level=logging.DEBUG):
         BaseLogger.__init__(self, level)
-        self.newLogAtom('Console', self.__console_logger_version__)
+        self.newLogAtom('ConsoleLogger', self.__console_logger_version__)
         # Logger
         if not self.__logger__.hasHandlers():
             self.__console_handler__ = logging.StreamHandler()
             self.__console_handler__.setFormatter(self._set_format())
             self.__logger__.addHandler(self.__console_handler__)
-        self.log.debug('ConsoleLogger init')
+        self.initialized()
 
 
 class FileLogger(BaseLogger):
     __file_logger_version__ = 5
     def __init__(self, log_file, level=logging.DEBUG, rotation = 'd'):
         BaseLogger.__init__(self, level)
-        self.newLogAtom('File', self.__file_logger_version__)
+        self.newLogAtom('FileLogger', self.__file_logger_version__)
         # Logger
         self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation , backupCount=5)
         self.__file_handler__.setFormatter(self._set_format())
         self.__logger__.addHandler(self.__file_handler__)
-        self.log.debug('FileLogger init')
+        self.initialized()
 
 
 class Logger(ConsoleLogger, FileLogger):
     __logger_version__ = 6
-    def __init__(self, file=None, level=logging.DEBUG):
+    def __init__(self, fileName=None, path=Path().cwd(), level=logging.DEBUG):
         ConsoleLogger.__init__(self, level)
-        FileLogger.__init__(self, Path(file) if file else Path.cwd() / Path(f'{file}.log'), level)
+        FileLogger.__init__(self, Path(path) / f'{fileName}.log', level)
         self.newLogAtom('Logger', self.__logger_version__ )
-        self.log.debug('Logger init')
+        self.initialized()
 
 
 
