@@ -5,7 +5,7 @@ import emoji
 
 class ColorTable():
 
-    _common_ = list(range(79, 84))
+    _common_ = list(range(79, 85))
     _sequence_ = -1
 
     def __init__(self):

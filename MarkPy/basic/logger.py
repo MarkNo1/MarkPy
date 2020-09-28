@@ -83,7 +83,7 @@ class Logger(ConsoleLogger, FileLogger):
 def test_logger():
     console_logger = ConsoleLogger()
     file_logger = FileLogger('FileLogger.test')
-    logger = Logger()
+    logger = Logger('Logger.test')
 
     # Console Logger
     console_logger().info("** Testing ConsoleLogger Class **")
