@@ -28,7 +28,7 @@ class BaseLogger(Style):
         self.log = logging.LoggerAdapter(self.__logger__ , dict(atom_name=self.__name__, atom_version=self.__version__))
 
     def _set_format(self):
-        return Formatter('''[%(asctime)s]<%(pathname)s-%(lineno)d> %(process)d |%(atom_name)sV%(atom_version)s> \t%(levelname).4s:\t%(message)s''')
+        return Formatter('''[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s''')
 
     def __call__(self):
         return self.log

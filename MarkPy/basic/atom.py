@@ -1,6 +1,6 @@
 from .time import datetime
 
-__atom_version__ = 1
+__atom_version__ = '1'
 
 class Atom:
     def __init__(self):
@@ -9,5 +9,5 @@ class Atom:
         self.__version__ = __atom_version__
 
     def newAtom(self, atom_name, atom_version):
-        self.__name__ += f'{atom_name}|'
-        self.__version__ = f'{atom_version}{self.__version__}'
+        self.__name__ += f'>{atom_name}'
+        self.__version__ += f'.{atom_version}'
