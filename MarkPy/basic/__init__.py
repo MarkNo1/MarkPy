@@ -7,3 +7,5 @@ from .time import  now, datetime, clock
 
 from .filesystem import Folder, test_folder
 from .filesystem import File, test_file
+
+from .watchdog import WatchFile, WatchFolder

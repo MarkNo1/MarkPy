@@ -1,3 +1,4 @@
+watchdog
 tqdm
 pandas
 numpy

@@ -34,6 +34,8 @@ class File(Logger):
         self.initialized()
         self.log.debug(f' File {opt_file} -> {self.violet(self.__file__)}')
 
+    def __del__(self):
+        Logger.__del__(self)
 
 
 class Folder(Logger):
@@ -81,7 +83,8 @@ class Folder(Logger):
         for file in self.list_files():
             self.delete_file(file)
 
-
+    def __del__(self):
+        Logger.__del__(self)
 
 
 def test_file():

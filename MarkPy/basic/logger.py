@@ -28,7 +28,7 @@ class BaseLogger(Style):
         self.log = logging.LoggerAdapter(self.__logger__ , dict(atom_name=self.__name__, atom_version=self.__version__))
 
     def _set_format(self):
-        return Formatter('''[%(asctime)s]<%(pathname)s-%(lineno)d>%(process)d |%(atom_name)sV%(atom_version)s> \t%(levelname).4s:\t%(message)s''')
+        return Formatter('''[%(asctime)s]<%(pathname)s-%(lineno)d> %(process)d\n|%(atom_name)sV%(atom_version)s> \t%(levelname).4s:\t%(message)s''')
 
     def __call__(self):
         return self.log
@@ -66,6 +66,9 @@ class ConsoleLogger(BaseLogger):
             self.__logger__.addHandler(self.__console_handler__)
         self.initialized()
 
+    def __del__(self):
+        BaseLogger.__del__(self)
+
 
 class FileLogger(BaseLogger):
     __file_logger_version__ = 5
@@ -78,6 +81,8 @@ class FileLogger(BaseLogger):
         self.__logger__.addHandler(self.__file_handler__)
         self.initialized()
 
+    def __del__(self):
+        BaseLogger.__del__(self)
 
 class Logger(ConsoleLogger, FileLogger):
     __logger_version__ = 6
@@ -86,6 +91,9 @@ class Logger(ConsoleLogger, FileLogger):
         FileLogger.__init__(self, Path(path) / Path(fileName), level)
         self.newLogAtom('Logger', self.__logger_version__ )
         self.initialized()
+        
+    def __del__(self):
+        FileLogger.__del__(self)
 
 
 
