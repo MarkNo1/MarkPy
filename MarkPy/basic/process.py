@@ -36,9 +36,8 @@ class Process(Logger):
 
     def execute(self, cmd):
         self.log.debug(f'Process executing: {self.cyan(cmd)}')
-        loop = asyncio.get_event_loop()
-        rc = loop.run_until_complete( self._stream_subprocess(cmd) )
-        loop.close()
+        self.loop = asyncio.get_event_loop()
+        rc = self.loop.run_until_complete( self._stream_subprocess(cmd) )
         self.log.debug('Process completed')
         return rc
 
