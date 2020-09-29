@@ -40,7 +40,7 @@ class WatchFile(File, BaseWatcher):
 
     def __init__(self, fileName, path=Path.cwd(), recursive=False):
         File.__init__(self, fileName, path)
-        BaseWatcher.__init__(self, path, target=fileName, recursive=recursive)
+        BaseWatcher.__init__(self, self.__file__.parent, target=fileName, recursive=recursive)
         self.newLogAtom('WatchFile', self.__watch_file_version)
         self.initialized()
 
@@ -56,6 +56,6 @@ class WatchFolder(Folder, BaseWatcher):
 
     def __init__(self, folderName='./', path=Path.cwd(), recursive=False):
         Folder.__init__(self, folderName, path)
-        BaseWatcher.__init__(self, path)
+        BaseWatcher.__init__(self, self.__folder__)
         self.newLogAtom('WatchFile', self.__watch_file_version)
         self.initialized()
