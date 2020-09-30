@@ -1,13 +1,13 @@
 from pathlib import Path
+from dataclasses import dataclass
 
 from .process import Process
 
-
+@dataclass
 class Host():
-    def __init__(self, user, ip, path):
-        self.user = user
-        self.ip = ip
-        self.path = path
+    ip: str
+    user: str
+    path: Path
 
     def __str__(self):
         return f'{self.user}@{self.ip}:{self.path}'

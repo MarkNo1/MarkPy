@@ -8,6 +8,10 @@ from pathlib import Path
 
 from .filesystem import File, Folder
 
+@dataclass
+class WatcherEvent:
+
+
 class BaseWatcher(RegexMatchingEventHandler):
 
     watcher_events =   {'file': {'moved':FileMovedEvent,

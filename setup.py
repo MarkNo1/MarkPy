@@ -22,5 +22,5 @@ setup(
     # entry_points ={'console_scripts': ['tdbm = tdbm.manager:main']},
     install_requires=requirements,
     include_package_data=True,
-    python_requires='>=3.8'
+    python_requires='>=3.7'
 )
