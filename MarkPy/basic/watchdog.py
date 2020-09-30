@@ -36,12 +36,12 @@ class BaseWatcher(RegexMatchingEventHandler):
 
 class WatchFile(File, BaseWatcher):
 
-    __watch_file_version = 2
+    __watch_file_version__ = 2
 
     def __init__(self, fileName, path=Path.cwd(), recursive=False):
         File.__init__(self, fileName, path)
-        BaseWatcher.__init__(self, self.__file__.parent, target=fileName, recursive=recursive)
-        self.newLogAtom('WatchFile', self.__watch_file_version)
+        BaseWatcher.__init__(self, path, target=fileName, recursive=recursive)
+        self.newLogAtom('WatchFile', self.__watch_file_version__)
         self.initialized()
 
     def use_event(self, event):
@@ -56,6 +56,6 @@ class WatchFolder(Folder, BaseWatcher):
 
     def __init__(self, folderName='./', path=Path.cwd(), recursive=False):
         Folder.__init__(self, folderName, path)
-        BaseWatcher.__init__(self, self.__folder__)
+        BaseWatcher.__init__(self, path)
         self.newLogAtom('WatchFile', self.__watch_file_version)
         self.initialized()

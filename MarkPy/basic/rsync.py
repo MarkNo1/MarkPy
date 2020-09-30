@@ -43,9 +43,9 @@ class Rsync(Process):
 
 def test_rsync():
     source = Path('/tmp/test/source/')
-    destination = Host('mark', '172.23.87.156', '/tmp/test/destination/')
+    destination = Host('mark', '10.168.72.103', '/tmp/test/destination/')
     rsync = Rsync(source, destination)
     rsync.sync()
-    source = Host('mark', '172.23.87.156', '/tmp/test/source/')
+    source = Host('mark', '10.168.72.103', '/tmp/test/source/')
     rsync = Rsync(source, destination)
     rsync.sync()

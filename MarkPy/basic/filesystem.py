@@ -34,6 +34,15 @@ class File(Logger):
         self.initialized()
         self.log.debug(f' File {opt_file} -> {self.violet(self.__file__)}')
 
+    def folder(self):
+        return self.__file__.parent
+
+    def __str__(self):
+    '''
+        Return the absolute Path
+    '''
+        return str(self.__file__).strip()
+
     def __del__(self):
         Logger.__del__(self)
 

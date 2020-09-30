@@ -28,10 +28,8 @@ class Process(Logger):
 
     async def _stream_subprocess(self, cmd):
         process = await asyncio.create_subprocess_exec(*cmd, stdout=PIPE, stderr=PIPE)
-        await asyncio.wait([
-            self._read_stream(process.stdout, self.log.debug),
-            self._read_stream(process.stderr, self.log.error)
-        ])
+        await asyncio.wait([ self._read_stream(process.stdout, self.log.debug),
+                             self._read_stream(process.stderr, self.log.error)])
         return await process.wait()
 
     def execute(self, cmd):
