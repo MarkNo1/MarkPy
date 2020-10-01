@@ -49,8 +49,7 @@ class Performance:
         else:
             self.stats[name].update(time)
 
-    @classmethod
-    def collect (method):
+    def collect(method):
         def measure(*args, **kw):
             self = args[0]
             ts = time.time_ns()
