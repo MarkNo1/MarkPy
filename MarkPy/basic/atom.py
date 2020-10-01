@@ -1,13 +1,28 @@
+import time
+from dataclasses import dataclass
+
 from .time import datetime
 
-__atom_version__ = '1'
 
+_atom_version = '1'
+
+
+@dataclass
 class Atom:
-    def __init__(self):
-        self.__name__ = 'Atom'
-        self.__create_date__ = datetime()
-        self.__version__ = __atom_version__
+
+    _name : str = 'Atom'
+    _create_date : str = datetime()
+    _version : str = _atom_version
 
     def newAtom(self, atom_name, atom_version):
-        self.__name__ += f'>{atom_name}'
-        self.__version__ += f'.{atom_version}'
+        self._name += f'>{atom_name}'
+        self._version += f'.{atom_version}'
+
+    def getAtomName(self):
+        return self._name
+
+    def getAtomVersione(self):
+        return self._version
+
+    def getAtomCreateDate(self):
+        return self._create_date

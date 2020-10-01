@@ -1,3 +1,5 @@
+import time
+from dataclasses import dataclass
 from pathlib import Path
 import logging
 from logging.handlers import TimedRotatingFileHandler
@@ -8,29 +10,90 @@ from .style import Style
 
 DEFAULT_LOG_PATH = Path('/var/MarkPy/')
 
+@dataclass
+class Measure:
+    min  : int = int(1e12)
+    mean : int = 0
+    total: int = 0
+    max  : int = 0
+    last : int = 0
+    count: int = 1
+
+    def __str__(self):
+        return f'{self.last} <{self.min},{self.mean},{self.max}> ns'
+
+    def update(self, measure):
+        self.count += 1
+        if measure < self.min:
+            self.min = measure
+        elif measure > self.max:
+            self.max = measure
+        self.total += measure
+        self.mean = int(self.total / self.count)
+        self.last = measure
+
+    def reset(self):
+        self.count = 0
+        self.total = 0
+
+class Performance:
+    stats = dict()
+    _ms : int = int(1e-6)
+
+    def __getitem__(self, key):
+       return self.stats[key]
+
+    def new(self, name, time):
+        if name not in self.stats:
+            self.stats[name] = Measure(min=time, mean=time, max=time, last=time)
+        else:
+            self.stats[name].update(time)
+
+    @classmethod
+    def collect (method):
+        def measure(*args, **kw):
+            self = args[0]
+            ts = time.time_ns()
+            result = method(*args, **kw)
+            self.performance.new(method.__name__, time.time_ns() - ts)
+            self.log.debug(f'{method.__name__}: {self.performance[method.__name__]}')
+            return result
+        return measure
+
+
+
 class BaseLogger(Style):
-    __base_logger_version__ = 3
-    __hasBaseLogger__ = False
+    _base_logger_version = 3
+    _hasBaseLogger = False
+    performance = Performance()
 
     def __init__(self, loggerName, level=logging.DEBUG):
-        if not self.__hasBaseLogger__:
+        if not self._hasBaseLogger:
             Style.__init__(self)
-            self.newAtom(self.sequential('BaseLogger'), self.sequential(self.__base_logger_version__))
+            self.newAtom(self.sequential('BaseLogger'), self.sequential(self._base_logger_version))
             self.next_sequential()
             # Logger
             self.__logger__ = logging.getLogger(loggerName)
             # Set Level
             self.__logger__.setLevel(level)
             # Do not re-init
-            self.__hasBaseLogger__ = True
+            self._hasBaseLogger = True
+
+
+    @Performance.collect
+    def test(self):
+        self.log.info('test')
+
 
     def newLogAtom(self, atom_name, atom_version):
         self.newAtom(self.sequential(atom_name), self.sequential(atom_version))
         self.next_sequential()
-        self.log = logging.LoggerAdapter(self.__logger__ , dict(atom_name=self.__name__, atom_version=self.__version__))
+        self.log = logging.LoggerAdapter(self.__logger__ , dict(atom_name=self.getAtomName(), atom_version=self.getAtomVersione()))
 
     def _set_format(self):
         return Formatter('''[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s''')
+
+
 
     def __call__(self):
         return self.log
@@ -87,10 +150,11 @@ class Logger(ConsoleLogger, FileLogger):
     __logger_version__ = 7
 
     def __init__(self, loggerName='Logger', logPath=DEFAULT_LOG_PATH, level=logging.DEBUG):
-        if 'ConsoleLogger' not in self.__name__:
+        if 'ConsoleLogger' not in self.getAtomName():
             ConsoleLogger.__init__(self, loggerName, level)
-        if 'FileLogger' not in self.__name__:
+        if 'FileLogger' not in self.getAtomName():
             FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName , level)
+
         self.newLogAtom('Logger', self.__logger_version__ )
         self.log.debug(self.ugrey(f'Initialized'))
 
