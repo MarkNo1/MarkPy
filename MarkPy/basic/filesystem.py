@@ -16,14 +16,14 @@ class File(Logger):
 
     __file_version__ = 1
 
-    def __init__(self, fileName, path=Path.cwd()):
-        Logger.__init__(self, f'.file_{fileName}.log', path=path)
+    def __init__(self, filePath):
+        Logger.__init__(self, f'.file.{Path(filePath).name}')
         self.newLogAtom('File', self.__file_version__)
 
-        self.__file__ = Path(path) / fileName
+        self.__file__ = Path(filePath)
         opt_file = self.orange('looking')
 
-        if not Path(path).exists():
+        if not self.__file__.parent.exists():
             raise ParentPathException(self)
 
         if not self.__file__.exists():
@@ -31,16 +31,13 @@ class File(Logger):
             with open(self.__file__, 'w') as fd:
                 fd.write('')
 
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
         self.log.debug(f' File {opt_file} -> {self.violet(self.__file__)}')
 
     def folder(self):
         return self.__file__.parent
 
     def __str__(self):
-    '''
-        Return the absolute Path
-    '''
         return str(self.__file__).strip()
 
     def __del__(self):
@@ -51,20 +48,21 @@ class Folder(Logger):
 
     __folder_version__ = 1
 
-    def __init__(self, folderName='./', path=Path.cwd()):
-        self.__folder__ = Path(path) / folderName
+    def __init__(self, folderPath='./'):
+        Logger.__init__(self, f'.folder.{folderPath}')
+        self.newLogAtom('Folder', self.__folder_version__)
+
+        self.__folder__ = Path(folderPath)
 
         opt_folder = self.orange('looking')
-        if not Path(path).exists():
+        if not self.__folder__.parent.exists():
             raise ParentPathException(self)
 
         if not self.__folder__.exists():
             os.makedirs(self.__folder__, exist_ok=False)
             opt_folder =  self.green('new')
 
-        Logger.__init__(self, f'.folder.log', path=self.__folder__ )
-        self.newLogAtom('Folder', self.__folder_version__)
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
         self.log.debug(f' Folder {opt_folder} -> {self.lightviolet(self.__folder__)}')
 
     def folders(self):

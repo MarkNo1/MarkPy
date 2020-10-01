@@ -2,21 +2,23 @@ from pathlib import Path
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from logging import Formatter
+from datetime import date
 
 from .style import Style
 
+DEFAULT_LOG_PATH = Path('/var/MarkPy/')
 
 class BaseLogger(Style):
     __base_logger_version__ = 3
     __hasBaseLogger__ = False
 
-    def __init__(self, level=logging.DEBUG):
+    def __init__(self, loggerName, level=logging.DEBUG):
         if not self.__hasBaseLogger__:
             Style.__init__(self)
             self.newAtom(self.sequential('BaseLogger'), self.sequential(self.__base_logger_version__))
             self.next_sequential()
             # Logger
-            self.__logger__ = logging.getLogger(self.__name__)
+            self.__logger__ = logging.getLogger(loggerName)
             # Set Level
             self.__logger__.setLevel(level)
             # Do not re-init
@@ -34,7 +36,7 @@ class BaseLogger(Style):
         return self.log
 
     def __del__(self):
-        self.destructed()
+        self.log.debug(self.ugrey(f'Destructed'))
 
     def error(self, text):
         return self.red(text)
@@ -48,23 +50,19 @@ class BaseLogger(Style):
     def highlight(self, text):
         return self.blue(text)
 
-    def initialized(self):
-        self.log.debug(self.ugrey(f'Initialized'))
-
-    def destructed(self):
-        self.log.debug(self.ugrey(f'Destructed'))
 
 class ConsoleLogger(BaseLogger):
     __console_logger_version__ = 3
-    def __init__(self, level=logging.DEBUG):
-        BaseLogger.__init__(self, level)
+    def __init__(self, loggerName='ConsoleLogger', level=logging.DEBUG):
+        BaseLogger.__init__(self, loggerName, level)
         self.newLogAtom('ConsoleLogger', self.__console_logger_version__)
         # Logger
         if not self.__logger__.hasHandlers():
             self.__console_handler__ = logging.StreamHandler()
             self.__console_handler__.setFormatter(self._set_format())
             self.__logger__.addHandler(self.__console_handler__)
-        self.initialized()
+
+        self.log.debug(self.ugrey(f'Initialized'))
 
     def __del__(self):
         BaseLogger.__del__(self)
@@ -72,25 +70,29 @@ class ConsoleLogger(BaseLogger):
 
 class FileLogger(BaseLogger):
     __file_logger_version__ = 5
-    def __init__(self, log_file, level=logging.DEBUG, rotation = 'd'):
+    def __init__(self, log_file, loggerName='FileLogger', level=logging.DEBUG, rotation = 'd'):
         BaseLogger.__init__(self, level)
         self.newLogAtom('FileLogger', self.__file_logger_version__)
         # Logger
         self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation , backupCount=5)
         self.__file_handler__.setFormatter(self._set_format())
         self.__logger__.addHandler(self.__file_handler__)
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
+        self.log.debug(f'Logging on: {self.orange(log_file)}')
 
     def __del__(self):
         BaseLogger.__del__(self)
 
 class Logger(ConsoleLogger, FileLogger):
-    __logger_version__ = 6
-    def __init__(self, fileName='Logger', path=Path().cwd(), level=logging.DEBUG):
-        ConsoleLogger.__init__(self, level)
-        FileLogger.__init__(self, Path(path) / Path(fileName), level)
+    __logger_version__ = 7
+
+    def __init__(self, loggerName='Logger', logPath=DEFAULT_LOG_PATH, level=logging.DEBUG):
+        if 'ConsoleLogger' not in self.__name__:
+            ConsoleLogger.__init__(self, loggerName, level)
+        if 'FileLogger' not in self.__name__:
+            FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName , level)
         self.newLogAtom('Logger', self.__logger_version__ )
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
 
     def __del__(self):
         FileLogger.__del__(self)

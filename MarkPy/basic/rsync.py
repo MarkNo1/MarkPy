@@ -23,13 +23,13 @@ class Rsync(Process):
 
     __rsync_version__ = 2
 
-    def __init__(self, source, destination, path=Path.cwd()):
-        Process.__init__(self,'Rsync-Sync', path=path)
+    def __init__(self, source, destination):
+        Process.__init__(self,'Rsync-Sync')
         self.newLogAtom('Rsync', self.__rsync_version__)
         self._check_input(source, destination)
         self.source = source
         self.destination = destination
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
         self.rsync_cmd = ['rsync', '-avzh', '--info=flist2,name,progress2']
 
     def sync(self):

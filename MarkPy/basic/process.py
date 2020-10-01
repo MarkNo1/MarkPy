@@ -9,11 +9,11 @@ class Process(Logger):
 
     __process_version__ = 1
 
-    def __init__(self, processName, path=Path.cwd()):
-        Logger.__init__(self, f'.process_{processName}.log', path=path)
+    def __init__(self, processName):
+        Logger.__init__(self, f'.process.{processName}')
         self.newLogAtom('Process', self.__process_version__)
         self.proc = None
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
 
     def _clean_out_line(self, line):
         return str(line,'utf-8').replace('\r', '').replace('\n','')

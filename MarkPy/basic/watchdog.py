@@ -8,10 +8,6 @@ from pathlib import Path
 
 from .filesystem import File, Folder
 
-@dataclass
-class WatcherEvent:
-
-
 class BaseWatcher(RegexMatchingEventHandler):
 
     watcher_events =   {'file': {'moved':FileMovedEvent,
@@ -46,7 +42,7 @@ class WatchFile(File, BaseWatcher):
         File.__init__(self, fileName, path)
         BaseWatcher.__init__(self, path, target=fileName, recursive=recursive)
         self.newLogAtom('WatchFile', self.__watch_file_version__)
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
 
     def use_event(self, event):
         if event.src_path == str(self.__file__):
@@ -62,4 +58,4 @@ class WatchFolder(Folder, BaseWatcher):
         Folder.__init__(self, folderName, path)
         BaseWatcher.__init__(self, path)
         self.newLogAtom('WatchFile', self.__watch_file_version)
-        self.initialized()
+        self.log.debug(self.ugrey(f'Initialized'))
