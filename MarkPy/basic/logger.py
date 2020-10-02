@@ -152,7 +152,7 @@ class Logger(ConsoleLogger, FileLogger):
             ConsoleLogger.__init__(self, loggerName, level)
         if 'FileLogger' not in self.getAtomName():
             FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName, level)
-        if '>Logger' not in self.getAtomName():
+        if 'Logger' not in self.getAtomName():
             self.newLogAtom('Logger', self.__logger_version__)
             self.log.debug(self.ugrey(f'Initialized'))
 

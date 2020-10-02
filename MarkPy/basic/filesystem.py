@@ -13,7 +13,6 @@ class ParentPathException(Exception):
 
 
 class File(Logger):
-
     __file_version__ = 1
 
     def __init__(self, filePath):
@@ -21,6 +20,8 @@ class File(Logger):
         self.newLogAtom('File', self.__file_version__)
 
         self.__file__ = Path(filePath)
+        assert self.__file__.is_file() == True
+
         opt_file = self.orange('looking')
 
         if not self.__file__.parent.exists():
@@ -45,7 +46,6 @@ class File(Logger):
 
 
 class Folder(Logger):
-
     __folder_version__ = 1
 
     def __init__(self, folderPath='./'):
@@ -60,7 +60,7 @@ class Folder(Logger):
 
         if not self.__folder__.exists():
             os.makedirs(self.__folder__, exist_ok=False)
-            opt_folder =  self.green('new')
+            opt_folder = self.green('new')
 
         self.log.debug(self.ugrey(f'Initialized'))
         self.log.debug(f' Folder {opt_folder} -> {self.lightviolet(self.__folder__)}')
@@ -68,12 +68,12 @@ class Folder(Logger):
     @Performance.collect
     def folders(self):
         self.log.debug("call list_folder")
-        return [x for x in  self.__folder__.iterdir() if x.is_dir()]
+        return [x for x in self.__folder__.iterdir() if x.is_dir()]
 
     @Performance.collect
     def files(self):
         self.log.debug("call list_files")
-        return [x for x in  self.__folder__.iterdir() if x.is_file()]
+        return [x for x in self.__folder__.iterdir() if x.is_file()]
 
     @Performance.collect
     def delete(self, target=None):
@@ -101,7 +101,6 @@ class Folder(Logger):
 
 def test_file():
     file = File("test_file")
-
 
 
 def test_folder():
