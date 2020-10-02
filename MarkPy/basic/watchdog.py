@@ -18,12 +18,14 @@ class BaseWatcher(Logger, FileSystemEventHandler):
         Logger.__init__(self, logname)
         self.newLogAtom('BaseWatcher', self._base_watcher_version)
 
+        look = Path(path).strip()
+
         self.target = target
         self.observer_thread = Observer()
-        self.observer_thread.schedule(self, path=str(path), recursive=recursive)
+        self.observer_thread.schedule(self, path=look, recursive=recursive)
         self.observer_thread.start()
 
-        self.log.debug(f'Filesystem observer point to: {self.cyan(str(path))}')
+        self.log.debug(f'Filesystem observer point to: {self.cyan(look)}')
 
     def __del__(self):
         self.observer_thread.stop()
@@ -95,7 +97,7 @@ class WatchFile(File, BaseWatcher):
 class WatchFolder(Folder, BaseWatcher):
     __watch_file_version = 2
 
-    def __init__(self, folderPath=Path.cwd(), recursive=True):
+    def __init__(self, folderPath=Path.cwd(), recursive=False):
         BaseWatcher.__init__(self, 'WatchFolder', Path(folderPath), recursive=recursive)
         Folder.__init__(self, Path(folderPath))
         self.newLogAtom('WatchFolder', self.__watch_file_version)
