@@ -3,6 +3,7 @@ from .atom import Atom
 from .style import Style
 
 from .logger import ConsoleLogger, FileLogger, Logger, test_logger
+from .logger import Performance
 
 from .time import  now, datetime, clock
 

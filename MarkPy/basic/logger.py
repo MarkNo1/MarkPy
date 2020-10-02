@@ -10,13 +10,14 @@ from .style import Style
 
 DEFAULT_LOG_PATH = Path('/var/MarkPy/')
 
+
 @dataclass
 class Measure:
-    min  : int = int(1e12)
-    mean : int = 0
+    min: int = int(1e12)
+    mean: int = 0
     total: int = 0
-    max  : int = 0
-    last : int = 0
+    max: int = 0
+    last: int = 0
     count: int = 1
 
     def __str__(self):
@@ -36,12 +37,13 @@ class Measure:
         self.count = 0
         self.total = 0
 
+
 class Performance:
     stats = dict()
-    _ms : int = int(1e-6)
+    _ms: int = int(1e-6)
 
     def __getitem__(self, key):
-       return self.stats[key]
+        return self.stats[key]
 
     def new(self, name, time):
         if name not in self.stats:
@@ -57,8 +59,8 @@ class Performance:
             self.performance.new(method.__name__, time.time_ns() - ts)
             self.log.debug(f'{method.__name__}: {self.performance[method.__name__]}')
             return result
-        return measure
 
+        return measure
 
 
 class BaseLogger(Style):
@@ -78,21 +80,15 @@ class BaseLogger(Style):
             # Do not re-init
             self._hasBaseLogger = True
 
-
-    @Performance.collect
-    def test(self):
-        self.log.info('test')
-
-
     def newLogAtom(self, atom_name, atom_version):
         self.newAtom(self.sequential(atom_name), self.sequential(atom_version))
         self.next_sequential()
-        self.log = logging.LoggerAdapter(self.__logger__ , dict(atom_name=self.getAtomName(), atom_version=self.getAtomVersione()))
+        self.log = logging.LoggerAdapter(self.__logger__,
+                                         dict(atom_name=self.getAtomName(), atom_version=self.getAtomVersione()))
 
     def _set_format(self):
-        return Formatter('''[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s''')
-
-
+        return Formatter(
+            '''[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s''')
 
     def __call__(self):
         return self.log
@@ -115,6 +111,7 @@ class BaseLogger(Style):
 
 class ConsoleLogger(BaseLogger):
     __console_logger_version__ = 3
+
     def __init__(self, loggerName='ConsoleLogger', level=logging.DEBUG):
         BaseLogger.__init__(self, loggerName, level)
         self.newLogAtom('ConsoleLogger', self.__console_logger_version__)
@@ -132,11 +129,12 @@ class ConsoleLogger(BaseLogger):
 
 class FileLogger(BaseLogger):
     __file_logger_version__ = 5
-    def __init__(self, log_file, loggerName='FileLogger', level=logging.DEBUG, rotation = 'd'):
+
+    def __init__(self, log_file, loggerName='FileLogger', level=logging.DEBUG, rotation='d'):
         BaseLogger.__init__(self, level)
         self.newLogAtom('FileLogger', self.__file_logger_version__)
         # Logger
-        self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation , backupCount=5)
+        self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation, backupCount=5)
         self.__file_handler__.setFormatter(self._set_format())
         self.__logger__.addHandler(self.__file_handler__)
         self.log.debug(self.ugrey(f'Initialized'))
@@ -145,6 +143,7 @@ class FileLogger(BaseLogger):
     def __del__(self):
         BaseLogger.__del__(self)
 
+
 class Logger(ConsoleLogger, FileLogger):
     __logger_version__ = 7
 
@@ -152,14 +151,13 @@ class Logger(ConsoleLogger, FileLogger):
         if 'ConsoleLogger' not in self.getAtomName():
             ConsoleLogger.__init__(self, loggerName, level)
         if 'FileLogger' not in self.getAtomName():
-            FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName , level)
-
-        self.newLogAtom('Logger', self.__logger_version__ )
-        self.log.debug(self.ugrey(f'Initialized'))
+            FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName, level)
+        if '>Logger' not in self.getAtomName():
+            self.newLogAtom('Logger', self.__logger_version__)
+            self.log.debug(self.ugrey(f'Initialized'))
 
     def __del__(self):
         FileLogger.__del__(self)
-
 
 
 def test_logger():
@@ -174,9 +172,12 @@ def test_logger():
     console_logger().info('This is an example of a level of console_logger case of the type: info')
     console_logger().warn('This is an example of a level of console_logger case of the type: warn')
     console_logger().error('This is an example of a level of console_logger case of the type: error')
-    console_logger().error(console_logger.error('This is an example of a level of console_logger case of the type: error with style'))
-    console_logger().info(console_logger.highlight('This is an example of a level of console_logger case of the type: info with style'))
-    console_logger().warn(console_logger.warning('This is an example of a level of console_logger case of the type: warn with style'))
+    console_logger().error(
+        console_logger.error('This is an example of a level of console_logger case of the type: error with style'))
+    console_logger().info(
+        console_logger.highlight('This is an example of a level of console_logger case of the type: info with style'))
+    console_logger().warn(
+        console_logger.warning('This is an example of a level of console_logger case of the type: warn with style'))
 
     # File logger
     file_logger().info("** Testing FileLogger Class **")
@@ -185,9 +186,12 @@ def test_logger():
     file_logger().info('This is an example of a level of file_logger case of the type: info')
     file_logger().warn('This is an example of a level of file_logger case of the type: warn')
     file_logger().error('This is an example of a level of file_logger case of the type: error')
-    file_logger().error(file_logger.error('This is an example of a level of file_logger case of the type: error with style'))
-    file_logger().info(file_logger.highlight('This is an example of a level of file_logger case of the type: info with style'))
-    file_logger().warn(file_logger.warning('This is an example of a level of file_logger case of the type: warn with style'))
+    file_logger().error(
+        file_logger.error('This is an example of a level of file_logger case of the type: error with style'))
+    file_logger().info(
+        file_logger.highlight('This is an example of a level of file_logger case of the type: info with style'))
+    file_logger().warn(
+        file_logger.warning('This is an example of a level of file_logger case of the type: warn with style'))
 
     # Logger
     logger().info("** Testing Logger Class **")
