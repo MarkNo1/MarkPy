@@ -3,41 +3,47 @@ from dataclasses import dataclass
 
 from .time import datetime
 
-_atom_ = {'name': 'Atom', 'version': '2'}
+_atom_ = {'class': 'Atom', 'version': 3}
+
+
+@dataclass
+class ClassDetails:
+    version: int = 1
+    creation_date: datetime = datetime()
+    destruction_date: datetime = None
+
+
+@dataclass
+class InheritHistory:
+    atoms = {_atom_['class']: ClassDetails(version=_atom_['version'])}
+
+    def add(self, name, version):
+        self.atoms[name] = ClassDetails(version)
+
+    def get(self, name):
+        return self.atoms[name]
+
+    def show(self):
+        return str(self.atoms)
 
 
 class Atom:
-    _name = _atom_['name']
-    _version = _atom_['version']
-    _create_date: str = datetime()
 
-    _names = []
-    _versions = []
+    def __init__(self, name, version):
+        if not hasattr(self, '_history'):
+            self._history = InheritHistory()
+            self._history.add(name=name, version=version)
+        else:
+            self._history.add(name=name, version=version)
 
-    def __init__(self, atom='Atom', version=_atom_['version']):
-        self._names += [atom]
-        self._versions += [version]
+    def _get_atom_inherit_history(self):
+        return self._history
 
-    def getName(self):
-        return self._name
+    def _get_atom_inherit_class(self, name):
+        return self._history.get(name)
 
-    def getStrNames(self):
-        return '>'.join(self._names)
-
-    def getStrVersions(self):
-        return '>'.join(self._versions)
-
-    def getVersion(self):
-        return self.version
-
-    def getNames(self):
-        return self._names
-
-    def getVersions(self):
-        return self._versions
-
-    def getAtomCreateDate(self):
-        return self._create_date
+    def _show_inherit_history(self):
+        return self._history.show()
 
     def __hash__(self):
-        return hash(self.getStrNames() + self.getStrVersions())
+        return hash(self._history)

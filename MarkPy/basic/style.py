@@ -2,7 +2,7 @@ from .atom import Atom
 
 import emoji
 
-_style_ = {'name': lambda: 'Style', 'version': lambda: 4}
+_style_ = {'class': 'Style', 'version': 5}
 
 
 class ColorTable():
@@ -31,7 +31,7 @@ class ColorTable():
         self._sequence_ = (self._sequence_ + 1) % 2
 
 
-class EmojyTable():
+class EmojiTable():
     def __init__(self):
         self._table_ = [emo for name, emo in emoji.unicode_codes.EMOJI_UNICODE.items()]
 
@@ -43,14 +43,11 @@ class EmojyTable():
 
 
 class Style(Atom):
-    _version = _style_['version']
-    _nane = _style_['name']
-
     _colors_ = ColorTable()
-    _emoji_ = EmojyTable()
+    _emoji_ = EmojiTable()
 
     def __init__(self):
-        Atom.__init__(self)
+        Atom.__init__(self, _style_['class'], _style_['version'])
 
     def _colorize_(self, colorCode, text):
         return f'\x1b[%sm{text}\x1b[0m' % (colorCode)
@@ -60,13 +57,6 @@ class Style(Atom):
 
     def emoji(self, id):
         return self._emoji_(id)
-
-    def __call__(self, style, text=None):
-        if isinstance(style, int):
-            if text:
-                return self.color(style, text)
-            else:
-                return self.emoji(style)
 
     def showAllColors(self):
         styles = ''

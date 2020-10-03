@@ -26,8 +26,7 @@ def log_base_init(class_init):
     def init(base_class, atom, version, *args, **kw):
         # Call class Constructor
         class_init(base_class, atom, version, *args, **kw)
-        # Register new class
-        base_class.newAtom(base_class.name, base_class.version)
+        # Register new class in the logger adapter
         base_class.log = logging.LoggerAdapter(base_class.__logger__, dict(atom_name=base_class.getStrNames(),
                                                                            atom_version=base_class.getStrVersions()))
         base_class.log.debug(f'Initialized')
@@ -125,51 +124,46 @@ class Logger(ConsoleLogger, FileLogger):
         FileLogger.__del__(self)
 
 
-def test_logger():
-    console_logger = ConsoleLogger()
-    file_logger = FileLogger('FileLogger.test')
-    logger = Logger('Logger.test')
-
-    # Console Logger
-    console_logger().info("** Testing ConsoleLogger Class **")
-    console_logger().info("START")
-    console_logger().debug('This is an example of a level of console_logger case of the type: debug')
-    console_logger().info('This is an example of a level of console_logger case of the type: info')
-    console_logger().warn('This is an example of a level of console_logger case of the type: warn')
-    console_logger().error('This is an example of a level of console_logger case of the type: error')
-    console_logger().error(
-        console_logger.error('This is an example of a level of console_logger case of the type: error with style'))
-    console_logger().info(
-        console_logger.highlight('This is an example of a level of console_logger case of the type: info with style'))
-    console_logger().warn(
-        console_logger.warning('This is an example of a level of console_logger case of the type: warn with style'))
-
-    # File logger
-    file_logger().info("** Testing FileLogger Class **")
-    file_logger().info("START")
-    file_logger().debug('This is an example of a level of file_logger case of the type: debug')
-    file_logger().info('This is an example of a level of file_logger case of the type: info')
-    file_logger().warn('This is an example of a level of file_logger case of the type: warn')
-    file_logger().error('This is an example of a level of file_logger case of the type: error')
-    file_logger().error(
-        file_logger.error('This is an example of a level of file_logger case of the type: error with style'))
-    file_logger().info(
-        file_logger.highlight('This is an example of a level of file_logger case of the type: info with style'))
-    file_logger().warn(
-        file_logger.warning('This is an example of a level of file_logger case of the type: warn with style'))
-
-    # Logger
-    logger().info("** Testing Logger Class **")
-    logger().info("START")
-    logger().debug('This is an example of a level of logger case of the type: debug')
-    logger().info('This is an example of a level of logger case of the type: info')
-    logger().warn('This is an example of a level of logger case of the type: warn')
-    logger().error('This is an example of a level of logger case of the type: error')
-    logger().error(logger.error('This is an example of a level of logger case of the type: error with style'))
-    logger().info(logger.highlight('This is an example of a level of logger case of the type: info with style'))
-    logger().warn(logger.warning('This is an example of a level of logger case of the type: warn with style'))
-
-
-if __name__ == '__main__':
-    l = Logger()
-    l.log.debug('It Works !')
+# def test_logger():
+#     console_logger = ConsoleLogger()
+#     file_logger = FileLogger('FileLogger.test')
+#     logger = Logger('Logger.test')
+#
+#     # Console Logger
+#     console_logger().info("** Testing ConsoleLogger Class **")
+#     console_logger().info("START")
+#     console_logger().debug('This is an example of a level of console_logger case of the type: debug')
+#     console_logger().info('This is an example of a level of console_logger case of the type: info')
+#     console_logger().warn('This is an example of a level of console_logger case of the type: warn')
+#     console_logger().error('This is an example of a level of console_logger case of the type: error')
+#     console_logger().error(
+#         console_logger.error('This is an example of a level of console_logger case of the type: error with style'))
+#     console_logger().info(
+#         console_logger.highlight('This is an example of a level of console_logger case of the type: info with style'))
+#     console_logger().warn(
+#         console_logger.warning('This is an example of a level of console_logger case of the type: warn with style'))
+#
+#     # File logger
+#     file_logger().info("** Testing FileLogger Class **")
+#     file_logger().info("START")
+#     file_logger().debug('This is an example of a level of file_logger case of the type: debug')
+#     file_logger().info('This is an example of a level of file_logger case of the type: info')
+#     file_logger().warn('This is an example of a level of file_logger case of the type: warn')
+#     file_logger().error('This is an example of a level of file_logger case of the type: error')
+#     file_logger().error(
+#         file_logger.error('This is an example of a level of file_logger case of the type: error with style'))
+#     file_logger().info(
+#         file_logger.highlight('This is an example of a level of file_logger case of the type: info with style'))
+#     file_logger().warn(
+#         file_logger.warning('This is an example of a level of file_logger case of the type: warn with style'))
+#
+#     # Logger
+#     logger().info("** Testing Logger Class **")
+#     logger().info("START")
+#     logger().debug('This is an example of a level of logger case of the type: debug')
+#     logger().info('This is an example of a level of logger case of the type: info')
+#     logger().warn('This is an example of a level of logger case of the type: warn')
+#     logger().error('This is an example of a level of logger case of the type: error')
+#     logger().error(logger.error('This is an example of a level of logger case of the type: error with style'))
+#     logger().info(logger.highlight('This is an example of a level of logger case of the type: info with style'))
+#     logger().warn(logger.warning('This is an example of a level of logger case of the type: warn with style'))
