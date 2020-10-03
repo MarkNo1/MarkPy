@@ -6,61 +6,50 @@ from logging.handlers import TimedRotatingFileHandler
 from logging import Formatter
 from datetime import date
 
+from .atom import Atom
 from .perf import Performance
 from .style import Style
 
 DEFAULT_LOG_PATH = Path('/var/MarkPy/')
 
-_base_logger_ = {'name': 'BaseLogger', 'version': '4',
+_base_logger_ = {'class': 'BaseLogger', 'version': 4,
                  'formatter': Formatter('[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n'
                                         '|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
 
-_console_logger_ = {'name': 'BaseLogger', 'version': '5'}
+_console_logger_ = {'class': 'ConsoleLogger', 'version': 5}
 
-_file_logger_ = {'name': 'FileLogger', 'version': '5'}
+_file_logger_ = {'class': 'FileLogger', 'version': 5}
 
-_logger_ = {'name': 'Logger', 'version': '7'}
-
-
-def log_base_init(class_init):
-    def init(base_class, atom, version, *args, **kw):
-        # Call class Constructor
-        class_init(base_class, atom, version, *args, **kw)
-        # Register new class in the logger adapter
-        base_class.log = logging.LoggerAdapter(base_class.__logger__, dict(atom_name=base_class.getStrNames(),
-                                                                           atom_version=base_class.getStrVersions()))
-        base_class.log.debug(f'Initialized')
-        return base_class
-
-    return init
+_logger_ = {'class': 'Logger', 'version': 7}
 
 
 class BaseLogger(Style):
-    version = _base_logger_['version']
-    name = _base_logger_['name']
-    _formatter = _base_logger_['formatter']
 
-    log: logging.LoggerAdapter = None
+    def __init__(self, level=logging.DEBUG):
+        Style.__init__(self)
+        Atom.__init__(self, _base_logger_['class'], _base_logger_['version'])
 
-    performance = Performance()
-
-    @log_base_init
-    def __init__(self, loggerName, level=logging.DEBUG):
-        if 'BaseLogger' not in self.getNames():
-            Style.__init__(self)
+        if _console_logger_['class'] not in self._get_atom_inherit_classes():
             # Logger
-            self.__logger__ = logging.getLogger(loggerName)
+            self.__logger__ = logging.getLogger(str(self._get_class_hash()))
             # Set Level
             self.__logger__.setLevel(level)
+
+        # Prepare Logger Adapter
+        self.log = None
 
     def _set_format(self):
         return self._formatter
 
-    def __call__(self):
-        return self.log
+    # def __call__(self):
+    #     return self.log
 
-    def __del__(self):
-        self.log.debug(self.ugrey(f'Destructed'))
+    # def __del__(self):
+    #     self.log.debug(self.ugrey(f'Destructed'))
+
+    def _update_log_adapter(self):
+        self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_atom_inherit_classes_logs(),
+                                                           "atom_version": self._get_atom_inherit_versions_logs()})
 
     def error(self, text):
         return self.red(text)
@@ -76,52 +65,47 @@ class BaseLogger(Style):
 
 
 class ConsoleLogger(BaseLogger):
-    version = _console_logger_['version']
-    name = _console_logger_['name']
 
-    @log_base_init
-    def __init__(self, loggerName='ConsoleLogger', level=logging.DEBUG):
-        BaseLogger.__init__(self, loggerName, level)
+    def __init__(self, level=logging.DEBUG):
+        BaseLogger.__init__(self, level=level)
+        Atom.__init__(self, _console_logger_['class'], _console_logger_['version'])
 
         # Logger
-        if not self.__logger__.hasHandlers():
+        if _console_logger_['class'] not in self._get_atom_inherit_classes():
             self.__console_handler__ = logging.StreamHandler()
             self.__console_handler__.setFormatter(self._set_format())
             self.__logger__.addHandler(self.__console_handler__)
+            self._update_log_adapter()
 
-    def __del__(self):
-        BaseLogger.__del__(self)
-
-
-class FileLogger(BaseLogger):
-    version = _file_logger_['version']
-    name = _file_logger_['name']
-
-    @log_base_init
-    def __init__(self, log_file, loggerName='FileLogger', level=logging.DEBUG, rotation='d'):
-        BaseLogger.__init__(self, loggerName, level)
-
-        # Logger
-        self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation, backupCount=5)
-        self.__file_handler__.setFormatter(self._set_format())
-        self.__logger__.addHandler(self.__file_handler__)
-
-    def __del__(self):
-        BaseLogger.__del__(self)
-
-
-class Logger(ConsoleLogger, FileLogger):
-    version = _logger_['version']
-    name = _logger_['name']
-
-    def __init__(self, loggerName='Logger', logPath=DEFAULT_LOG_PATH, level=logging.DEBUG):
-        if 'ConsoleLogger' not in self.getNames():
-            ConsoleLogger.__init__(self, loggerName, level)
-        if 'FileLogger' not in self.getNames():
-            FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName, level)
-
-    def __del__(self):
-        FileLogger.__del__(self)
+# class FileLogger(BaseLogger):
+#     version = _file_logger_['version']
+#     name = _file_logger_['name']
+#
+#     @log_base_init
+#     def __init__(self, log_file, loggerName='FileLogger', level=logging.DEBUG, rotation='d'):
+#         BaseLogger.__init__(self, loggerName, level)
+#
+#         # Logger
+#         self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation, backupCount=5)
+#         self.__file_handler__.setFormatter(self._set_format())
+#         self.__logger__.addHandler(self.__file_handler__)
+#
+#     def __del__(self):
+#         BaseLogger.__del__(self)
+#
+#
+# class Logger(ConsoleLogger, FileLogger):
+#     version = _logger_['version']
+#     name = _logger_['name']
+#
+#     def __init__(self, loggerName='Logger', logPath=DEFAULT_LOG_PATH, level=logging.DEBUG):
+#         if 'ConsoleLogger' not in self.getNames():
+#             ConsoleLogger.__init__(self, loggerName, level)
+#         if 'FileLogger' not in self.getNames():
+#             FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName, level)
+#
+#     def __del__(self):
+#         FileLogger.__del__(self)
 
 
 # def test_logger():

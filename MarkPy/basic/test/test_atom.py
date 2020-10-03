@@ -1,5 +1,6 @@
 import unittest
 
+import time
 from MarkPy.basic import Atom
 from MarkPy.basic.atom import _atom_
 
@@ -24,7 +25,24 @@ class TestAtom(unittest.TestCase):
         a = Atom('Test', 1)
         self.assertEqual(a._get_atom_inherit_class(_atom_['class']).version, _atom_['version'])
         self.assertEqual(a._get_atom_inherit_class('Test').version, 1)
-        del a
+
+    def test_atom_inherit_equality(self):
+        a = Atom('Test', 1)
+        b = Atom('Test', 1)
+        self.assertEqual(hash(a), hash(b))
+
+    def test_atom_inherit_notequality(self):
+        a = Atom('Test1', 1)
+        b = Atom('Test2', 1)
+        self.assertNotEqual(hash(a), hash(b))
+
+    def test_atom_get_classes(self):
+        a = Atom('Test', 1)
+        self.assertEqual(a._get_atom_inherit_classes(), [_atom_['class'], 'Test'])
+
+    def test_atom_get_versions(self):
+        a = Atom('Test', 1)
+        self.assertEqual(a._get_atom_inherit_versions(), [_atom_['version'], 1])
 
     def test_atom_inheritance(self):
         c = Child()
