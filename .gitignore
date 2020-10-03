@@ -3,3 +3,4 @@
 /dist
 *.egg-info
 *.idea
+*.cpython-38.pyc
