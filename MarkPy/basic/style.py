@@ -2,19 +2,20 @@ from .atom import Atom
 
 import emoji
 
+_style_ = {'name': lambda: 'Style', 'version': lambda: 4}
+
 
 class ColorTable():
-
     _base_colors_ = [1940, 1950]
     _sequence_ = -1
 
     def __init__(self):
-        self._table_ = [ self._colorCode_(a,b,c)
-                for a in range(8)
-                for b in range(38)
-                for c in range(48)]
+        self._table_ = [self._colorCode_(a, b, c)
+                        for a in range(8)
+                        for b in range(38)
+                        for c in range(48)]
 
-    def _colorCode_(self, a,b,c):
+    def _colorCode_(self, a, b, c):
         return f'{a};{b};{c}'
 
     def __len__(self):
@@ -27,13 +28,12 @@ class ColorTable():
         return self._base_colors_[self._sequence_]
 
     def increase_sequence(self):
-        self._sequence_ = ( self._sequence_ + 1 ) % 2
-
+        self._sequence_ = (self._sequence_ + 1) % 2
 
 
 class EmojyTable():
     def __init__(self):
-        self._table_ = [emo for name, emo  in emoji.unicode_codes.EMOJI_UNICODE.items()]
+        self._table_ = [emo for name, emo in emoji.unicode_codes.EMOJI_UNICODE.items()]
 
     def __call__(self, emojyID):
         return self._table_[emojyID]
@@ -43,16 +43,14 @@ class EmojyTable():
 
 
 class Style(Atom):
+    _version = _style_['version']
+    _nane = _style_['name']
 
-    __style_version__ = 3
     _colors_ = ColorTable()
     _emoji_ = EmojyTable()
 
-
     def __init__(self):
         Atom.__init__(self)
-        self.newAtom(self.sequential('Style'), self.sequential(self.__style_version__))
-        self.next_sequential()
 
     def _colorize_(self, colorCode, text):
         return f'\x1b[%sm{text}\x1b[0m' % (colorCode)
@@ -61,10 +59,10 @@ class Style(Atom):
         return self._colorize_(self._colors_(id), text)
 
     def emoji(self, id):
-        return  self._emoji_(id)
+        return self._emoji_(id)
 
     def __call__(self, style, text=None):
-        if isinstance(style,int):
+        if isinstance(style, int):
             if text:
                 return self.color(style, text)
             else:
@@ -73,7 +71,7 @@ class Style(Atom):
     def showAllColors(self):
         styles = ''
         for x in range(len(self._colors_)):
-            if x %10 == 0 :
+            if x % 10 == 0:
                 styles += '\n'
             styles += '  ' + self.color(x, x)
         print(styles)
@@ -82,10 +80,10 @@ class Style(Atom):
         counter = 0
         styles = ''
         for x in range(len(self._emoji_)):
-            if x %10 == 0 :
+            if x % 10 == 0:
                 styles += '\n'
             styles += f'\t{counter}:' + self._emoji_(x)
-            counter +=1
+            counter += 1
         print(styles)
 
     def next_sequential(self):
@@ -158,5 +156,6 @@ def test_style():
     s.showAllColors()
     s.showAllEmoji()
 
-    print(s.green('Green') + s.red('Red') + s.orange('Orange') + s.blue('Blue') + s.violet('Violet') + s.lightblue('Lightblue'))
+    print(s.green('Green') + s.red('Red') + s.orange('Orange') + s.blue('Blue') + s.violet('Violet') + s.lightblue(
+        'Lightblue'))
     print(s.mark() + s.denied())

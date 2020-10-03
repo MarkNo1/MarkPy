@@ -11,25 +11,26 @@ from .style import Style
 
 DEFAULT_LOG_PATH = Path('/var/MarkPy/')
 
-_base_logger_ = {'name': lambda: 'BaseLogger', 'version': lambda: 4,
-                 'formatter': lambda: Formatter('[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n'
-                                                '|%(version)s|%(name)s %(levelname).4s:\t%(message)s')}
+_base_logger_ = {'name': 'BaseLogger', 'version': '4',
+                 'formatter': Formatter('[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n'
+                                        '|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
 
-_console_logger_ = {'name': lambda: 'BaseLogger', 'version': lambda: 5}
+_console_logger_ = {'name': 'BaseLogger', 'version': '5'}
 
-_file_logger_ = {'name': lambda: 'FileLogger', 'version': lambda: 5}
+_file_logger_ = {'name': 'FileLogger', 'version': '5'}
 
-_logger_ = {'name': lambda: 'Logger', 'version': lambda: 7}
+_logger_ = {'name': 'Logger', 'version': '7'}
 
 
 def log_base_init(class_init):
-    def init(base_class, name, version, *args, **kw):
+    def init(base_class, atom, version, *args, **kw):
         # Call class Constructor
-        base_class = class_init(name, version, *args, **kw)
+        class_init(base_class, atom, version, *args, **kw)
         # Register new class
-        base_class.newAtom(base_class.sequential(base_class.name()), base_class.sequential(base_class.version()))
-        logging.LoggerAdapter(base_class.__logger__, dict(name=base_class.name(), version=base_class.version()))
-        base_class.log.debug(base_class.ugrey(f'Initialized'))
+        base_class.newAtom(base_class.name, base_class.version)
+        base_class.log = logging.LoggerAdapter(base_class.__logger__, dict(atom_name=base_class.getStrNames(),
+                                                                           atom_version=base_class.getStrVersions()))
+        base_class.log.debug(f'Initialized')
         return base_class
 
     return init
@@ -42,23 +43,19 @@ class BaseLogger(Style):
 
     log: logging.LoggerAdapter = None
 
-    _hasBaseLogger = False
     performance = Performance()
 
     @log_base_init
     def __init__(self, loggerName, level=logging.DEBUG):
-        if not self._hasBaseLogger:
+        if 'BaseLogger' not in self.getNames():
             Style.__init__(self)
             # Logger
             self.__logger__ = logging.getLogger(loggerName)
             # Set Level
             self.__logger__.setLevel(level)
-            # Do not re-init
-            self._hasBaseLogger = True
-        return self
 
     def _set_format(self):
-        return self._formatter()
+        return self._formatter
 
     def __call__(self):
         return self.log
@@ -93,8 +90,6 @@ class ConsoleLogger(BaseLogger):
             self.__console_handler__.setFormatter(self._set_format())
             self.__logger__.addHandler(self.__console_handler__)
 
-        return self
-
     def __del__(self):
         BaseLogger.__del__(self)
 
@@ -105,14 +100,12 @@ class FileLogger(BaseLogger):
 
     @log_base_init
     def __init__(self, log_file, loggerName='FileLogger', level=logging.DEBUG, rotation='d'):
-        BaseLogger.__init__(self, level)
+        BaseLogger.__init__(self, loggerName, level)
 
         # Logger
         self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation, backupCount=5)
         self.__file_handler__.setFormatter(self._set_format())
         self.__logger__.addHandler(self.__file_handler__)
-
-        return self
 
     def __del__(self):
         BaseLogger.__del__(self)
@@ -123,12 +116,10 @@ class Logger(ConsoleLogger, FileLogger):
     name = _logger_['name']
 
     def __init__(self, loggerName='Logger', logPath=DEFAULT_LOG_PATH, level=logging.DEBUG):
-        if 'ConsoleLogger' not in self.getAtomName():
+        if 'ConsoleLogger' not in self.getNames():
             ConsoleLogger.__init__(self, loggerName, level)
-        if 'FileLogger' not in self.getAtomName():
+        if 'FileLogger' not in self.getNames():
             FileLogger.__init__(self, Path(logPath) / f'{loggerName}.{date.today()}.log', loggerName, level)
-
-        return self
 
     def __del__(self):
         FileLogger.__del__(self)

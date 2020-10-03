@@ -13,6 +13,7 @@ from .filesystem import File, Folder
 class BaseWatcher(Logger, FileSystemEventHandler):
     _base_watcher_version = 2
 
+    @log_base_init
     def __init__(self, logname='BaseWatcher', path=Path.cwd(), target=None, recursive=False):
         FileSystemEventHandler.__init__(self)
         Logger.__init__(self, logname)
