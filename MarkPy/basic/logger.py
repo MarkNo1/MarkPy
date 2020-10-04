@@ -12,36 +12,50 @@ from .style import Style
 
 DEFAULT_LOG_PATH = Path('/var/MarkPy/')
 
-_base_logger_ = {'class': 'BaseLogger', 'version': 4}
+_logger_ = {'class': 'Logger', 'version': 7,
+'console_formatter': Formatter('[%(asctime)s]|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s'),
+'file_formatter': Formatter('[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
 
 _console_logger_ = {'class': 'ConsoleLogger', 'version': 5,
-                    'formatter': Formatter(
-                        '[%(asctime)s]|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
+                    }
 
 _file_logger_ = {'class': 'FileLogger', 'version': 5,
                  'formatter': Formatter('[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n'
                                         '|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
 
-_logger_ = {'class': 'Logger', 'version': 7}
 
 
-class BaseLogger(Style):
 
-    def __init__(self, level=logging.DEBUG):
+class Logger(Style):
+
+    def __init__(self, console=True, file_log=None,  rotation='d', level=logging.DEBUG):
         Style.__init__(self)
-        Atom.__init__(self, _base_logger_['class'], _base_logger_['version'])
+        Atom.__init__(self, _logger_['class'], _logger_['version'])
 
-        # Logger
-        self.__logger__ = logging.getLogger(str(self._get_class_hash()))
-        # Set Level
-        self.__logger__.setLevel(level)
+        if not self._history(_logger_['class']).was_init:
+            # Logger
+            self.__logger__ = logging.getLogger(str(self._get_classes_hash()))
+            # Set Level
+            self.__logger__.setLevel(level)
+            # Enable Console Logger
+            if console: 
+                self.__console_handler__ = logging.StreamHandler()
+                self.__console_handler__.setFormatter(_logger_['console_formatter'])
+                self.__logger__.addHandler(self.__console_handler__)
+            # Enable File Logger
+            if file_log:
+                file_log = Path(DEFAULT_LOG_PATH) / f'{ str(file_log).replace("/",".") }.{date.today()}.log'
+                self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(file_log, when=rotation, backupCount=5)
+                self.__file_handler__.setFormatter(_logger_['file_formatter'])
+                self.__logger__.addHandler(self.__file_handler__)
 
-        # Prepare Logger Adapter
-        self.log = None
+            # Set class init too True
+            self._history.set_class_init(_logger_['class'])
+            self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(), "atom_version": self._get_classes_versions_str()})
 
-    def _update_log_adapter(self):
-        self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_atom_inherit_classes_logs(),
-                                                           "atom_version": self._get_atom_inherit_versions_logs()})
+
+
+  
 
     def error(self, text):
         return self.red(text)
@@ -56,34 +70,3 @@ class BaseLogger(Style):
         return self.blue(text)
 
 
-class ConsoleLogger(BaseLogger):
-
-    def __init__(self, level=logging.DEBUG):
-        BaseLogger.__init__(self, level=level)
-        Atom.__init__(self, _console_logger_['class'], _console_logger_['version'])
-
-        self.__console_handler__ = logging.StreamHandler()
-        self.__console_handler__.setFormatter(_console_logger_['formatter'])
-        self.__logger__.addHandler(self.__console_handler__)
-        self._update_log_adapter()
-
-
-class FileLogger(BaseLogger):
-    def __init__(self, log_file, level=logging.DEBUG, rotation='d'):
-        BaseLogger.__init__(self, level)
-        Atom.__init__(self, _file_logger_['class'], _file_logger_['version'])
-
-        self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(log_file, when=rotation, backupCount=5)
-        self.__file_handler__.setFormatter(_file_logger_['formatter'])
-        self.__logger__.addHandler(self.__file_handler__)
-        self._update_log_adapter()
-
-
-class Logger(ConsoleLogger, FileLogger):
-    def __init__(self, logFile, logPath=DEFAULT_LOG_PATH, level=logging.DEBUG):
-        # if _console_logger_['class'] not in self._get_atom_inherit_classes():
-        ConsoleLogger.__init__(self, level)
-        # if _file_logger_['class'] not in self._get_atom_inherit_classes():
-        FileLogger.__init__(self, Path(logPath) / f'{logFile}.{date.today()}.log', level)
-        Atom.__init__(self, _logger_['class'], _logger_['version'])
-        self._update_log_adapter()

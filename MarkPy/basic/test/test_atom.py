@@ -23,8 +23,8 @@ class TestAtom(unittest.TestCase):
 
     def test_atom_creation(self):
         a = Atom('Test', 1)
-        self.assertEqual(a._get_atom_inherit_class(_atom_['class']).version, _atom_['version'])
-        self.assertEqual(a._get_atom_inherit_class('Test').version, 1)
+        self.assertEqual(a._get_class_details(_atom_['class']).version, _atom_['version'])
+        self.assertEqual(a._get_class_details('Test').version, 1)
 
     def test_atom_inherit_equality(self):
         a = Atom('Test', 1)
@@ -38,22 +38,22 @@ class TestAtom(unittest.TestCase):
 
     def test_atom_get_classes(self):
         a = Atom('Test', 1)
-        self.assertEqual(a._get_atom_inherit_classes(), [_atom_['class'], 'Test'])
+        self.assertEqual(a._get_classes_name_list(), [_atom_['class'], 'Test'])
 
     def test_atom_get_versions(self):
         a = Atom('Test', 1)
-        self.assertEqual(a._get_atom_inherit_versions(), [_atom_['version'], 1])
+        self.assertEqual(a._get_classes_versions_list(), [_atom_['version'], 1])
 
     def test_atom_inheritance(self):
         c = Child()
-        self.assertEqual(c._get_atom_inherit_class(_atom_['class']).version, _atom_['version'])
-        self.assertEqual(c._get_atom_inherit_class(_child_['class']).version, _child_['version'])
+        self.assertEqual(c._get_class_details(_atom_['class']).version, _atom_['version'])
+        self.assertEqual(c._get_class_details(_child_['class']).version, _child_['version'])
 
     def test_atom_multiple_inheritance(self):
         n = Nephew()
-        self.assertEqual(n._get_atom_inherit_class(_atom_['class']).version, _atom_['version'])
-        self.assertEqual(n._get_atom_inherit_class(_child_['class']).version, _child_['version'])
-        self.assertEqual(n._get_atom_inherit_class(_nephew_['class']).version, _nephew_['version'])
+        self.assertEqual(n._get_class_details(_atom_['class']).version, _atom_['version'])
+        self.assertEqual(n._get_class_details(_child_['class']).version, _child_['version'])
+        self.assertEqual(n._get_class_details(_nephew_['class']).version, _nephew_['version'])
 
 
 if __name__ == '__main__':
