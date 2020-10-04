@@ -52,6 +52,9 @@ class File(Logger):
     def append(self, data):
         with open(self.__file__, 'a') as f:
             return f.write(str(data))
+    
+    def remove(self):
+        os.remove(self.__file__)
 
 
 class Folder(Logger):

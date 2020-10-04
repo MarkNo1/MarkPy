@@ -17,7 +17,7 @@ class ClassDetails:
         self.destruction_date: datetime = None
         self.was_init = False
         self.rand_id = random()
-
+        
     def __eq__(self, other):
         return self.version == other.version and self.creation_date == other.creation_date and self.creation_time == other.creation_time
 

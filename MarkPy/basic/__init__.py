@@ -10,5 +10,7 @@ from .perf import Performance
 
 from .filesystem import File, Folder
 
+from .watchers import Watcher
+
 from .test import test_atom
 
