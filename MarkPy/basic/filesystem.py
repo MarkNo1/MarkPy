@@ -18,11 +18,10 @@ class ParentPathException(Exception):
 class File(Logger):
 
     def __init__(self, file_path, console=False):
-        Logger.__init__(self, console=console, file_log= f'Folder.{file_path}')
+        Logger.__init__(self, console=console, file_log= f'File.{file_path}')
         self._init_atom_register_class(_file_)
 
         self.__file__ = Path(file_path)
-        assert self.__file__.is_file() == True
 
         opt_file = self.orange('looking')
 
@@ -41,6 +40,18 @@ class File(Logger):
 
     def __str__(self):
         return str(self.__file__).strip()
+
+    def read(self):
+        with open(self.__file__, 'r') as f:
+            return f.read()
+    
+    def write(self, data):
+        with open(self.__file__, 'w') as f:
+            return f.write(str(data))
+
+    def append(self, data):
+        with open(self.__file__, 'a') as f:
+            return f.write(str(data))
 
 
 class Folder(Logger):

@@ -6,21 +6,30 @@ from MarkPy.basic import Atom
 from MarkPy.basic import File, Folder
 
 
-_logger_child_ = {'class': 'LoggerChild', 'version': 2}
-_logger_nephew_ = {'class': 'LoggerNephew', 'version': 3}
+_File_child_ = {'class': 'FileChild', 'version': 2}
+_File_nephew_ = {'class': 'FileNephew', 'version': 3}
 
 
-class LoggerChild(Logger):
-    def __init__(self, console, file_log):
-        Logger.__init__(self, console=console, file_log=file_log)
-        self._init_atom_register_class(_logger_child_)
+class FileChild(File):
+    def __init__(self, console=False, file_path='/tmp/file_child_test'):
+        File.__init__(self, console=console, file_path=file_path)
+        self._init_atom_register_class(_File_child_)
 
 
-class LoggerNephew(LoggerChild):
-    def __init__(self, console, file_log):
-        LoggerChild.__init__(self, console=console, file_log=file_log)
-        self._init_atom_register_class(_logger_nephew_)
+class FileNephew(FileChild):
+    def __init__(self, console=False, file_path='/tmp/file_nephew_test'):
+        FileChild.__init__(self, console=console, file_path=file_path)
+        self._init_atom_register_class(_File_nephew_)
 
+class TestFile(unittest.TestCase):
+
+    def test_performance_child(self):
+        fc = FileChild()
+        
+        
+
+    def test_performance_nephew(self):
+        fn = FileNephew()
 
 
 if __name__ == '__main__':

@@ -73,6 +73,13 @@ class TestFileLogger(unittest.TestCase):
         self.assertEqual(n._get_class_details(_logger_nephew_['class']).version,_logger_nephew_['version'])
     
 
+    def test_logger_multiple_instances(self):
+        n = LoggerNephew(console=False, file_log='test_file_logger_multy_instance_1')
+        n.log.debug("init child")
+        z = LoggerNephew(console=False, file_log='test_file_logger_multy_instance_2')
+        z.log.debug("init nephew")
+        n.log.debug("end child")
+        z.log.debug("end nephew")
 
 if __name__ == '__main__':
     unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='/tmp/markpy_unittest/'))

@@ -1,4 +1,5 @@
 import time
+from random import random
 from dataclasses import dataclass
 
 from .time import datetime, clock
@@ -15,12 +16,13 @@ class ClassDetails:
         self.creation_time = clock()
         self.destruction_date: datetime = None
         self.was_init = False
+        self.rand_id = random()
 
     def __eq__(self, other):
         return self.version == other.version and self.creation_date == other.creation_date and self.creation_time == other.creation_time
 
     def __hash__(self):
-        return hash((self.name, self.version, self.creation_date))
+        return hash((self.name, self.version, self.creation_time, self.rand_id))
 
     def init(self):
         self.was_init = True

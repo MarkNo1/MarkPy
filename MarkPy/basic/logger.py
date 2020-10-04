@@ -22,33 +22,32 @@ class Logger(Style):
     def __init__(self, console=True, file_log=None,  rotation='d', level=logging.DEBUG):
         Style.__init__(self)
         Atom.__init__(self, _logger_['class'], _logger_['version'])
-
-        if not self._history(_logger_['class']).was_init:
-            # Logger
-            self.__logger__ = logging.getLogger(str(self._get_classes_hash()))
-            # Set Level
-            self.__logger__.setLevel(level)
-            # Enable Console Logger
-            if console: 
-                self.__console_handler__ = logging.StreamHandler()
-                self.__console_handler__.setFormatter(_logger_['console_formatter'])
-                self.__logger__.addHandler(self.__console_handler__)
-            # Enable File Logger
-            if file_log:
-                file_log = Path(DEFAULT_LOG_PATH) / f'{ str(file_log).replace("/",".") }.{date.today()}.log'
-                self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(file_log, when=rotation, backupCount=5)
-                self.__file_handler__.setFormatter(_logger_['file_formatter'])
-                self.__logger__.addHandler(self.__file_handler__)
-
-            # Set class init too True
-            self._history.set_class_init(_logger_['class'])
-            self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(), "atom_version": self._get_classes_versions_str()})
+        self._logger_console = console
+        self._logger_file = file_log
+        self._logger_rotatation = rotation
+        self._logger_level = level
+        self._init_atom_register_class(_logger_)
 
 
     def _init_atom_register_class(self, class_details):
         Atom.__init__(self, class_details['class'], class_details['version'])
+        # Logger
+        self.__logger__ = logging.getLogger(str(self._get_classes_hash()))
+        # Set Level
+        self.__logger__.setLevel(self._logger_level)
+        # Enable Console Logger
+        if self._logger_console: 
+            self.__console_handler__ = logging.StreamHandler()
+            self.__console_handler__.setFormatter(_logger_['console_formatter'])
+            self.__logger__.addHandler(self.__console_handler__)
+        # Enable File Logger
+        if self._logger_file:
+            file_log = Path(DEFAULT_LOG_PATH) / f'{ str(self._logger_file).replace("/",".") }.{date.today()}.log'
+            self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(file_log, when=self._logger_rotatation, backupCount=5)
+            self.__file_handler__.setFormatter(_logger_['file_formatter'])
+            self.__logger__.addHandler(self.__file_handler__)
+
         self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(), "atom_version": self._get_classes_versions_str()})
-  
 
     def error(self, text):
         return self.red(text)

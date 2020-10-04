@@ -29,7 +29,7 @@ class TestAtom(unittest.TestCase):
     def test_atom_inherit_equality(self):
         a = Atom('Test', 1)
         b = Atom('Test', 1)
-        self.assertEqual(hash(a), hash(b))
+        self.assertNotEqual(hash(a), hash(b))
 
     def test_atom_inherit_notequality(self):
         a = Atom('Test1', 1)
