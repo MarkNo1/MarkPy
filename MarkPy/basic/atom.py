@@ -20,12 +20,12 @@ class ClassDetails:
         return self.version == other.version and self.creation_date == other.creation_date and self.creation_time == other.creation_time
 
     def __hash__(self):
-        return hash((self.name, self.version))
+        return hash((self.name, self.version, self.creation_date))
 
     def init(self):
         self.was_init = True
 
-class ClassesHistory:
+class AtomHistory:
 
     def __init__(self, name, version):
         class_details = ClassDetails(name=name, version=version)
@@ -63,9 +63,11 @@ class ClassesHistory:
 
 class Atom:
 
+    performance = Performance()
+
     def __init__(self, name, version):
         if not hasattr(self, '_history'):
-            self._history = ClassesHistory(name=_atom_['class'], version=_atom_['version'])
+            self._history = AtomHistory(name=_atom_['class'], version=_atom_['version'])
             self._history.add(name=name, version=version)
         else:
             self._history.add(name=name, version=version)

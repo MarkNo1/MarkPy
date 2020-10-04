@@ -5,6 +5,7 @@ import time
 
 @dataclass
 class Measure:
+    name: str = ''
     min: int = int(1e12)
     mean: int = 0
     total: int = 0
@@ -15,7 +16,7 @@ class Measure:
     data : pd.DataFrame = None
 
     def __str__(self):
-        return f'{self.last} <{self.min},{self.mean},{self.max}> ns'
+        return f'{self.name}: {self.last} <{self.min},{self.mean},{self.max}> ns'
 
     def update(self, measure):
         self.count += 1
@@ -41,7 +42,7 @@ class Performance:
 
     def new(self, name, time):
         if name not in self.stats:
-            self.stats[name] = Measure(min=time, mean=time, max=time, last=time)
+            self.stats[name] = Measure(name=name, min=time, mean=time, max=time, last=time)
         else:
             self.stats[name].update(time)
 
@@ -51,7 +52,6 @@ class Performance:
             ts = time.time_ns()
             result = method(*args, **kw)
             self.performance.new(method.__name__, time.time_ns() - ts)
-            self.log.debug(f'{method.__name__}: {self.performance[method.__name__]}')
             return result
-
         return measure
+

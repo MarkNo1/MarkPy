@@ -16,15 +16,6 @@ _logger_ = {'class': 'Logger', 'version': 7,
 'console_formatter': Formatter('[%(asctime)s]|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s'),
 'file_formatter': Formatter('[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
 
-_console_logger_ = {'class': 'ConsoleLogger', 'version': 5,
-                    }
-
-_file_logger_ = {'class': 'FileLogger', 'version': 5,
-                 'formatter': Formatter('[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n'
-                                        '|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
-
-
-
 
 class Logger(Style):
 
@@ -54,7 +45,9 @@ class Logger(Style):
             self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(), "atom_version": self._get_classes_versions_str()})
 
 
-
+    def _init_atom_register_class(self, class_details):
+        Atom.__init__(self, class_details['class'], class_details['version'])
+        self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(), "atom_version": self._get_classes_versions_str()})
   
 
     def error(self, text):
