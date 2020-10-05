@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:temp_branch" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5988f85c-6c09-4ad8-b73a-213f8a5c78f4" name="Default Changelist" comment="basic | html unittest, Logger needs more testes">
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1iMgmGJ1KEd9uITTb9MCavkGAkQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/markipy/gui" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/markipy/gui" />
+      <recent name="$PROJECT_DIR$/markipy/basic/test" />
+      <recent name="$PROJECT_DIR$/markipy/script" />
+      <recent name="$PROJECT_DIR$/MarkPy/basic/test" />
+      <recent name="$PROJECT_DIR$/MarkPy/test/basic" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/MarkPy/basic" />
+      <recent name="$PROJECT_DIR$/MarkPy/test" />
+      <recent name="$PROJECT_DIR$/MarkPy/test/basic" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unittests for markipy.basic.test.test_atom.TestAtom" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="MarkPy" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/markipy/basic/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;markipy.basic.test.test_atom.TestAtom&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Unittests for markipy.basic.test.test_atom.TestAtom" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5988f85c-6c09-4ad8-b73a-213f8a5c78f4" name="Default Changelist" comment="" />
+      <created>1601723032006</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1601723032006</updated>
+    </task>
+    <task id="LOCAL-00001" summary="basic | html unittest, Logger needs more testes">
+      <created>1601739364226</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1601739364226</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="temp_branch" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="basic | html unittest, Logger needs more testes" />
+    <option name="LAST_COMMIT_MESSAGE" value="basic | html unittest, Logger needs more testes" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="738" y="396" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1601724281259">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="738" y="396" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.31.2560.1409@0.31.2560.1409" timestamp="1601724281259" />
+    <state x="989" y="529" width="589" height="420" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1601929459987">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="989" y="529" width="589" height="420" key="#com.intellij.fileTypes.FileTypeChooser/0.31.2560.1409@0.31.2560.1409" timestamp="1601929459987" />
+    <state x="95" y="131" width="2370" height="1214" key="DiffContextDialog" timestamp="1601725634123">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="95" y="131" width="2370" height="1214" key="DiffContextDialog/0.31.2560.1409@0.31.2560.1409" timestamp="1601725634123" />
+    <state x="1063" y="496" width="434" height="487" key="FileChooserDialogImpl" timestamp="1601724274489">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="1063" y="496" width="434" height="487" key="FileChooserDialogImpl/0.31.2560.1409@0.31.2560.1409" timestamp="1601724274489" />
+    <state width="2514" height="474" key="GridCell.Tab.0.bottom" timestamp="1601749714969">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.0.bottom/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714969" />
+    <state width="2514" height="474" key="GridCell.Tab.0.center" timestamp="1601749714968">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.0.center/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714968" />
+    <state width="2514" height="474" key="GridCell.Tab.0.left" timestamp="1601749714968">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.0.left/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714968" />
+    <state width="2514" height="474" key="GridCell.Tab.0.right" timestamp="1601749714969">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.0.right/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714969" />
+    <state width="2514" height="474" key="GridCell.Tab.1.bottom" timestamp="1601749714973">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.1.bottom/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714973" />
+    <state width="2514" height="474" key="GridCell.Tab.1.center" timestamp="1601749714972">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.1.center/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714972" />
+    <state width="2514" height="474" key="GridCell.Tab.1.left" timestamp="1601749714972">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.1.left/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714972" />
+    <state width="2514" height="474" key="GridCell.Tab.1.right" timestamp="1601749714973">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state width="2514" height="474" key="GridCell.Tab.1.right/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714973" />
+    <state x="769" y="373" width="1022" height="733" key="SettingsEditor" timestamp="1601906893424">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="769" y="373" width="1022" height="733" key="SettingsEditor/0.31.2560.1409@0.31.2560.1409" timestamp="1601906893424" />
+    <state x="933" y="355" width="693" height="768" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1601725862620">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="933" y="355" width="693" height="768" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.31.2560.1409@0.31.2560.1409" timestamp="1601725862620" />
+    <state x="970" y="316" width="620" height="846" key="find.popup" timestamp="1601930965130">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="970" y="316" width="620" height="846" key="find.popup/0.31.2560.1409@0.31.2560.1409" timestamp="1601930965130" />
+    <state x="943" y="353" width="672" height="678" key="search.everywhere.popup" timestamp="1601728172234">
+      <screen x="0" y="31" width="2560" height="1409" />
+    </state>
+    <state x="943" y="353" width="672" height="678" key="search.everywhere.popup/0.31.2560.1409@0.31.2560.1409" timestamp="1601728172234" />
+  </component>
+</project>
