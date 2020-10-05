@@ -2,8 +2,8 @@ import unittest
 import time
 import HtmlTestRunner
 
-from MarkPy.basic import Atom
-from MarkPy.basic import Performance
+from markipy.basic import Atom
+from markipy.basic import Performance
 
 
 _Performance_child_ = {'class': 'PerformanceChild', 'version': 2}

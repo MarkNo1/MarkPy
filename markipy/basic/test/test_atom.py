@@ -1,8 +1,8 @@
 import unittest
 
 import time
-from MarkPy.basic import Atom
-from MarkPy.basic.atom import _atom_
+from markipy.basic import Atom
+from markipy.basic.atom import _atom_
 
 _child_ = {'class': 'Child', 'version': 2}
 _nephew_ = {'class': 'Nephew', 'version': 3}

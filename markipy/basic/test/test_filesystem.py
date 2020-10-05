@@ -2,8 +2,8 @@ import unittest
 import os
 import HtmlTestRunner
 
-from MarkPy.basic import Atom
-from MarkPy.basic import File, Folder
+from markipy.basic import Atom
+from markipy.basic import File, Folder
 
 
 _File_child_ = {'class': 'FileChild', 'version': 2}

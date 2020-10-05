@@ -3,8 +3,8 @@ import os
 from time import sleep
 import HtmlTestRunner
 
-from MarkPy.basic import File
-from MarkPy.basic import Watcher
+from markipy.basic import File
+from markipy.basic import Watcher
 
 _watcher_child_ = {'class': 'WatcherChild', 'version': 1}
 _watcher_nephew_ = {'class': 'WatcherNephew', 'version': 1}

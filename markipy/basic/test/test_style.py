@@ -1,10 +1,10 @@
 import unittest
 
-from MarkPy.basic.style import _style_
-from MarkPy.basic.atom import _atom_
+from markipy.basic.style import _style_
+from markipy.basic.atom import _atom_
 
-from MarkPy.basic import Atom
-from MarkPy.basic import Style
+from markipy.basic import Atom
+from markipy.basic import Style
 
 _child_ = {'class': 'Child', 'version': 2}
 _nephew_ = {'class': 'Nephew', 'version': 3}

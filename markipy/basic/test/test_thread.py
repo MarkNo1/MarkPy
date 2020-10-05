@@ -3,8 +3,8 @@ import os
 from time import sleep
 import HtmlTestRunner
 
-from MarkPy.basic import Channel
-from MarkPy.basic import ThreadConsumer, ThreadProducer, GeneralThread
+from markipy.basic import Channel
+from markipy.basic import ThreadConsumer, ThreadProducer, GeneralThread
 
 _producer_ = {'class': 'Producer', 'version': 1}
 _consumer_ = {'class': 'Consumer', 'version': 1}
@@ -20,7 +20,7 @@ class Producer(ThreadProducer):
         for x in range(0, 100):
             self.produced.append(x)
             self.produce(x)
-            sleep(0.001)
+            sleep(0.0001)
         self.set_finish()
 
 
@@ -31,7 +31,6 @@ class Consumer(ThreadConsumer):
         self.consumed = []
 
     def task(self, var):
-        sleep(0.001)
         self.consumed.append(var)
 
 

@@ -3,7 +3,7 @@ import os
 from time import sleep
 import HtmlTestRunner
 
-from MarkPy.basic import Channel
+from markipy.basic import Channel
 
 
 class TestChannel(unittest.TestCase):
