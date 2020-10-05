@@ -10,7 +10,6 @@ from pathlib import Path
 from .logger import Logger, Performance
 from .filesystem import File, Folder
 
-
 _watcher_ = {'class': 'Watcher', 'version': 3}
 
 
@@ -19,7 +18,7 @@ class Watcher(Logger, FileSystemEventHandler):
     def __init__(self, path=Path.cwd(), console=False, recursive=False):
         FileSystemEventHandler.__init__(self)
 
-        if Path(path).is_dir():            
+        if Path(path).is_dir():
             path = Path(path)
             self.target_file = None
             log_file = f'FolderWatcher.{path}'
@@ -33,8 +32,7 @@ class Watcher(Logger, FileSystemEventHandler):
 
         Logger.__init__(self, console=console, file_log=log_file)
         self._init_atom_register_class(_watcher_)
-        
-    
+
     def start(self):
         self.observer_thread = Observer()
         self.observer_thread.schedule(self, path=self.path, recursive=self.recursive)
@@ -55,7 +53,7 @@ class Watcher(Logger, FileSystemEventHandler):
             self.dispatch_folder(event)
 
     def dispatch_file(self, event):
-        if event.src_path == str(self.target_file): 
+        if event.src_path == str(self.target_file):
             if isinstance(event, FileMovedEvent):
                 self.task_file_moved(event)
             if isinstance(event, FileModifiedEvent):
@@ -63,8 +61,8 @@ class Watcher(Logger, FileSystemEventHandler):
             if isinstance(event, FileCreatedEvent):
                 self.task_file_created(event)
             if isinstance(event, FileDeletedEvent):
-                self.task_file_deleted(event)        
-        
+                self.task_file_deleted(event)
+
     def dispatch_folder(self, event):
         if isinstance(event, FileMovedEvent):
             self.task_file_moved(event)
@@ -81,7 +79,7 @@ class Watcher(Logger, FileSystemEventHandler):
         if isinstance(event, DirCreatedEvent):
             self.task_dir_created(event)
         if isinstance(event, DirDeletedEvent):
-            self.task_dir_deleted(event)        
+            self.task_dir_deleted(event)
 
     def task_file_moved(self, event):
         self.log.debug(f'File moved from {self.orange(event.src_path)} to {self.green(event.dest_path)}')

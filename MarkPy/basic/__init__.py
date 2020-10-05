@@ -12,5 +12,6 @@ from .filesystem import File, Folder
 
 from .watchers import Watcher
 
-from .test import test_atom
+from .channel import Channel
 
+from .thread import ThreadConsumer, ThreadProducer, GeneralThread
