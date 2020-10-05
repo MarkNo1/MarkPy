@@ -1,3 +1,5 @@
+html-testRunner
+wget
 watchdog
 tqdm
 pandas

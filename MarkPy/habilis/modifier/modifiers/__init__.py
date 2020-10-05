@@ -1,1 +1,0 @@
-from .pigment import PigmentModifier
