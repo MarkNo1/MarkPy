@@ -86,6 +86,11 @@ class Folder(Logger):
         return [x for x in self.__folder__.iterdir() if x.is_file()]
 
     @Performance.collect
+    def ls(self):
+        self.log.debug("call ls")
+        return [x for x in self.__folder__.iterdir()]
+
+    @Performance.collect
     def delete(self, target=None):
         if target is None:
             target = self.__folder__
