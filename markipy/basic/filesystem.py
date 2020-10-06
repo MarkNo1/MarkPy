@@ -13,8 +13,16 @@ _folder_ = {'class': 'Folder', 'version': 3}
 
 # ParentPathCreationNewFileNotFound
 class ParentPathException(Exception):
-    def __init__(self, File):
-        File.log.error(f"Parent path not exist of  {File.red(File.__file__)}")
+    def __init__(self, FilesystemClass):
+        if isinstance(FilesystemClass, File):
+            FilesystemClass.log.error(f"Parent path not exist of  {FilesystemClass.red(FilesystemClass.__file__)}")
+        else:
+            FilesystemClass.log.error(f"Parent path not exist of  {FilesystemClass.red(FilesystemClass.__folder__)}")
+
+
+class FolderAttachedToFileException(Exception):
+    def __init__(self, Folder):
+        Folder.log.error(f"Folder cannot be attached to a file: {Folder.red(Folder.__folder__)}")
 
 
 class File(Logger):
@@ -67,6 +75,9 @@ class File(Logger):
     def remove(self):
         os.remove(self.__file__)
 
+    def __call__(self):
+        return self.__file__
+
 
 class Folder(Logger):
 
@@ -75,6 +86,9 @@ class Folder(Logger):
         Atom.__init__(self, _folder_['class'], _folder_['version'])
 
         self.__folder__ = Path(folder_path)
+
+        if self.__folder__.is_file():
+            raise FolderAttachedToFileException(self)
 
         opt_folder = self.orange('looking')
         if not self.__folder__.parent.exists():
@@ -127,3 +141,6 @@ class Folder(Logger):
 
     def __str__(self):
         return str(self.__folder__)
+
+    def __call__(self):
+        return self.__folder__

@@ -1,5 +1,3 @@
-import os, sys, urllib.request, json
-import PySide2.QtQml
 from PySide2.QtQuick import QQuickView
 from PySide2.QtCore import QStringListModel, Qt, QUrl, QSize, QObject, Slot
 from PySide2.QtGui import QGuiApplication
@@ -14,9 +12,11 @@ class PythonClass(QObject):
         return "python is awesome!"
 
 
+
+
 def DisplayData(data):
     # Set up the application window
-    app = QGuiApplication(sys.argv)
+    app = QGuiApplication()
     view = QQuickView()
     view.setMaximumSize(QSize(960, 500))
     view.setResizeMode(QQuickView.SizeRootObjectToView)
@@ -30,7 +30,7 @@ def DisplayData(data):
     view.rootContext().setContextProperty("PythonClass", pclass)
 
     # Load the QML file
-    qml_file = os.path.join(os.path.dirname(__file__), "view.qml")
+    qml_file = os.path.join(os.path.dirname(__file__), "list_view.qml")
     view.setSource(QUrl.fromLocalFile(os.path.abspath(qml_file)))
 
     # Show the window
