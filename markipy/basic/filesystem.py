@@ -28,7 +28,7 @@ class FolderAttachedToFileException(Exception):
 class File(Logger):
 
     def __init__(self, file_path, console=False, log_path=DEFAULT_LOG_PATH):
-        Logger.__init__(self, console=console, file_log=f'File.{file_path}', log_path=log_path)
+        Logger.__init__(self, console=console, file_log=f'File{file_path}', log_path=log_path)
         self._init_atom_register_class(_file_)
 
         self.__file__ = Path(file_path)
@@ -82,7 +82,7 @@ class File(Logger):
 class Folder(Logger):
 
     def __init__(self, folder_path='./', console=False, log_path=DEFAULT_LOG_PATH):
-        Logger.__init__(self, console=console, file_log=f'Folder.{folder_path}', log_path=log_path)
+        Logger.__init__(self, console=console, file_log=f'Folder{folder_path}', log_path=log_path)
         Atom.__init__(self, _folder_['class'], _folder_['version'])
 
         self.__folder__ = Path(folder_path)

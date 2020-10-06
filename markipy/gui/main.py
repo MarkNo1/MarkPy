@@ -8,10 +8,10 @@ from pathlib import Path
 
 
 class PythonClass(QObject):
-    @Slot(str, result=str)  # also works: @pyqtSlot(QVariant, result=QVariant)
+    @Slot(str, result=list)  # also works: @pyqtSlot(QVariant, result=QVariant)
     def back_to_python(self, variable):
         print(variable)
-        return "python is awesome!"
+        return ["python is awesome!"]
 
 
 def DisplayData(data):

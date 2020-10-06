@@ -32,7 +32,7 @@ Page {
             id: list_view
             anchors.fill: root
             anchors.margins: 25
-            model: myModel
+            model: ListModel
             delegate: Text {
                 color: "#0080FF"
                 anchors.leftMargin: 70
@@ -50,7 +50,7 @@ Page {
             }
             focus: true
             onCurrentIndexChanged: {
-            var x = PythonClass.back_to_python(list_view.currentIndex)
+            var x = ListController.add_item_selected(list_view.currentIndex)
             console.log(x)
             console.log(list_view.currentIndex)
             }
