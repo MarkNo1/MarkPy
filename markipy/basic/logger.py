@@ -6,10 +6,10 @@ from logging.handlers import TimedRotatingFileHandler
 from logging import Formatter
 from datetime import date
 
+from markipy import DEFAULT_LOG_PATH
 from .atom import Atom
 from .perf import Performance
 from .style import Style
-
 
 _logger_ = {'class': 'Logger', 'version': 7,
             'console_formatter': Formatter(

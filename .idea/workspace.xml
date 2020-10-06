@@ -22,10 +22,7 @@
     <list default="true" id="5988f85c-6c09-4ad8-b73a-213f8a5c78f4" name="Default Changelist" comment="basic | html unittest, Logger needs more testes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/markipy/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markipy/basic/filesystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/basic/filesystem.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/markipy/basic/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/basic/logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markipy/basic/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/basic/process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markipy/basic/yml.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/basic/yml.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
