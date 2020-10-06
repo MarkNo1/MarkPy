@@ -29,7 +29,7 @@ Page {
         }
 
         ListView {
-            id: view
+            id: list_view
             anchors.fill: root
             anchors.margins: 25
             model: myModel
@@ -40,14 +40,27 @@ Page {
                 font.bold: true
                 horizontalAlignment: Text.AlignHCenter
                 text: display
+                 MouseArea {
+                    anchors.fill: parent
+                    onClicked: list_view.currentIndex = index
+                 }
+            }
+            highlight: Rectangle {
+            color: '#DCE7FA'
+            }
+            focus: true
+            onCurrentIndexChanged: {
+            var x = PythonClass.back_to_python(list_view.currentIndex)
+            console.log(x)
+            console.log(list_view.currentIndex)
             }
         }
     }
     NumberAnimation {
         id: anim
         running: true
-        target: view
+        target: list_view
         property: "contentY"
-        duration: 900
+        duration: 100
     }
 }

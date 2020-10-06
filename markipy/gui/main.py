@@ -1,10 +1,17 @@
 import os, sys, urllib.request, json
 import PySide2.QtQml
 from PySide2.QtQuick import QQuickView
-from PySide2.QtCore import QStringListModel, Qt, QUrl, QSize
+from PySide2.QtCore import QStringListModel, Qt, QUrl, QSize, QObject, Slot
 from PySide2.QtGui import QGuiApplication
 from markipy.basic import Folder
 from pathlib import Path
+
+
+class PythonClass(QObject):
+    @Slot(str, result=str)  # also works: @pyqtSlot(QVariant, result=QVariant)
+    def back_to_python(self, variable):
+        print(variable)
+        return "python is awesome!"
 
 
 def DisplayData(data):
@@ -18,7 +25,9 @@ def DisplayData(data):
     my_model = QStringListModel()
     my_model.setStringList(data)
 
+    pclass = PythonClass()
     view.rootContext().setContextProperty("myModel", my_model)
+    view.rootContext().setContextProperty("PythonClass", pclass)
 
     # Load the QML file
     qml_file = os.path.join(os.path.dirname(__file__), "view.qml")
