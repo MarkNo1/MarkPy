@@ -9,3 +9,5 @@ class Yaml(File):
         if self.exist():
             with open(self.__file__, 'r') as fd:
                 return yaml.safe_load(fd)
+        else:
+            return None

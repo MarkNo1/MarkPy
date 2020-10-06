@@ -7,6 +7,7 @@ from watchdog.events import FileDeletedEvent, DirDeletedEvent
 from watchdog.observers import Observer
 from pathlib import Path
 
+from markipy import DEFAULT_LOG_PATH
 from .logger import Logger, Performance
 from .filesystem import File, Folder
 
@@ -15,7 +16,7 @@ _watcher_ = {'class': 'Watcher', 'version': 3}
 
 class Watcher(Logger, FileSystemEventHandler):
 
-    def __init__(self, path=Path.cwd(), console=False, recursive=False):
+    def __init__(self, path=Path.cwd(), console=False, recursive=False, log_path=DEFAULT_LOG_PATH):
         FileSystemEventHandler.__init__(self)
 
         if Path(path).is_dir():
@@ -30,7 +31,7 @@ class Watcher(Logger, FileSystemEventHandler):
         self.path = path
         self.recursive = recursive
 
-        Logger.__init__(self, console=console, file_log=log_file)
+        Logger.__init__(self, console=console, file_log=log_file, log_path=log_path)
         self._init_atom_register_class(_watcher_)
 
     def start(self):

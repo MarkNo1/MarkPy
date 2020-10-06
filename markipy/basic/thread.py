@@ -1,5 +1,6 @@
 import threading
 
+from markipy import DEFAULT_LOG_PATH
 from .atom import Performance
 from .logger import Logger
 
@@ -10,8 +11,8 @@ _producer_thread_ = {'class': 'ProducerThread', 'version': 3}
 
 class GeneralThread(Logger, threading.Thread):
 
-    def __init__(self, channel=None, task_name='default', console=False, daemon=False):
-        Logger.__init__(self, console=console, file_log=f'GeneralThread.{task_name}')
+    def __init__(self, channel=None, task_name='default', console=False, daemon=False, log_path=DEFAULT_LOG_PATH):
+        Logger.__init__(self, console=console, file_log=f'GeneralThread.{task_name}', log_path=log_path)
         self._init_atom_register_class(_general_thread_)
         threading.Thread.__init__(self)
         self.setDaemon(daemon)
@@ -40,8 +41,8 @@ class GeneralThread(Logger, threading.Thread):
 
 class ThreadConsumer(Logger, threading.Thread):
 
-    def __init__(self, channel=None, task_name='default', console=False, daemon=False):
-        Logger.__init__(self, console=console, file_log=f'ConsumerThread.{task_name}')
+    def __init__(self, channel=None, task_name='default', console=False, daemon=False, log_path=DEFAULT_LOG_PATH):
+        Logger.__init__(self, console=console, file_log=f'ConsumerThread.{task_name}', log_path=log_path)
         self._init_atom_register_class(_consumer_thread_)
         threading.Thread.__init__(self)
         self.setDaemon(daemon)
@@ -81,8 +82,8 @@ class ThreadConsumer(Logger, threading.Thread):
 
 class ThreadProducer(Logger, threading.Thread):
 
-    def __init__(self, channel=None, task_name='default', console=False, daemon=False):
-        Logger.__init__(self, console=console, file_log=f'ProducerThread.{task_name}')
+    def __init__(self, channel=None, task_name='default', console=False, daemon=False, log_path=DEFAULT_LOG_PATH):
+        Logger.__init__(self, console=console, file_log=f'ProducerThread.{task_name}', log_path=log_path)
         self._init_atom_register_class(_producer_thread_)
         threading.Thread.__init__(self)
         self.setDaemon(daemon)

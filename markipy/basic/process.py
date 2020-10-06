@@ -2,6 +2,7 @@ from pathlib import Path
 import asyncio
 from asyncio.subprocess import PIPE
 
+from markipy import DEFAULT_LOG_PATH
 from .perf import Performance
 from .logger import Logger
 
@@ -10,8 +11,8 @@ _process_ = {'class': 'Process', 'version': 4}
 
 class Process(Logger):
 
-    def __init__(self, process_name, cmd=None, console=False):
-        Logger.__init__(self, console=console, file_log=f'Process.{process_name}')
+    def __init__(self, process_name, cmd=None, console=False, log_path=DEFAULT_LOG_PATH):
+        Logger.__init__(self, console=console, file_log=f'Process.{process_name}', log_path=log_path)
         self._init_atom_register_class(_process_)
         self.proc = None
         self.loop = None

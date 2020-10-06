@@ -10,7 +10,6 @@ from .atom import Atom
 from .perf import Performance
 from .style import Style
 
-DEFAULT_LOG_PATH = Path('/var/MarkPy/')
 
 _logger_ = {'class': 'Logger', 'version': 7,
             'console_formatter': Formatter(
@@ -21,9 +20,10 @@ _logger_ = {'class': 'Logger', 'version': 7,
 
 class Logger(Style):
 
-    def __init__(self, console=True, file_log=None, rotation='d', level=logging.DEBUG):
+    def __init__(self, console=True, file_log=None, log_path=Path(DEFAULT_LOG_PATH), rotation='d', level=logging.DEBUG):
         Style.__init__(self)
         Atom.__init__(self, _logger_['class'], _logger_['version'])
+        self.log_path = log_path
         self._logger_console = console
         self._logger_file = file_log
         self._logger_rotatation = rotation
@@ -43,7 +43,7 @@ class Logger(Style):
             self.__logger__.addHandler(self.__console_handler__)
         # Enable File Logger
         if self._logger_file:
-            file_log = Path(DEFAULT_LOG_PATH) / f'{str(self._logger_file).replace("/", ".")}.{date.today()}.log'
+            file_log = self.log_path / f'{str(self._logger_file).replace("/", ".")}.{date.today()}.log'
             self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(file_log, when=self._logger_rotatation,
                                                                               backupCount=5)
             self.__file_handler__.setFormatter(_logger_['file_formatter'])
