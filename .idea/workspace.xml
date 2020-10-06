@@ -16,16 +16,18 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:temp_branch" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-    </select>
+    <select />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5988f85c-6c09-4ad8-b73a-213f8a5c78f4" name="Default Changelist" comment="basic | html unittest, Logger needs more testes">
+      <change afterPath="$PROJECT_DIR$/markipy/basic/yml.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/MarkPy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MarkPy.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/markipy/basic/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/basic/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/markipy/basic/filesystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/basic/filesystem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/markipy/gui/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/markipy/gui/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,20 +48,20 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/markipy/gui" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/MarkPy/basic" />
+      <recent name="$PROJECT_DIR$/MarkPy/test" />
+      <recent name="$PROJECT_DIR$/MarkPy/test/basic" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/markipy/gui" />
       <recent name="$PROJECT_DIR$/markipy/basic/test" />
       <recent name="$PROJECT_DIR$/markipy/script" />
       <recent name="$PROJECT_DIR$/MarkPy/basic/test" />
-      <recent name="$PROJECT_DIR$/MarkPy/test/basic" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/MarkPy/basic" />
-      <recent name="$PROJECT_DIR$/MarkPy/test" />
       <recent name="$PROJECT_DIR$/MarkPy/test/basic" />
     </key>
   </component>
@@ -148,41 +150,50 @@
       <screen x="0" y="31" width="2560" height="1409" />
     </state>
     <state x="1063" y="496" width="434" height="487" key="FileChooserDialogImpl/0.31.2560.1409@0.31.2560.1409" timestamp="1601724274489" />
-    <state width="2514" height="474" key="GridCell.Tab.0.bottom" timestamp="1601749714969">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.0.bottom" timestamp="1601966184747">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.0.bottom/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184747" />
     <state width="2514" height="474" key="GridCell.Tab.0.bottom/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714969" />
-    <state width="2514" height="474" key="GridCell.Tab.0.center" timestamp="1601749714968">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.0.center" timestamp="1601966184747">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.0.center/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184747" />
     <state width="2514" height="474" key="GridCell.Tab.0.center/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714968" />
-    <state width="2514" height="474" key="GridCell.Tab.0.left" timestamp="1601749714968">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.0.left" timestamp="1601966184746">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.0.left/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184746" />
     <state width="2514" height="474" key="GridCell.Tab.0.left/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714968" />
-    <state width="2514" height="474" key="GridCell.Tab.0.right" timestamp="1601749714969">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.0.right" timestamp="1601966184747">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.0.right/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184747" />
     <state width="2514" height="474" key="GridCell.Tab.0.right/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714969" />
-    <state width="2514" height="474" key="GridCell.Tab.1.bottom" timestamp="1601749714973">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.1.bottom" timestamp="1601966184747">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.1.bottom/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184747" />
     <state width="2514" height="474" key="GridCell.Tab.1.bottom/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714973" />
-    <state width="2514" height="474" key="GridCell.Tab.1.center" timestamp="1601749714972">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.1.center" timestamp="1601966184747">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.1.center/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184747" />
     <state width="2514" height="474" key="GridCell.Tab.1.center/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714972" />
-    <state width="2514" height="474" key="GridCell.Tab.1.left" timestamp="1601749714972">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.1.left" timestamp="1601966184747">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.1.left/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184747" />
     <state width="2514" height="474" key="GridCell.Tab.1.left/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714972" />
-    <state width="2514" height="474" key="GridCell.Tab.1.right" timestamp="1601749714973">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state width="1897" height="380" key="GridCell.Tab.1.right" timestamp="1601966184747">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state width="1897" height="380" key="GridCell.Tab.1.right/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601966184747" />
     <state width="2514" height="474" key="GridCell.Tab.1.right/0.31.2560.1409@0.31.2560.1409" timestamp="1601749714973" />
-    <state x="769" y="373" width="1022" height="733" key="SettingsEditor" timestamp="1601906893424">
-      <screen x="0" y="31" width="2560" height="1409" />
+    <state x="577" y="312" width="900" height="730" key="SettingsEditor" timestamp="1601965959221">
+      <screen x="0" y="27" width="1920" height="1173" />
     </state>
+    <state x="577" y="312" width="900" height="730" key="SettingsEditor/0.27.1920.1173/1920.0.1680.1050@0.27.1920.1173" timestamp="1601965959221" />
     <state x="769" y="373" width="1022" height="733" key="SettingsEditor/0.31.2560.1409@0.31.2560.1409" timestamp="1601906893424" />
     <state x="933" y="355" width="693" height="768" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1601725862620">
       <screen x="0" y="31" width="2560" height="1409" />

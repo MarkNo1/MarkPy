@@ -6,6 +6,7 @@ from PySide2.QtGui import QGuiApplication
 from markipy.basic import Folder
 from pathlib import Path
 
+
 def DisplayData(data):
     # Set up the application window
     app = QGuiApplication(sys.argv)
@@ -34,7 +35,7 @@ def DisplayData(data):
 
 
 def ExampleDisplayData():
-    DisplayData([ str(x) for x in Folder(Path().home()).ls() ])
+    DisplayData([str(x) for x in Folder(Path().home()).ls()])
 
 
 if __name__ == '__main__':

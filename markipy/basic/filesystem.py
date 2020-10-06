@@ -9,6 +9,7 @@ from pathlib import Path
 _file_ = {'class': 'File', 'version': 3}
 _folder_ = {'class': 'Folder', 'version': 3}
 
+
 # ParentPathCreationNewFileNotFound
 class ParentPathException(Exception):
     def __init__(self, File):
@@ -18,7 +19,7 @@ class ParentPathException(Exception):
 class File(Logger):
 
     def __init__(self, file_path, console=False):
-        Logger.__init__(self, console=console, file_log= f'File.{file_path}')
+        Logger.__init__(self, console=console, file_log=f'File.{file_path}')
         self._init_atom_register_class(_file_)
 
         self.__file__ = Path(file_path)
@@ -41,18 +42,27 @@ class File(Logger):
     def __str__(self):
         return str(self.__file__).strip()
 
+    def exist(self):
+        return self.__file__.exists()
+
     def read(self):
         with open(self.__file__, 'r') as f:
             return f.read()
-    
+
     def write(self, data):
         with open(self.__file__, 'w') as f:
             return f.write(str(data))
 
+    def read_fd(self):
+        return open(self.__file__, 'r')
+
+    def write_fd(self, data):
+        return open(self.__file__, 'w')
+
     def append(self, data):
         with open(self.__file__, 'a') as f:
             return f.write(str(data))
-    
+
     def remove(self):
         os.remove(self.__file__)
 
@@ -60,7 +70,7 @@ class File(Logger):
 class Folder(Logger):
 
     def __init__(self, folder_path='./', console=False):
-        Logger.__init__(self, console=console, file_log= f'Folder.{folder_path}')
+        Logger.__init__(self, console=console, file_log=f'Folder.{folder_path}')
         Atom.__init__(self, _folder_['class'], _folder_['version'])
 
         self.__folder__ = Path(folder_path)
@@ -109,3 +119,11 @@ class Folder(Logger):
             self.delete(folder)
         for file in self.files():
             self.remove(file)
+
+    def get_file(self, file):
+        files = self.files()
+        if Path(file) in self.files:
+            return File(file)
+
+    def __str__(self):
+        return str(self.__folder__)
