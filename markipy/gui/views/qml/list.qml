@@ -24,7 +24,7 @@ Page {
             id: image
             fillMode: Image.PreserveAspectCrop
             anchors.centerIn: root
-            source: "/mark/personal/MarkPy/markipy/gui/resource/earth.960x540.jpg"
+            source: "/mark/MarkPy/markipy/gui/resource/earth.960x540.jpg"
             opacity: 1
         }
 

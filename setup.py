@@ -9,6 +9,8 @@ with open('README.md') as f:
 with open('LICENSE') as f:
     license = f.read()
 
+PKG_NAME = 'markipy'
+
 setup(
     name='markipy',
     author='Marco T.',
@@ -17,9 +19,10 @@ setup(
     license=license,
     description='MrkPy LIB',
     long_description=readme,
-    packages=find_namespace_packages(include=['markipy', 'markipy.*']),
-    entry_points={'console_scripts': ['markipy = markipy.script:Main']},
+    packages=find_namespace_packages(include=[PKG_NAME, f'{PKG_NAME}.*']),
+    entry_points={'console_scripts': [f'{PKG_NAME} = {PKG_NAME}.script:Main']},
     install_requires=requirements,
     include_package_data=True,
+    package_data={ PKG_NAME: ['gui/resource/*', 'gui/views/qml/*']},
     python_requires='>=3.7'
 )
