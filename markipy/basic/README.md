@@ -22,3 +22,5 @@ ___
 
 * File
 * Folder
+
+## Rsync:

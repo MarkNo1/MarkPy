@@ -34,7 +34,8 @@ Provide wrapper thread class with the producer, consumer paradigm.
 ## Yml
 Wrapper class to manage files type yalm.
 
- 
+## Rsync
+It use Process class to run rsync commands. 
   
 
 
