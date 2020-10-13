@@ -19,3 +19,5 @@ from .thread import ThreadConsumer, ThreadProducer, GeneralThread
 from .process import Process
 
 from .yml import Yaml
+
+from .rsync import Rsync, Host
