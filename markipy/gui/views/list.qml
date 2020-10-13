@@ -24,7 +24,7 @@ Page {
             id: image
             fillMode: Image.PreserveAspectCrop
             anchors.centerIn: root
-            source: "./resource/earth.960x540.jpg"
+            source: "/mark/personal/MarkPy/markipy/gui/resource/earth.960x540.jpg"
             opacity: 1
         }
 
@@ -32,7 +32,7 @@ Page {
             id: list_view
             anchors.fill: root
             anchors.margins: 25
-            model: ListModel
+            model: myModel
             delegate: Text {
                 color: "#0080FF"
                 anchors.leftMargin: 70
@@ -50,7 +50,7 @@ Page {
             }
             focus: true
             onCurrentIndexChanged: {
-            var x = ListController.add_item_selected(list_view.currentIndex)
+            var x = myListControl.add_item_selected(list_view.currentIndex)
             console.log(x)
             console.log(list_view.currentIndex)
             }
@@ -61,6 +61,6 @@ Page {
         running: true
         target: list_view
         property: "contentY"
-        duration: 100
+        duration: 1
     }
 }

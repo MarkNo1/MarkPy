@@ -15,7 +15,7 @@ class ListController(QObject):
     def add_item_selected(self, item):
         if item in self.current_indexes_selected:
             self.current_indexes_selected = sorted(self.current_indexes_selected)
-            self.current_indexes_selected.pop(item)
+            self.current_indexes_selected.pop(int(item))
         else:
             self.current_indexes_selected.append(item)
         return self.current_indexes_selected

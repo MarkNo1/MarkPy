@@ -61,6 +61,6 @@ Page {
         running: true
         target: list_view
         property: "contentY"
-        duration: 100
+        duration: 1
     }
 }
