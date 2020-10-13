@@ -23,6 +23,6 @@ setup(
     entry_points={'console_scripts': [f'{PKG_NAME} = {PKG_NAME}.script:Main']},
     install_requires=requirements,
     include_package_data=True,
-    package_data={ PKG_NAME: ['gui/resource/*', 'gui/views/qml/*']},
+    package_data={ PKG_NAME: ['gui/resource/*', 'gui/views/qml/*', 'gui/views/qml/components/*']},
     python_requires='>=3.7'
 )

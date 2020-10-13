@@ -1,6 +1,4 @@
-from PySide2.QtGui import QGuiApplication
-from PySide2.QtQuick import QQuickView
-from PySide2.QtCore import QSize, QUrl, QStringListModel
+from PySide2.QtCore import QStringListModel
 
 from markipy.basic import File
 
