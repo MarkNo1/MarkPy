@@ -16,8 +16,12 @@ from .channel import Channel
 
 from .thread import ThreadConsumer, ThreadProducer, GeneralThread
 
+from .async_process import AsyncProcess
+
 from .process import Process
 
 from .yml import Yaml
 
 from .rsync import Rsync, Host
+
+from .terminator import Terminator
