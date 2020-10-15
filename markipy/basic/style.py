@@ -113,6 +113,9 @@ class Style(Atom):
     def lightblue(self, text):
         return self.color(36, text)
 
+    def grey(self, text):
+        return self.color(4782, text)
+
     def bred(self, text):
         return self.color(41, text)
 

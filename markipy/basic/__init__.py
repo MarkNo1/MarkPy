@@ -25,3 +25,5 @@ from .yml import Yaml
 from .rsync import Rsync, Host
 
 from .terminator import Terminator
+
+from .hdf import Hdf

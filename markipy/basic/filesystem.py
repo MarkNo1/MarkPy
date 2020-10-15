@@ -27,7 +27,7 @@ class FolderAttachedToFileException(Exception):
 
 class File(Logger):
 
-    def __init__(self, file_path, console=False, log_path=DEFAULT_LOG_PATH):
+    def __init__(self, file_path, console=False, log_path=DEFAULT_LOG_PATH, auto_create=False):
         Logger.__init__(self, console=console, file_log=f'File{file_path}', log_path=log_path)
         self._init_atom_register_class(_file_)
 
@@ -39,9 +39,12 @@ class File(Logger):
             raise ParentPathException(self)
 
         if not self.__file__.exists():
-            opt_file = self.green('new')
-            with open(self.__file__, 'w') as fd:
-                fd.write('')
+            if auto_create:
+                opt_file = self.green('new')
+                with open(self.__file__, 'w') as fd:
+                    fd.write('')
+            else:
+                opt_file = self.red('not-exist')
 
         self.log.debug(f' File {opt_file} -> {self.violet(self.__file__)}')
 

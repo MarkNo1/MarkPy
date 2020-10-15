@@ -13,13 +13,12 @@ class Measure:
     last: int = 0
     count: int = 1
 
-    data : pd.DataFrame = None
+    data: pd.DataFrame = None
 
     def __str__(self):
         return f'{self.name}: {self.last} <{self.min},{self.mean},{self.max}> ns'
 
     def update(self, measure):
-        self.count += 1
         if measure < self.min:
             self.min = measure
         elif measure > self.max:
@@ -27,6 +26,7 @@ class Measure:
         self.total += measure
         self.mean = int(self.total / self.count)
         self.last = measure
+        self.count += 1
 
     def reset(self):
         self.count = 0
@@ -46,12 +46,16 @@ class Performance:
         else:
             self.stats[name].update(time)
 
+    def get(self, name):
+        return str(self.stats[name])
+
     def collect(method):
         def measure(*args, **kw):
             self = args[0]
             ts = time.time_ns()
             result = method(*args, **kw)
             self.performance.new(method.__name__, time.time_ns() - ts)
+            self.log.debug(self.grey(self.performance.get(method.__name__)))
             return result
-        return measure
 
+        return measure

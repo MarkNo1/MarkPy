@@ -9,3 +9,10 @@ markipy~=0.0.3
 PySide2~=5.15.1
 setuptools~=50.3.0
 twine
+matplotlib
+pycryptodomex
+python-gnupg
+rospkg
+rosbag
+rospy
+tables

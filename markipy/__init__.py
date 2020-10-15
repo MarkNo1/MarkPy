@@ -11,3 +11,4 @@ if not DEFAULT_LOG_PATH.exists():
 from . import basic
 from . import script
 from . import gui
+from . import ros
