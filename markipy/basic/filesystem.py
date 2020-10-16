@@ -68,7 +68,7 @@ class File(Logger):
     def read_fd(self):
         return open(self.__file__, 'r')
 
-    def write_fd(self, data):
+    def write_fd(self):
         return open(self.__file__, 'w')
 
     def append(self, data):
@@ -77,6 +77,9 @@ class File(Logger):
 
     def remove(self):
         os.remove(self.__file__)
+
+    def relative(self, old_path, new_path):
+        return Path(new_path) / Path(self.__file__).relative_to(Path(old_path))
 
     def __call__(self):
         return self.__file__
@@ -117,6 +120,10 @@ class Folder(Logger):
     def ls(self):
         self.log.debug("call ls")
         return [x for x in self.__folder__.iterdir()]
+
+    def walk(self):
+        for root, subdirs, files in os.walk(self.__folder__):
+            yield root, subdirs, files
 
     @Performance.collect
     def delete(self, target=None):

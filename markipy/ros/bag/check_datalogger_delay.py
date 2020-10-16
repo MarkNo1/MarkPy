@@ -10,12 +10,12 @@ _check_datalogger_delay_ = {'class': 'CheckDataloggerDelay', 'version': 3}
 _check_datalogger_delay_plotter_ = {'class': 'CheckDataloggerDelayPlotter', 'version': 4}
 
 
-def produce_delay_analysis(bag_path):
+def produce_delay_analysis(bag_path, stats_path):
     channel = Channel()
     # Create Bag reader
     reader = BagReader(bag_path, channel)
     # Create Bag
-    checker = CheckDataloggerDelay(bag_path, channel)
+    checker = CheckDataloggerDelay(bag_path, channel, hdf_path=stats_path)
     # Start workers
     reader.start()
     checker.start()

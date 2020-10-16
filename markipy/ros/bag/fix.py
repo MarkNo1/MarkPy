@@ -1,7 +1,6 @@
 from .io import BagWriter, BagReader
 
-from pathlib import Path
-from markipy.basic import Channel
+from markipy.basic import Channel, Performance
 
 _bag_fixer_ = {'class': 'BagFixer', 'version': 2}
 
@@ -50,8 +49,9 @@ class BagFixer(BagWriter):
                 else:
                     self.add(topic, msg, time)
 
+    @Performance.collect
     def cleanup(self):
-        self.bag.reindex()
-        self.bag.flush()
+        self.reindex()
+        self.flush()
         self.bag.close()
         self.log.debug(f"Finish writing fixed {self.green(self.bagFile())}")

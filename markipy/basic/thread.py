@@ -72,10 +72,12 @@ class ThreadConsumer(Logger, threading.Thread):
         except Exception as e:
             self.log.error(f"Error -> {e}")
 
+    @Performance.collect
     def set_finish(self):
         self.finish = True
         self.cleanup()
 
+    @Performance.collect
     def cleanup(self):
         pass
 
