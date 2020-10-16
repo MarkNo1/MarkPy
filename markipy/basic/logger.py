@@ -51,7 +51,6 @@ class Logger(Style):
 
         self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(),
                                                            "atom_version": self._get_classes_versions_str()})
-        self.log.debug('startup')
 
     def error(self, text):
         return self.red(text)
