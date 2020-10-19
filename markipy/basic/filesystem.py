@@ -11,20 +11,6 @@ _file_ = {'class': 'File', 'version': 3}
 _folder_ = {'class': 'Folder', 'version': 3}
 
 
-# ParentPathCreationNewFileNotFound
-class ParentPathException(Exception):
-    def __init__(self, FilesystemClass):
-        if isinstance(FilesystemClass, File):
-            FilesystemClass.log.error(f"Parent path not exist of  {FilesystemClass.red(FilesystemClass.__file__)}")
-        else:
-            FilesystemClass.log.error(f"Parent path not exist of  {FilesystemClass.red(FilesystemClass.__folder__)}")
-
-
-class FolderAttachedToFileException(Exception):
-    def __init__(self, Folder):
-        Folder.log.error(f"Folder cannot be attached to a file: {Folder.red(Folder.__folder__)}")
-
-
 class File(Logger):
 
     def __init__(self, file_path, console=False, log_path=DEFAULT_LOG_PATH, auto_create=False):
@@ -33,20 +19,54 @@ class File(Logger):
 
         self.__file__ = Path(file_path)
 
-        opt_file = self.orange('looking')
+        status = self._check_input(auto_create)
+
+        attach_mode = self._attach(status)
+
+        self.log.debug(f' File {attach_mode} -> {self.violet(self.__file__)}')
+
+    def _init(self):
+        with open(self.__file__, 'w') as fd:
+            fd.write('')
+
+    def _check_input(self, auto_create):
+
+        if self.__file__.is_dir():
+            raise FileAttacheToFolder(self)
 
         if not self.__file__.parent.exists():
-            raise ParentPathException(self)
+            if auto_create:
+                return ["init_parent", "init_file"]
+            else:
+                raise ParentPathExceptionNoFlagOnAutoFolderCreation(self)
 
         if not self.__file__.exists():
             if auto_create:
-                opt_file = self.green('new')
-                with open(self.__file__, 'w') as fd:
-                    fd.write('')
+                return ["init_file"]
             else:
-                opt_file = self.red('not-exist')
+                raise PathDoesNotExistNoFlagOnAutoCreateException(self)
 
-        self.log.debug(f' File {opt_file} -> {self.violet(self.__file__)}')
+        return ["ok"]
+
+    def _attach(self, mode):
+        return_code = []
+        if 'ok' in mode:
+            return_code += [self.orange('already-exist')]
+
+        if 'init_parent' in mode:
+            self.make_parent()
+            return_code += [self.green('init-parent')]
+
+        if 'init_file' in mode:
+            self._init()
+            return_code += [self.green('init-file')]
+        else:
+            return_code += [self.red('not-exist')]
+
+        return return_code
+
+    def make_parent(self):
+        os.makedirs(self.folder(), exist_ok=True)
 
     def folder(self):
         return self.__file__.parent
@@ -87,7 +107,7 @@ class File(Logger):
 
 class Folder(Logger):
 
-    def __init__(self, folder_path='./', console=False, log_path=DEFAULT_LOG_PATH):
+    def __init__(self, folder_path='./', console=False, log_path=DEFAULT_LOG_PATH, auto_create=True):
         Logger.__init__(self, console=console, file_log=f'Folder{folder_path}', log_path=log_path)
         Atom.__init__(self, _folder_['class'], _folder_['version'])
 
@@ -97,11 +117,12 @@ class Folder(Logger):
             raise FolderAttachedToFileException(self)
 
         opt_folder = self.orange('looking')
+
         if not self.__folder__.parent.exists():
-            raise ParentPathException(self)
+            raise ParentPathExceptionNoFlagOnAutoFolderCreation(self)
 
         if not self.__folder__.exists():
-            os.makedirs(self.__folder__, exist_ok=False)
+            os.makedirs(self.__folder__, exist_ok=True)
             opt_folder = self.green('new')
 
         self.log.debug(f' Folder {opt_folder} -> {self.lightviolet(self.__folder__)}')
@@ -154,3 +175,30 @@ class Folder(Logger):
 
     def __call__(self):
         return self.__folder__
+
+
+# ParentPathCreationNewFileNotFound
+class ParentPathExceptionNoFlagOnAutoFolderCreation(Exception):
+    def __init__(self, FilesystemClass):
+        if isinstance(FilesystemClass, File):
+            FilesystemClass.log.error(f"Parent path not exist of  {FilesystemClass.red(FilesystemClass.__file__)}")
+        else:
+            FilesystemClass.log.error(f"Parent path not exist of  {FilesystemClass.red(FilesystemClass.__folder__)}")
+
+
+class PathDoesNotExistNoFlagOnAutoCreateException(Exception):
+    def __init__(self, FilesystemClass):
+        if isinstance(FilesystemClass, File):
+            FilesystemClass.log.error(f"File path not exist of  {FilesystemClass.red(FilesystemClass.__file__)}")
+        else:
+            FilesystemClass.log.error(f"Folder path not exist of  {FilesystemClass.red(FilesystemClass.__folder__)}")
+
+
+class FileAttacheToFolder(Exception):
+    def __init__(self, File):
+        File.log.error(f"File cannot be attached to a folder: {File.red(File.__file__)}")
+
+
+class FolderAttachedToFileException(Exception):
+    def __init__(self, Folder):
+        Folder.log.error(f"Folder cannot be attached to a file: {Folder.red(Folder.__folder__)}")

@@ -22,6 +22,8 @@ def produce_delay_analysis(bag_path, stats_path):
     # Wait workers
     reader.join()
     checker.join()
+    # Show
+    plot_delay_analysis(hdf_path=stats_path)
 
 
 def plot_delay_analysis(hdf_path):
