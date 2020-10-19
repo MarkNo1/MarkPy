@@ -13,7 +13,7 @@ _folder_ = {'class': 'Folder', 'version': 3}
 
 class File(Logger):
 
-    def __init__(self, file_path, console=False, log_path=DEFAULT_LOG_PATH, auto_create=False):
+    def __init__(self, file_path, console=False, log_path=DEFAULT_LOG_PATH, auto_create=True):
         Logger.__init__(self, console=console, file_log=f'File{file_path}', log_path=log_path)
         self._init_atom_register_class(_file_)
 
@@ -25,10 +25,12 @@ class File(Logger):
 
         self.log.debug(f' File {attach_mode} -> {self.violet(self.__file__)}')
 
+    @Performance.collect
     def _init(self):
         with open(self.__file__, 'w') as fd:
             fd.write('')
 
+    @Performance.collect
     def _check_input(self, auto_create):
 
         if self.__file__.is_dir():
@@ -48,6 +50,7 @@ class File(Logger):
 
         return ["ok"]
 
+    @Performance.collect
     def _attach(self, mode):
         return_code = []
         if 'ok' in mode:
@@ -65,9 +68,11 @@ class File(Logger):
 
         return return_code
 
+    @Performance.collect
     def make_parent(self):
         os.makedirs(self.folder(), exist_ok=True)
 
+    @Performance.collect
     def folder(self):
         return self.__file__.parent
 
@@ -77,10 +82,12 @@ class File(Logger):
     def exist(self):
         return self.__file__.exists()
 
+    @Performance.collect
     def read(self):
         with open(self.__file__, 'r') as f:
             return f.read()
 
+    @Performance.collect
     def write(self, data):
         with open(self.__file__, 'w') as f:
             return f.write(str(data))
@@ -113,19 +120,53 @@ class Folder(Logger):
 
         self.__folder__ = Path(folder_path)
 
+        status = self._check_input(auto_create)
+
+        attach_mode = self._attach(status)
+
+        self.log.debug(f' Folder {attach_mode} -> {self.lightviolet(self.__folder__)}')
+
+    @Performance.collect
+    def _init(self):
+        os.makedirs(self.__folder__, exist_ok=True)
+
+    @Performance.collect
+    def _check_input(self, auto_create):
+
         if self.__folder__.is_file():
             raise FolderAttachedToFileException(self)
 
-        opt_folder = self.orange('looking')
-
         if not self.__folder__.parent.exists():
-            raise ParentPathExceptionNoFlagOnAutoFolderCreation(self)
+            if auto_create:
+                return ["init_parent", "init_folder"]
+            else:
+                raise ParentPathExceptionNoFlagOnAutoFolderCreation(self)
 
         if not self.__folder__.exists():
-            os.makedirs(self.__folder__, exist_ok=True)
-            opt_folder = self.green('new')
+            if auto_create:
+                return ["init_folder"]
+            else:
+                raise PathDoesNotExistNoFlagOnAutoCreateException(self)
 
-        self.log.debug(f' Folder {opt_folder} -> {self.lightviolet(self.__folder__)}')
+        return ["ok"]
+
+    @Performance.collect
+    def _attach(self, mode):
+        return_code = []
+        if 'ok' in mode:
+            return_code += [self.orange('already-exist')]
+
+        if 'init_parent' in mode:
+            os.makedirs(self.__folder__.parent, exist_ok=True)
+            return_code += [self.green('init-parent')]
+
+        if 'init_file' in mode:
+            self._init()
+            return_code += [self.green('init-file')]
+        else:
+            return_code += [self.red('not-exist')]
+
+        return return_code
 
     @Performance.collect
     def folders(self):

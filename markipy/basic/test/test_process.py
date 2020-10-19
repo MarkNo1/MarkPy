@@ -1,14 +1,14 @@
 import unittest
 import HtmlTestRunner
 
-from markipy.basic import Process
+from markipy.basic import AsyncProcess
 
 _process_ps_ = {'class': 'ProcessPS', 'version': 1}
 
 
-class PS(Process):
+class PS(AsyncProcess):
     def __init__(self, cmd):
-        Process.__init__(self, cmd=cmd, process_name='Unittest.PS')
+        AsyncProcess.__init__(self, cmd=cmd, file_log='Unittest.PS')
         self._init_atom_register_class(_process_ps_)
         self.ps = []
 
@@ -19,7 +19,7 @@ class PS(Process):
 class TestProcess(unittest.TestCase):
 
     def test_process(self):
-        p = Process('Unittest')
+        p = AsyncProcess('Unittest')
         p.execute(['ls', '-ashu'])
 
     def test_custom_process(self):
