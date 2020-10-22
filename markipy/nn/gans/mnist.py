@@ -233,7 +233,7 @@ if __name__ == "__main__":
     display_step = 500
     batch_size = 128
     lr = 0.00001
-    device = 'cpu'
+    device = 'cuda'
     # Load MNIST dataset as tensors
     dataloader = DataLoader(
         MNIST('.', download=True, transform=transforms.ToTensor()),

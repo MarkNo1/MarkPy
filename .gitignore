@@ -4,6 +4,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# VS code
+.vscode/
+
+
+# Data
+markipy/nn/gans/MNIST/
+
 # PyCharm
 .idea
 
