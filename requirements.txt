@@ -18,5 +18,4 @@ python-gnupg
 tables
 torch~=1.6.0
 PyYAML~=5.3.1
-terminator~=1.92
 wandb~=0.10.7

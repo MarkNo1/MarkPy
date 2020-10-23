@@ -4,44 +4,41 @@ from time import sleep
 from tqdm import tqdm
 import wandb
 
-from markipy.nn.common import make_ramp, make_one
 
 class LogisticRegrssion(nn.Module):
     def __init__(self, input):
         super(LogisticRegrssion, self).__init__()
-        self.l1 = nn.Sequential(nn.Linear(input, 100),nn.Sigmoid())
+        self.l1 = nn.Linear(input, 100)
+        self.l2 = nn.Linear(100, 1)
+        self.rel = nn.ReLU()
+        self.sig = nn.Sigmoid()
 
     def forward(self, x):
-        return self.l1(x)
-
+        x = self.rel(self.l1(x))
+        return  self.sig(self.l2(x))
 
 
 if __name__ == "__main__":
-    # DIMENSION 
-    # Computational Device 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-    #Wb1. Start a new run
+    # 1. Start a new run
     wandb.init(project="lr")
 
-    #Wb2. Save model inputs and hyperparameters
+    # 2. Save model inputs and hyperparameters
     config = wandb.config
-    # Parameters
-    config.learning_rate = lr = 0.001
-    config.epoch = epoch = int(1e3)
-    config.input_dimension = dim = 100
+    config.learning_rate = 0.001
 
-    # X Tensor 
-    m = 100 ; n = 200 
-    x = make_ramp(m,n)
+    epoch = int(1e3)
+    dim = 100
 
-    # Y Tensor
-    tensor_y = make_one((m , 1), device=device).view(2, 1)
+    x = [x for x in range(dim)]
+    y = torch.FloatTensor([0, 1])
+
+    tensor_x = torch.FloatTensor(x).view(dim, 1)
+    tensor_y = torch.FloatTensor(y).view(2, 1)
 
     # Init model
     model = LogisticRegrssion(1)
 
-    #Wb3. Log gradients and model parameters
+    # 3. Log gradients and model parameters
     wandb.watch(model)
 
     # Cost Function
@@ -50,20 +47,15 @@ if __name__ == "__main__":
     # Optimizer
     optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
 
-    # Tdqm
     bar = tqdm([x for x in range(epoch)], desc="Logistic Regrssion")
 
-    # Optional
     model.train()
 
-    # Loop for epoch 
     for iteration in bar:
-        # Loop for batch 
         for index in x:
             optimizer.zero_grad()
             y_ = model(tensor_x[index % dim])
             loss = criterion(y_, tensor_y[index % 2])
             loss.backward()
             optimizer.step()
-
         wandb.log({"epoch": epoch, "loss": loss})

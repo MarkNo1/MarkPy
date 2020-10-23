@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-
+from markipy.nn.commons import make_noise
 
 def get_generator_block(input_dim, output_dim):
     """
@@ -20,50 +20,7 @@ def get_generator_block(input_dim, output_dim):
     )
 
 
-# def get_piramide_block(dimension, ):
-
-
-class Mask(nn.Module):
-    def __init__(self, *dims):
-        super(Mask, self).__init__()
-        self.dimension = torch.Size([dims])
-        self.weight = self.get_new_mask_weight()
-        self.weight.data.uniform_(0.88, 0.99)
-
-    def forward(self, x):
-        x_dims = x.s
-        x_1d = torch.flatten(x)
-        # To-Do
-        # Flatt to 2D
-        # MatMul
-        # Unflat
-        return self.weight.mul(x)
-
-    def get_new_mask_weight(self, requires_grad=True):
-        return torch.nn.Parameter(data=torch.Tensor(self.dimension), requires_grad=requires_grad)
-
-
-class Model(nn.Module):
-    def __init__(self):
-        super(Model, self).__init__()
-        self.Mask = Mask(100)
-
-    def forward(self, x):
-        x = Mask(x)
-        return x
-
-
-def AutoRetroActionEncoder(input_dim, output_dim=0, scale=1, load=0):
-    if output_dim == 0:
-        # Calculate the correct scale for the parameters
-
-        scaled = 1
-        output_dim = scaled
-
-
-    return nn.Sequential(nn.ConvTranspose2d())
-
-
+    
 class Generator(nn.Module):
     """
     Generator Class
@@ -100,9 +57,45 @@ class Generator(nn.Module):
         return self.wandb
 
 
+def get_gen_loss(gen, disc, criterion, num_images, z_dim, device):
+    """
+    Return the loss of the generator given inputs.
+    Parameters:
+        gen: the generator model, which returns an image given z-dimensional noise
+        disc: the discriminator model, which returns a single-dimensional prediction of real/fake
+        criterion: the loss function, which should be used to compare
+               the discriminator's predictions to the ground truth reality of the images
+               (e.g. fake = 0, real = 1)
+        num_images: the number of images the generator should produce,
+                which is also the length of the real images
+        z_dim: the dimension of the noise vector, a scalar
+        device: the device type
+    Returns:
+        gen_loss: a torch scalar loss value for the current batch
+    """
+    #     These are the steps you will need to complete:
+    #       1) Create noise vectors and generate a batch of fake images.
+    #           Remember to pass the device argument to the get_noise function.
+    #       2) Get the discriminator's prediction of the fake image.
+    #       3) Calculate the generator's loss. Remember the generator wants
+    #          the discriminator to think that its fake images are real
+    #     *Important*: You should NOT write your own loss function here - use criterion(pred, true)!
+
+    noise = get_noise(num_images, z_dim, device=device)
+    x_gen = gen(noise)
+
+    y_fake = disc(x_gen)
+    gen_loss = criterion(y_fake, torch.ones_like(y_fake))
+
+    return gen_loss
+
+
+
 if __name__ == '__main__':
 
-    model = Model()
+    generator = Generator()
 
-    for name, param in model.named_parameters():
+    for name, param in generator.named_parameters():
         print(name, param)
+
+

@@ -1,0 +1,20 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.10.8
+    code_path: code/markipy/nn/lr/model.py
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.8.3
+epoch:
+  desc: null
+  value: 1000
+input_dimension:
+  desc: null
+  value: 100
+learning_rate:
+  desc: null
+  value: 0.001

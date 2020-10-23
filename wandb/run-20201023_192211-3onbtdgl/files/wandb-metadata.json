@@ -1,0 +1,24 @@
+{
+    "os": "Windows-10-10.0.19041-SP0",
+    "python": "3.8.3",
+    "heartbeatAt": "2020-10-23T17:22:12.679862",
+    "startedAt": "2020-10-23T17:22:11.369789",
+    "docker": null,
+    "gpu": "GeForce GTX 1080",
+    "gpu_count": 1,
+    "cpu_count": 16,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "codePath": "markipy\\nn\\lr\\model.py",
+    "program": "c:/Dev/git/MarkPy/markipy/nn/lr/model.py",
+    "git": {
+        "remote": "https://github.com/MarkNo1/MarkPy.git",
+        "commit": "850b8419bac9e073c404668d3779270448403fc7"
+    },
+    "email": "marcotreglia1@gmail.com",
+    "root": "C:/Dev/git/MarkPy",
+    "host": "DESKTOP-PKDQBE2",
+    "username": "marco",
+    "executable": "C:\\Users\\marco\\miniconda3\\python.exe"
+}
