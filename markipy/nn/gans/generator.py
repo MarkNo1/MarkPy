@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from markipy.nn.commons import make_noise
+from markipy.nn.commons import make_noise, scale_noise_by_label_number
 
 def get_generator_block(input_dim, output_dim):
     """
@@ -19,8 +19,10 @@ def get_generator_block(input_dim, output_dim):
         nn.ReLU(inplace=True),
     )
 
-def get_gen_conv2D(input_dim, output_dim):
-    pass
+def get_gen_v2(input_dim, output_dim):
+    return nn.Sequential(
+        
+    )
 
     
 class Generator(nn.Module):
@@ -59,7 +61,7 @@ class Generator(nn.Module):
         return self.gen
 
 
-def get_gen_loss(gen, disc, criterion, num_images, z_dim, device):
+def get_gen_loss(gen, disc, criterion, labels,  num_images, z_dim, device):
     """
     Return the loss of the generator given inputs.
     Parameters:
@@ -84,6 +86,7 @@ def get_gen_loss(gen, disc, criterion, num_images, z_dim, device):
     #     *Important*: You should NOT write your own loss function here - use criterion(pred, true)!
 
     noise = make_noise(num_images, z_dim, device=device)
+    # noise = scale_noise_by_label_number(noise, labels)
     x_gen = gen(noise)
 
     y_fake = disc(x_gen)

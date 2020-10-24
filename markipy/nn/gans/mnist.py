@@ -5,16 +5,34 @@ from torchvision import transforms
 from torchvision.datasets import MNIST  # Training dataset
 from torchvision.utils import make_grid
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+# default `log_dir` is "runs" - we'll be more specific here
+writer = SummaryWriter('runs/fashion_mnist_experiment_1')
+
+
 import matplotlib.pyplot as plt
 import wandb
 
 from markipy.nn.gans.generator import get_gen_loss, Generator
 from markipy.nn.gans.discriminator import get_disc_loss, Discriminator
-from markipy.nn.commons import show_tensor_images, make_noise
+from markipy.nn.commons import show_tensor_images, make_noise, scale_noise_by_label_number
 
 torch.manual_seed(0)  # Set for testing purposes, please do not change!
 
 PROJECT="MNIST"
+
+
+def log_image_board(writer, images, label):
+    # create grid of images
+    img_grid = torchvision.utils.make_grid(images)
+
+    # show images
+    matplotlib_imshow(img_grid, one_channel=True)
+
+    # write to tensorboard
+    writer.add_image(label, img_grid)
+
 
 if __name__ == "__main__":
 
@@ -74,7 +92,7 @@ if __name__ == "__main__":
             disc_opt.zero_grad()
 
             # Calculate discriminator loss
-            disc_loss = get_disc_loss(gen, disc, criterion, real, cur_batch_size, z_dim, device)
+            disc_loss = get_disc_loss(gen, disc, criterion, real, label,  cur_batch_size, z_dim, device)
 
             # Update gradients
             disc_loss.backward(retain_graph=True)
@@ -90,7 +108,7 @@ if __name__ == "__main__":
             gen_opt.zero_grad()
 
             # Update optimizer
-            gen_loss = get_gen_loss(gen, disc, criterion, cur_batch_size, z_dim, device)
+            gen_loss = get_gen_loss(gen, disc, criterion, label, cur_batch_size, z_dim, device)
 
             # Update gradients
             gen_loss.backward(retain_graph=True)
@@ -123,9 +141,11 @@ if __name__ == "__main__":
                 print(f"Epoch {epoch}, step {cur_step}: Generator loss: {mean_generator_loss}, discriminator loss: {mean_discriminator_loss}")
 
                 noise = make_noise(cur_batch_size, z_dim, device=device)
+                # noise = scale_noise_by_label_number(noise, label)
                 fake = gen(noise)
                 show_tensor_images(fake)
                 show_tensor_images(real)
+                
                 mean_generator_loss = 0
                 mean_discriminator_loss = 0
             

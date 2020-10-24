@@ -121,3 +121,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
+
+MNIST/
+
+wandb/

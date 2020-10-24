@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from markipy.nn.commons import make_noise
+from markipy.nn.commons import make_noise, scale_noise_by_label_number
 
 def get_discriminator_block(input_dim, output_dim):
     """
@@ -57,7 +57,7 @@ class Discriminator(nn.Module):
         return self.disc
 
 
-def get_disc_loss(gen, disc, criterion, real, num_images, z_dim, device):
+def get_disc_loss(gen, disc, criterion, real, label, num_images, z_dim, device):
     """
     Return the loss of the discriminator given inputs.
     Parameters:
@@ -90,6 +90,7 @@ def get_disc_loss(gen, disc, criterion, real, num_images, z_dim, device):
     #     *Important*: You should NOT write your own loss function here - use criterion(pred, true)!
 
     noise = make_noise(num_images, z_dim, device=device)
+    # noise = scale_noise_by_label_number(noise, label)
     x_gen = gen(noise)
 
     y_fake = disc(x_gen)
