@@ -19,6 +19,8 @@ def get_generator_block(input_dim, output_dim):
         nn.ReLU(inplace=True),
     )
 
+def get_gen_conv2D(input_dim, output_dim):
+    pass
 
     
 class Generator(nn.Module):
@@ -34,7 +36,7 @@ class Generator(nn.Module):
     def __init__(self, dimension=10, im_dim=784, hidden_dim=128):
         super(Generator, self).__init__()
         # Build the neural network
-        self.wandb = nn.Sequential(
+        self.gen = nn.Sequential(
             get_generator_block(dimension, hidden_dim),
             get_generator_block(hidden_dim, hidden_dim * 2),
             get_generator_block(hidden_dim * 2, hidden_dim * 4),
@@ -50,11 +52,11 @@ class Generator(nn.Module):
         Parameters:
             noise: a noise tensor with dimensions (examples, dimensions)
         """
-        return self.layer(noise)
+        return self.gen(noise)
 
     # Needed for grading
-    def get_layer(self):
-        return self.wandb
+    def get_gen(self):
+        return self.gen
 
 
 def get_gen_loss(gen, disc, criterion, num_images, z_dim, device):
@@ -81,7 +83,7 @@ def get_gen_loss(gen, disc, criterion, num_images, z_dim, device):
     #          the discriminator to think that its fake images are real
     #     *Important*: You should NOT write your own loss function here - use criterion(pred, true)!
 
-    noise = get_noise(num_images, z_dim, device=device)
+    noise = make_noise(num_images, z_dim, device=device)
     x_gen = gen(noise)
 
     y_fake = disc(x_gen)

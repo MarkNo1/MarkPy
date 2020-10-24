@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+
 from markipy.nn.commons import make_noise
 
 def get_discriminator_block(input_dim, output_dim):
@@ -88,8 +89,8 @@ def get_disc_loss(gen, disc, criterion, real, num_images, z_dim, device):
     #           support this, but for now, average the two losses as described in step (4).
     #     *Important*: You should NOT write your own loss function here - use criterion(pred, true)!
 
-    noise = get_noise(num_images, z_dim, device=device)
-    x_gen = gen(noise).detach()
+    noise = make_noise(num_images, z_dim, device=device)
+    x_gen = gen(noise)
 
     y_fake = disc(x_gen)
     loss_fake = criterion(y_fake, torch.zeros_like(y_fake))

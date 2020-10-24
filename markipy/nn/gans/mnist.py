@@ -8,49 +8,60 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import wandb
 
-from .gen import get_gen_loss, Generator
-from .discriminator import get_disc_loss, Discriminator
+from markipy.nn.gans.generator import get_gen_loss, Generator
+from markipy.nn.gans.discriminator import get_disc_loss, Discriminator
+from markipy.nn.commons import show_tensor_images, make_noise
 
 torch.manual_seed(0)  # Set for testing purposes, please do not change!
 
 PROJECT="MNIST"
 
 if __name__ == "__main__":
-    
 
+
+    # Mnist Playground
+    device = torch.device('cuda')
+    n_epochs = 200
+    z_dim = 64
+    display_step = 500
+    batch_size = 128
+    lr = 0.00001
+    
     # Weights and Biases. Profiler
     # wandb.init(project=PROJECT)
     # config = wandb.config
+    # # Hyperparameters and Store
+    # config.n_epochs = n_epochs
+    # config.z_dim = z_dim 
+    # config.display_step = display_step
+    # config.batch_size = batch_size
+    # config.lr = lr
+    # config.device = device
 
-    # Hyperparameters and Store
-    config.criterion = criterion = nn.BCEWithLogitsLoss()
-    config.n_epochs = n_epochs = 200
-    config.z_dim = z_dim = 64
-    config.display_step= display_step = 500
-    config.batch_size = batch_size = 128
-    config.lr = lr = 0.00001
-    config.device = device = 'cuda'
-
+    
     # Load MNIST dataset as tensors
     dataloader = DataLoader(
         MNIST('.', download=True, transform=transforms.ToTensor()),
         batch_size=batch_size,
         shuffle=True)
 
+    criterion = nn.BCEWithLogitsLoss()
     gen = Generator(z_dim).to(device)
     gen_opt = torch.optim.Adam(gen.parameters(), lr=lr)
     disc = Discriminator().to(device)
     disc_opt = torch.optim.Adam(disc.parameters(), lr=lr)
 
-    device = 'cuda'
+ 
     cur_step = 0
     mean_generator_loss = 0
     mean_discriminator_loss = 0
     test_generator = True  # Whether the generator should be tested
     gen_loss = False
     error = False
-    for epoch in range(n_epochs):
 
+    print("Start Training Loop")
+    for epoch in range(n_epochs):
+        
         # Dataloader returns the batches
         for real, _ in tqdm(dataloader):
             cur_batch_size = len(real)
@@ -92,8 +103,11 @@ if __name__ == "__main__":
                 try:
                     assert lr > 0.0000002 or (gen.gen[0][0].weight.grad.abs().max() < 0.0005 and epoch == 0)
                     assert torch.any(gen.gen[0][0].weight.detach().clone() != old_generator_weights)
+                    
                 except:
                     error = True
+                    
+                    # wandb.log({"no_training": 1, "epoch": epoch, "loss": loss})
                     print("Runtime tests have failed")
 
             # Keep track of the average discriminator loss
@@ -104,12 +118,19 @@ if __name__ == "__main__":
 
             ### Visualization code ###
             if cur_step % display_step == 0 and cur_step > 0:
-                print(
-                    f"Epoch {epoch}, step {cur_step}: Generator loss: {mean_generator_loss}, discriminator loss: {mean_discriminator_loss}")
-                fake_noise = get_noise(cur_batch_size, z_dim, device=device)
-                fake = gen(fake_noise)
+
+                # wandb.log({ "Epoch" : epoch, "step": cur_step , "Generator_Loss" : mean_generator_loss, "Discriminator_Loss": mean_discriminator_loss })
+                print(f"Epoch {epoch}, step {cur_step}: Generator loss: {mean_generator_loss}, discriminator loss: {mean_discriminator_loss}")
+
+                noise = make_noise(cur_batch_size, z_dim, device=device)
+                fake = gen(noise)
                 show_tensor_images(fake)
                 show_tensor_images(real)
                 mean_generator_loss = 0
                 mean_discriminator_loss = 0
+            
+            # Increase step
             cur_step += 1
+        
+
+    

@@ -2,14 +2,16 @@ import torch
 from torch import nn
 from time import sleep
 from tqdm import tqdm
-import wandb
+from datetime import datetime
 
-from markipy.nn.common import make_ramp, make_one
+# import wandb
+
+from markipy.nn.commons import make_ramp, make_one
 
 class LogisticRegrssion(nn.Module):
     def __init__(self, input):
         super(LogisticRegrssion, self).__init__()
-        self.l1 = nn.Sequential(nn.Linear(input, 100),nn.Sigmoid())
+        self.l1 = nn.Sequential(nn.Linear(1, 100), nn.LeakyReLU(negative_slope=0.2), nn.Linear(100, 1),nn.Sigmoid())
 
     def forward(self, x):
         return self.l1(x)
@@ -17,53 +19,69 @@ class LogisticRegrssion(nn.Module):
 
 
 if __name__ == "__main__":
-    # DIMENSION 
-    # Computational Device 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     #Wb1. Start a new run
-    wandb.init(project="lr")
+    # wandb.init(project="lr")
 
     #Wb2. Save model inputs and hyperparameters
-    config = wandb.config
-    # Parameters
-    config.learning_rate = lr = 0.001
-    config.epoch = epoch = int(1e3)
-    config.input_dimension = dim = 100
+    # config = wandb.config
+    # # Parameters
+    # config.learning_rate = 
+    # config.epoch = epoch = int(1e3)
+    # config.input_dimension = dim = 100
+
+
+
+    # 1D
+    dim = 100 
+    lr = 0.1e-3
+    epoch = int(1e6)
 
     # X Tensor 
-    m = 100 ; n = 200 
-    x = make_ramp(m,n)
+    x = torch.ones(size=(dim,1), device='cuda')
+    for i in range(len(x)):
+        x[i] = x[i] * i
+
+
 
     # Y Tensor
-    tensor_y = make_one((m , 1), device=device).view(2, 1)
+    y = torch.ones(size=(dim,1), device='cuda')
+    for i in range(len(y)):
+        y[i] = i % 2 
+    
+
+
 
     # Init model
-    model = LogisticRegrssion(1)
+    model = LogisticRegrssion(dim)
 
     #Wb3. Log gradients and model parameters
-    wandb.watch(model)
+    # wandb.watch(model)
 
     # Cost Function
     criterion = nn.BCELoss()
 
     # Optimizer
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr)
 
     # Tdqm
-    bar = tqdm([x for x in range(epoch)], desc="Logistic Regrssion")
+    bar = tqdm(range(epoch), total=epoch, desc="Discovery run: {datatime.date()}")
 
     # Optional
-    model.train()
+    # model.train()
+    model = model.cuda()
 
     # Loop for epoch 
-    for iteration in bar:
-        # Loop for batch 
-        for index in x:
-            optimizer.zero_grad()
-            y_ = model(tensor_x[index % dim])
-            loss = criterion(y_, tensor_y[index % 2])
-            loss.backward()
-            optimizer.step()
+    batch_size = 1
+    for epoc in range(epoch):
+        # Loop x 
+        optimizer.zero_grad()
+        y_ = model( x )
+        loss = criterion(y_, y)
+        loss.backward()
+        optimizer.step()
 
-        wandb.log({"epoch": epoch, "loss": loss})
+        # print(f"epoch:{epoc} loss:{loss.item()} : ")
+        bar.set_description(f"epoch:{epoc} loss:{loss.item()}")
+
+        # wandb.log({"epoch": epoch, "loss": loss})

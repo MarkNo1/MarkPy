@@ -1,2 +1,2 @@
-from .gen import Generator
-from .common import *
+from .generator import Generator
+from .discriminator import Discriminator
