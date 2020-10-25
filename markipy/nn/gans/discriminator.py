@@ -1,23 +1,14 @@
 import torch
 from torch import nn
 
-from markipy.nn.commons import make_noise, scale_noise_by_label_number
+from markipy.nn.commons import make_noise
+from markipy.nn.commons import get_linear_block, get_conv2d_block
 
-def get_discriminator_block(input_dim, output_dim):
-    """
-    Discriminator Block
-    Function for returning a neural network of the discriminator given input and output dimensions.
-    Parameters:
-        input_dim: the dimension of the input vector, a scalar
-        output_dim: the dimension of the output vector, a scalar
-    Returns:
-        a discriminator neural network layer, with a linear transformation
-          followed by an nn.LeakyReLU activation with negative slope of 0.2
-          (https://pytorch.org/docs/master/generated/torch.nn.LeakyReLU.html)
-    """
+
+def get_disc_block(channel_in, channel_out):
     return nn.Sequential(
-        nn.Linear(input_dim, output_dim),
-        nn.LeakyReLU(0.2)
+        get_conv2d_block(channel_in, channel_out, ks=5, normalize=False, activation=nn.LeakyReLU(0.2)),
+        nn.MaxPool2d((3, 3), stride=(1, 1))
     )
 
 
@@ -30,13 +21,15 @@ class Discriminator(nn.Module):
         hidden_dim: the inner dimension, a scalar
     """
 
-    def __init__(self, im_dim=784, hidden_dim=128):
+    def __init__(self, im_dim=784, hidden_dim=32):
         super(Discriminator, self).__init__()
         self.disc = nn.Sequential(
-            get_discriminator_block(im_dim, hidden_dim * 4),
-            get_discriminator_block(hidden_dim * 4, hidden_dim * 2),
-            get_discriminator_block(hidden_dim * 2, hidden_dim),
-            nn.Linear(hidden_dim, 1),
+            get_disc_block(1, 10),
+            get_disc_block(10, 20),
+            get_disc_block(20, 30),
+            get_disc_block(30, 2),
+            nn.Flatten(),
+            nn.Linear(800, im_dim)
         )
 
     def forward(self, image):
@@ -46,7 +39,7 @@ class Discriminator(nn.Module):
         Parameters:
             image: a flattened image tensor with dimension (im_dim)
         """
-        return self.disc(image)
+        return self.disc(image.view(image.shape[0], 1, 28, 28))
 
     # Needed for grading
     def get_disc(self):
@@ -106,9 +99,19 @@ def get_disc_loss(gen, disc, criterion, real, label, num_images, z_dim, device):
 
 if __name__ == '__main__':
 
-    discriminator = Discriminator()
+    from pytorch_model_summary import summary
 
-    for name, param in discriminator.named_parameters():
-        print(name, param)
+    n_sample = 1
+    img_c = 1 
+    img_w = img_b = 28
+
+    noise_input = make_noise( n_sample, (img_c, img_w, img_b), device='cuda')
+    
+    disc = Discriminator().cuda()
+
+    print(summary(disc, noise_input,  show_input=True))
+    print(summary(disc, noise_input,  show_input=False))
+
+
 
 

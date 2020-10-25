@@ -8,4 +8,3 @@ DEFAULT_DATA_PATH = DEFAULT_PKG_INSTALLED_PATH / 'nn' / 'data'
 
 from . import commons
 from . import gans  
-from . import lr

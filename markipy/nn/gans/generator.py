@@ -1,30 +1,10 @@
 import torch
 from torch import nn
-from markipy.nn.commons import make_noise, scale_noise_by_label_number
+from markipy.nn.commons import make_noise, get_linear_block, get_conv2d_block, get_deconv2d_block
 
-def get_generator_block(input_dim, output_dim):
-    """
-    Function for returning a block of the generator's neural network
-    given input and output dimensions.
-    Parameters:
-        input_dim: the dimension of the input vector, a scalar
-        output_dim: the dimension of the output vector, a scalar
-    Returns:
-        a generator neural network layer, with a linear transformation
-          followed by a batch normalization and then a relu activation
-    """
-    return nn.Sequential(
-        nn.Linear(input_dim, output_dim),
-        nn.BatchNorm1d(output_dim),
-        nn.ReLU(inplace=True),
-    )
+def get_gen_block(self):
+    pass
 
-def get_gen_v2(input_dim, output_dim):
-    return nn.Sequential(
-        
-    )
-
-    
 class Generator(nn.Module):
     """
     Generator Class
@@ -35,15 +15,31 @@ class Generator(nn.Module):
         hidden_dim: the inner dimension, a scalar
     """
 
-    def __init__(self, dimension=10, im_dim=784, hidden_dim=128):
+    def __init__(self, noise_channel=1):
         super(Generator, self).__init__()
         # Build the neural network
         self.gen = nn.Sequential(
-            get_generator_block(dimension, hidden_dim),
-            get_generator_block(hidden_dim, hidden_dim * 2),
-            get_generator_block(hidden_dim * 2, hidden_dim * 4),
-            get_generator_block(hidden_dim * 4, hidden_dim * 8),
-            nn.Linear(hidden_dim * 8, im_dim),
+            # Manage the noise Input n_sample, noise_channel
+            get_conv2d_block(noise_channel, 10, ks=3, p=1),
+            get_deconv2d_block(10, 9, ks=5, p=0),
+            get_deconv2d_block(9, 8, ks=5, p=0),
+            get_deconv2d_block(8, 7, ks=5, p=0),
+            get_deconv2d_block(7, 6, ks=5, p=0),
+            get_deconv2d_block(6, 5, ks=5, p=0),
+            get_deconv2d_block(5, 4, ks=5, p=0),
+            get_deconv2d_block(4, 3, ks=5, p=0),
+            
+            get_conv2d_block(3, 10, ks=3, p=0, activation=nn.LeakyReLU(0.2)),
+            get_conv2d_block(10, 20, ks=3, p=0, activation=nn.LeakyReLU(0.2) ),
+            get_conv2d_block(20, 30, ks=3, p=0, activation=nn.LeakyReLU(0.2)),
+            get_conv2d_block(30, 40, ks=3, p=0, activation=nn.LeakyReLU(0.2)),
+            get_conv2d_block(40, 30, ks=3, p=1),
+            get_conv2d_block(30, 20, ks=3, p=1),
+            get_conv2d_block(20, 10, ks=3, p=1),
+            get_conv2d_block(10, 1, ks=3, p=1),
+    
+            nn.Flatten(),
+            nn.Linear(784, 784),
             nn.Sigmoid(),
         )
 
@@ -98,9 +94,17 @@ def get_gen_loss(gen, disc, criterion, labels,  num_images, z_dim, device):
 
 if __name__ == '__main__':
 
-    generator = Generator()
+    from pytorch_model_summary import summary
 
-    for name, param in generator.named_parameters():
-        print(name, param)
+
+    n_sample = 1
+    noise_c = 1 
+    noise_w = noise_b = 8
+
+    noise_input = make_noise( n_sample, (noise_c, noise_w, noise_b), device='cuda')
+    
+    print(summary(Generator().cuda(), noise_input,  show_input=True))
+    print(summary(Generator().cuda(), noise_input,  show_input=False))
+
 
 

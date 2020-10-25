@@ -125,3 +125,7 @@ fabric.properties
 MNIST/
 
 wandb/
+
+markipy/nn/gans/runs/
+
+runs/

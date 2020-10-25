@@ -17,7 +17,7 @@ def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28), show=True)
         plt.show()
 
 
-def make_noise(n_samples, dimensions, device= DEFAULT_TENSOR_DEVICE):
+def make_noise(n_samples, dimensions, device= 'cuda'):
     """
     Function for creating noise vectors: Given the dimensions (n_samples, z_dim),
     creates a tensor of that shape filled with random numbers from the normal distribution.
@@ -28,15 +28,21 @@ def make_noise(n_samples, dimensions, device= DEFAULT_TENSOR_DEVICE):
     """
     # NOTE: To use this on GPU with device='cuda', make sure to pass the device
     # argument to the function you use to generate the noise.
-    return torch.randn(n_samples, dimensions, device=device)
+    if not isinstance(dimensions, tuple):
+        dimensions = (dimensions,)
+    return torch.randn((n_samples,) + dimensions , device=device)
 
 
-def make_one(size=(1, 1), device=DEFAULT_TENSOR_DEVICE):
-    return torch.ones(size=size, device=device)
+def make_one(n_samples, dimensions,  device=DEFAULT_TENSOR_DEVICE):
+    if not isinstance(dimensions, tuple):
+        dimensions = (dimensions,)
+    return torch.ones(size=(n_samples,) + dimensions, device=device)
 
-
-def make_ramp(size=(1, 1), device=DEFAULT_TENSOR_DEVICE):
-    X = torch.ones(size=size, device=device)
+ 
+def make_ramp(n_samples, dimensions, device=DEFAULT_TENSOR_DEVICE):
+    if not isinstance(dimensions, tuple):
+        dimensions = (dimensions,)
+    X = torch.ones(size=(n_samples,) + dimensions, device=device)
     i = 0
     for x in X:
         x += i
@@ -46,14 +52,8 @@ def make_ramp(size=(1, 1), device=DEFAULT_TENSOR_DEVICE):
 def one_hot_encoder(dimension, device=DEFAULT_TENSOR_DEVICE):
     pass
 
-def scale_noise_by_label_number(noise, label):
-    for i in range(len(noise)):
-        noise[i,:]  = noise[i,:] * label.view(noise.shape[0], 1)[i,:].item()
-    return noise
-
 
 def log_image_board(writer, images, label):
-    
     # show images
     image_unflat = image_tensor.detach().cpu().view(-1, *size)
     image_grid = make_grid(image_unflat[:num_images], nrow=5)

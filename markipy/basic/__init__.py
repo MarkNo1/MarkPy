@@ -1,4 +1,4 @@
-from .time import now, datetime, clock
+from .time import now, datetime, clock, date
 
 from .atom import Atom
 

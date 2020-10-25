@@ -16,7 +16,7 @@ import wandb
 
 from markipy.nn.gans.generator import get_gen_loss, Generator
 from markipy.nn.gans.discriminator import get_disc_loss, Discriminator
-from markipy.nn.commons import show_tensor_images, make_noise, scale_noise_by_label_number
+from markipy.nn.commons import show_tensor_images, make_noise
 
 torch.manual_seed(0)  # Set for testing purposes, please do not change!
 
@@ -40,7 +40,9 @@ if __name__ == "__main__":
     # Mnist Playground
     device = torch.device('cuda')
     n_epochs = 200
-    z_dim = 64
+    noise_c = 1 
+    noise_w = noise_b = 8
+    z_dim = (noise_c, noise_w, noise_b)
     display_step = 500
     batch_size = 128
     lr = 0.00001
@@ -64,7 +66,7 @@ if __name__ == "__main__":
         shuffle=True)
 
     criterion = nn.BCEWithLogitsLoss()
-    gen = Generator(z_dim).to(device)
+    gen = Generator().to(device)
     gen_opt = torch.optim.Adam(gen.parameters(), lr=lr)
     disc = Discriminator().to(device)
     disc_opt = torch.optim.Adam(disc.parameters(), lr=lr)
@@ -81,7 +83,7 @@ if __name__ == "__main__":
     for epoch in range(n_epochs):
         
         # Dataloader returns the batches
-        for real, _ in tqdm(dataloader):
+        for real, label in tqdm(dataloader):
             cur_batch_size = len(real)
 
             # Flatten the batch of real images from the dataset
