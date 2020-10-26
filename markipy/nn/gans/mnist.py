@@ -6,21 +6,24 @@ from torchvision.datasets import MNIST  # Training dataset
 from torchvision.utils import make_grid
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
-
-# default `log_dir` is "runs" - we'll be more specific here
-writer = SummaryWriter('runs/fashion_mnist_experiment_1')
-
-
-import matplotlib.pyplot as plt
-import wandb
-
 from markipy.nn.gans.generator import get_gen_loss, Generator
 from markipy.nn.gans.discriminator import get_disc_loss, Discriminator
 from markipy.nn.commons import show_tensor_images, make_noise
+from markipy.basic import date
+
 
 torch.manual_seed(0)  # Set for testing purposes, please do not change!
 
 PROJECT="MNIST"
+VERSIONE="0.1"
+RUN="11"
+
+# default `log_dir` is "runs" - we'll be more specific here\
+logs=f'runs/{PROJECT}_{VERSIONE}.{date()}#{RUN}'
+
+writer = SummaryWriter(logs)
+print(f"Logs at: {logs}")
+
 
 
 def log_image_board(writer, images, label):

@@ -22,7 +22,7 @@ def get_linear_block(input_dim, output_dim, normalize=True, activation=nn.ReLU(i
 
     return nn.Sequential(*modules)
 
-def get_conv2d_block(in_channels, out_channels, normalize=True,  ks=5, s=1, p=2, d=1, activation=nn.ReLU(inplace=True)):
+def get_conv2d_block(in_channels, out_channels, normalize=True,  ks=5, s=1, p=2, d=1, activation=nn.LeakyReLU(0.1)):
     modules = []
 
     modules.append(nn.Conv2d(in_channels, out_channels, kernel_size=ks, stride=s, padding=p, dilation=d))
@@ -32,7 +32,8 @@ def get_conv2d_block(in_channels, out_channels, normalize=True,  ks=5, s=1, p=2,
     return nn.Sequential(*modules)
 
 
-def get_deconv2d_block(in_channels, out_channels, normalize=True,  ks=5, s=1, p=2, d=1, activation=nn.ReLU(inplace=True)):
+
+def get_deconv2d_block(in_channels, out_channels, normalize=True,  ks=5, s=1, p=2, d=1, activation=nn.LeakyReLU(0.1)):
     modules = []
     modules.append(nn.ConvTranspose2d(in_channels, out_channels, kernel_size=ks, stride=s, padding=p, dilation=d))
     if normalize:
