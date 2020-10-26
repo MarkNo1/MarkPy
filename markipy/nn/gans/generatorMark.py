@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 from markipy.nn.commons import make_noise, get_linear_block, get_conv2d_block, get_deconv2d_block
+import torch.nn.functional as F
 
 class Generator(nn.Module):
     """
@@ -21,8 +22,8 @@ class Generator(nn.Module):
         ic = input_channel
         self.oc = 5
 
-        self.cv1 = get_conv2d_block(ic, self.oc, ks=5, normalize=True, activation=nn.LeakyReLU(0.2))
         self.m = nn.Upsample(scale_factor=1.2, mode='bilinear')
+        self.cv1 = get_conv2d_block(ic, self.oc, ks=5, normalize=True, activation=nn.LeakyReLU(0.2))
         self.f = nn.Flatten(2)
 
 
@@ -32,13 +33,13 @@ class Generator(nn.Module):
         self.bidirectional = 2
         self.ls_hidden = 400
 
-        self.lstm = nn.LSTM(self.l_hidden, self.ls_hidden, 1, dropout=0.88, bidirectional=True)   # Input (seq_len, batch, input_size)
+        self.lstm = nn.LSTM(self.l_hidden, self.ls_hidden, 1, dropout=0.33, bidirectional=True)   # Input (seq_len, batch, input_size)
 
         self.ap2 = nn.AvgPool2d(2, stride=2)
 
-        self.cv2 = get_conv2d_block(2, 1, ks=5, p=4, normalize=False, activation=nn.LeakyReLU(0.2))
+        self.cv2 = get_conv2d_block(2, 1, ks=5, p=4, normalize=True, activation=nn.LeakyReLU(0.2))
 
-        self.cv3 = get_conv2d_block(1, 1, ks=5, p=4, normalize=False, activation=nn.LeakyReLU(0.2))
+        self.cv3 = get_conv2d_block(1, 1, ks=5, p=4, normalize=True, activation=nn.LeakyReLU(0.2))
         
         self.to_init_lstm = True
 
@@ -53,18 +54,18 @@ class Generator(nn.Module):
         n_sampled = X.shape[0]
 
         if self.to_init_lstm:
-            self.hn = torch.ones( self.bidirectional, n_sampled, self.l_hidden , device=self.dev) * 0.5
-            self.cn = torch.ones( self.bidirectional, n_sampled, self.l_hidden , device=self.dev) * 0.5
+            self.hn = torch.zeros( self.bidirectional, n_sampled, self.l_hidden , device=self.dev) 
+            self.cn = torch.zeros( self.bidirectional, n_sampled, self.l_hidden , device=self.dev) 
             to_init_lstm = False
                 
-        X = self.m(X)        
-        X = self.cv1(X)      
-        X = self.f(X)        
+        X = F.leaky_relu(self.m(X), 0.1)
+        X = F.leaky_relu(self.cv1(X), 0.1)      
+        X = F.leaky_relu(self.f(X), 0.1)      
 
         Xn = torch.zeros(n_sampled, self.oc, self.l_hidden, device=self.dev)
 
         for xi in range( self.oc ):
-            Xn[: , xi , :] = self.Ln[xi](X[:,:1].view(n_sampled,1089))
+            Xn[: , xi , :] = F.leaky_relu(self.Ln[xi](X[:,:1].view(n_sampled,1089)), 0.1)
 
         X , (self.hn, self.cn) = self.lstm (Xn.permute(1,0,2), (self.hn,self.cn))
 
@@ -74,9 +75,9 @@ class Generator(nn.Module):
 
         X = X.view( n_sampled , 2,  20, 20)
 
-        X = self.cv2(X)                  
+        X = F.leaky_relu(self.cv2(X), 0.1)
 
-        X = self.cv3(X)             
+        X = F.leaky_relu(self.cv3(X), 0.1)            
 
         return X
 
