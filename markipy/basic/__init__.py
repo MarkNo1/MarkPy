@@ -27,3 +27,5 @@ from .rsync import Rsync, Host
 from .terminator import Terminator
 
 from .hdf import Hdf
+
+from .jupy import Jupy

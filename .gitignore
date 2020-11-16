@@ -11,7 +11,7 @@ __pycache__/
 markipy/nn/lr/wandb/
 
 # Data
-markipy/nn/gans/MNIST/
+markipy/nn/data/MNIST/
 
 # PyCharm
 .idea

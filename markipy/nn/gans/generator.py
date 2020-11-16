@@ -30,7 +30,7 @@ class Generator(nn.Module):
             get_deconv2d_block(4, 3, ks=5, p=0),
             
             get_conv2d_block(3, 10, ks=3, p=0, activation=nn.LeakyReLU(0.2)),
-            get_conv2d_block(10, 20, ks=3, p=0, activation=nn.LeakyReLU(0.2) ),
+            get_conv2d_block(10, 20, ks=3, p=0, activation=nn.LeakyReLU(0.2)),
             get_conv2d_block(20, 30, ks=3, p=0, activation=nn.LeakyReLU(0.2)),
             get_conv2d_block(30, 40, ks=3, p=0, activation=nn.LeakyReLU(0.2)),
             get_conv2d_block(40, 30, ks=3, p=1),
@@ -86,10 +86,9 @@ def get_gen_loss(gen, disc, criterion, labels,  num_images, z_dim, device):
     x_gen = gen(noise)
 
     y_fake = disc(x_gen)
-    gen_loss = criterion(y_fake, torch.ones_like(y_fake))
+    gen_loss = criterion(y_fake, torch.ones_like(y_fake, device=device))
 
     return gen_loss
-
 
 
 if __name__ == '__main__':

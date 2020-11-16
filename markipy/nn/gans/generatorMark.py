@@ -3,6 +3,7 @@ from torch import nn
 from markipy.nn.commons import make_noise, get_linear_block, get_conv2d_block, get_deconv2d_block
 import torch.nn.functional as F
 
+
 class Generator(nn.Module):
     """
     Generator Class
@@ -15,9 +16,8 @@ class Generator(nn.Module):
 
     def __init__(self, input_channel=1, device='cuda'):
         super(Generator, self).__init__()
-        self.dev = device
+        self.device = device
         # Build the neural network
-
 
         ic = input_channel
         self.oc = 5
@@ -26,22 +26,37 @@ class Generator(nn.Module):
         self.cv1 = get_conv2d_block(ic, self.oc, ks=5, normalize=True, activation=nn.LeakyReLU(0.2))
         self.f = nn.Flatten(2)
 
+        self.l_hidden = 10
+        self.Ln = [nn.Linear(1089, self.l_hidden) for n in range(self.oc)]
 
-        self.l_hidden = 400
-        self.Ln = [nn.Linear(1089, self.l_hidden) for n in range( self.oc)]
-                 
         self.bidirectional = 2
-        self.ls_hidden = 400
+        self.ls_hidden = 10
 
-        self.lstm = nn.LSTM(self.l_hidden, self.ls_hidden, 1, dropout=0.33, bidirectional=True)   # Input (seq_len, batch, input_size)
+        # Input (seq_len, batch, input_size)
+        self.lstm = nn.LSTM(self.l_hidden, self.ls_hidden, 1, dropout=0.33, bidirectional=True)
 
-        self.ap2 = nn.AvgPool2d(2, stride=2)
+        self.cv2 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
 
-        self.cv2 = get_conv2d_block(2, 1, ks=5, p=4, normalize=True, activation=nn.LeakyReLU(0.2))
+        self.cv3 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
 
-        self.cv3 = get_conv2d_block(1, 1, ks=5, p=4, normalize=True, activation=nn.LeakyReLU(0.2))
-        
+        self.cv4 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
+        self.cv5 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
+        self.cv6 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
+        self.cv7 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
+        self.cv8 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
+        self.cv9 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
+        self.cv10 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
+        self.cv11 = get_conv2d_block(1, 1, ks=3, p=2, normalize=True, activation=nn.LeakyReLU(0.2))
+
         self.to_init_lstm = True
+        self.last_n_batch = 0
 
     def forward(self, X):
         """
@@ -53,31 +68,45 @@ class Generator(nn.Module):
 
         n_sampled = X.shape[0]
 
-        if self.to_init_lstm:
-            self.hn = torch.zeros( self.bidirectional, n_sampled, self.l_hidden , device=self.dev) 
-            self.cn = torch.zeros( self.bidirectional, n_sampled, self.l_hidden , device=self.dev) 
-            to_init_lstm = False
-                
+        if self.to_init_lstm or self.last_n_batch != n_sampled:
+            self.hn = torch.zeros(self.bidirectional, n_sampled, self.l_hidden, device=self.device)
+            self.cn = torch.zeros(self.bidirectional, n_sampled, self.l_hidden, device=self.device)
+            self.to_init_lstm = False
+            self.last_n_batch = n_sampled
+
         X = F.leaky_relu(self.m(X), 0.1)
-        X = F.leaky_relu(self.cv1(X), 0.1)      
-        X = F.leaky_relu(self.f(X), 0.1)      
+        X = F.leaky_relu(self.cv1(X), 0.1)
+        X = F.leaky_relu(self.f(X), 0.1)
 
-        Xn = torch.zeros(n_sampled, self.oc, self.l_hidden, device=self.dev)
+        Xn = torch.zeros(n_sampled, self.oc, self.l_hidden, device=self.device)
 
-        for xi in range( self.oc ):
-            Xn[: , xi , :] = F.leaky_relu(self.Ln[xi](X[:,:1].view(n_sampled,1089)), 0.1)
+        for xi in range(self.oc):
+            Xn[:, xi, :] = F.leaky_relu(self.Ln[xi](X[:, :1].view(n_sampled, 1089)), 0.1)
 
-        X , (self.hn, self.cn) = self.lstm (Xn.permute(1,0,2), (self.hn,self.cn))
+        X, (self.hn, self.cn) = self.lstm(Xn.permute(1, 0, 2), (self.hn, self.cn))
 
-        X = X.permute(1,0,2)                    
+        X = X.permute(1, 0, 2)
 
-        X = self.ap2(X)                         
+        X = X.flatten(0);
+        X = X.view(n_sampled, 1, 10, 10);
 
-        X = X.view( n_sampled , 2,  20, 20)
+        X = self.cv2(X);
 
-        X = F.leaky_relu(self.cv2(X), 0.1)
+        X = self.cv3(X);
 
-        X = F.leaky_relu(self.cv3(X), 0.1)            
+        X = self.cv4(X);
+
+        X = self.cv5(X);
+
+        X = self.cv6(X);
+
+        X = self.cv7(X);
+
+        X = self.cv8(X);
+
+        X = self.cv9(X);
+
+        X = self.cv10(X);
 
         return X
 
@@ -86,7 +115,7 @@ class Generator(nn.Module):
         return self.gen
 
 
-def get_gen_loss(gen, disc, criterion, labels,  num_images, z_dim, device):
+def get_gen_loss(gen, disc, criterion, labels, num_images, z_dim, device):
     """
     Return the loss of the generator given inputs.
     Parameters:
@@ -115,25 +144,23 @@ def get_gen_loss(gen, disc, criterion, labels,  num_images, z_dim, device):
     x_gen = gen(noise)
 
     y_fake = disc(x_gen)
-    gen_loss = criterion(y_fake, torch.ones_like(y_fake))
+    gen_loss = criterion(y_fake, torch.ones_like(y_fake, device=device))
 
     return gen_loss
 
 
-
 if __name__ == '__main__':
-
     from pytorch_model_summary import summary
 
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     device = 'cpu'
     n_sample = 1
-    noise_c = 1 
+    noise_c = 1
     noise_w = noise_b = 28
 
-    noise_input = make_noise( n_sample, (noise_c, noise_w, noise_b), device=device)
-    gen = Generator(input_channel= noise_c, device=device)
-    print(summary(gen, noise_input,  show_input=True))
-    print(summary(gen, noise_input,  show_input=False))
+    gen = Generator(input_channel=noise_c, device=device).to(device)
+    noise_input = make_noise(n_sample, (noise_c, noise_w, noise_b), device=device)
 
-
+    print(summary(gen, noise_input, show_input=True))
+    print(summary(gen, noise_input, show_input=False))
 

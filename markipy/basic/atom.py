@@ -27,6 +27,7 @@ class ClassDetails:
     def init(self):
         self.was_init = True
 
+
 class AtomHistory:
 
     def __init__(self, name, version):
@@ -87,7 +88,7 @@ class Atom:
         return self._history.get_versions()
 
     def _get_classes_name_str(self):
-        return '>'.join(self._get_classes_name_list())
+        return '.'.join(self._get_classes_name_list())
 
     def _get_classes_versions_str(self):
         return '.'.join([str(v) for v in self._get_classes_versions_list()])

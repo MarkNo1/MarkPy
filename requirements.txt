@@ -1,7 +1,7 @@
 html-testRunner
 wget
 watchdog~=0.10.3
-tqdm~=4.50.0
+tqdm
 pandas~=1.1.2
 numpy
 emoji~=0.6.0
@@ -9,13 +9,17 @@ markipy~=0.0.3
 PySide2~=5.15.1
 setuptools~=50.3.0
 twine
-matplotlib~=3.3.2
+matplotlib
 pycryptodomex
 python-gnupg
 # rospkg
-# rosbag~=1.15.7
+# rosbag
 # rospy
 tables
-torch~=1.6.0
-PyYAML~=5.3.1
-wandb~=0.10.7
+torch
+PyYAML
+wandb
+jupyter
+tensorboard
+pytorch_model_summary
+torchsummary
