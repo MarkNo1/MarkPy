@@ -12,10 +12,6 @@ def Args():
 def Main():
     args = Args()
 
-    if args.init:
-        # Cfg File
-        pass
-
     if args.pip_up:
         py = args.pip_up
         p_build = Process(file_log='Dist.Build', cmd=[py, 'setup.py', 'bdist_wheel'], console=True)
