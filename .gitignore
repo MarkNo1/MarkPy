@@ -4,6 +4,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# VS code
+.vscode/
+
+# WB
+markipy/nn/lr/wandb/
+
+# Data
+markipy/nn/data/MNIST/
+
 # PyCharm
 .idea
 
@@ -112,3 +121,11 @@ fabric.properties
 
 # *.iml
 # modules.xml
+
+MNIST/
+
+wandb/
+
+markipy/nn/gans/runs/
+
+runs/

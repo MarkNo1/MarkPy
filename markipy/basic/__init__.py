@@ -1,4 +1,4 @@
-from .time import now, datetime, clock
+from .time import now, datetime, clock, date
 
 from .atom import Atom
 
@@ -27,3 +27,5 @@ from .rsync import Rsync, Host
 from .terminator import Terminator
 
 from .hdf import Hdf
+
+from .jupy import Jupy

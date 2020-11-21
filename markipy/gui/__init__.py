@@ -1,8 +1,9 @@
 import markipy as mpy
+from pathlib import Path
 from markipy.basic import Folder, File
 
-DEFAULT_INSTALLED_PYTHON_FOLDER = Folder(File(mpy.__file__)().parent)
-DEFAULT_QML_VIEW_FOLDER = Folder(DEFAULT_INSTALLED_PYTHON_FOLDER() / 'gui' / 'views' / 'qml')
+DEFAULT_INSTALLED_PYTHON_PATH = Path(mpy.__file__).parent
+DEFAULT_QML_VIEW_PATH = DEFAULT_INSTALLED_PYTHON_PATH / 'gui' / 'views' / 'qml'
 
 from .app import QApp
 from .views import QTView

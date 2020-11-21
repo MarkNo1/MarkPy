@@ -1,1 +1,1 @@
-from .bag import BagFixer, BagReader, BagWriter, BagRawReader
+from . import bag

@@ -11,11 +11,12 @@ from .atom import Atom
 from .perf import Performance
 from .style import Style
 
+
 _logger_ = {'class': 'Logger', 'version': 7,
             'console_formatter': Formatter(
-                '[%(asctime)s]|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s'),
+                '[%(asctime)s] %(levelname).4s: [%(atom_name)sV%(atom_version)s]\t%(message)s'),
             'file_formatter': Formatter(
-                '[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d\n|%(atom_version)s|%(atom_name)s %(levelname).4s:\t%(message)s')}
+                '[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d %(levelname).4s: [%(atom_name)sV%(atom_version)s]\t%(message)s')}
 
 
 class Logger(Style):
@@ -26,7 +27,7 @@ class Logger(Style):
         self.log_path = log_path
         self._logger_console = console
         self._logger_file = file_log
-        self._logger_rotatation = rotation
+        self._logger_rotation = rotation
         self._logger_level = level
         self._init_atom_register_class(_logger_)
 
@@ -44,13 +45,18 @@ class Logger(Style):
         # Enable File Logger
         if self._logger_file:
             file_log = self.log_path / f'{str(self._logger_file).replace("/", ".")}.{date.today()}.log'
-            self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(file_log, when=self._logger_rotatation,
+            self.__file_handler__ = logging.handlers.TimedRotatingFileHandler(file_log, when=self._logger_rotation,
                                                                               backupCount=5)
             self.__file_handler__.setFormatter(_logger_['file_formatter'])
             self.__logger__.addHandler(self.__file_handler__)
 
-        self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(),
+        self.log = logging.LoggerAdapter(self.__logger__, {"atom_name": class_details['class'],
+                                                           "atom_version": class_details['version']})
+
+        self.hlog = logging.LoggerAdapter(self.__logger__, {"atom_name": self._get_classes_name_str(),
                                                            "atom_version": self._get_classes_versions_str()})
+
+        self.hlog.debug(" Init ")
 
     def error(self, text):
         return self.red(text)
