@@ -11,9 +11,6 @@ twine
 matplotlib
 pycryptodomex
 python-gnupg
-rospkg
-rosbag
-rospy
 tables
 torch
 PyYAML
