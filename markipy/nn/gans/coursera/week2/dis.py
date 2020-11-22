@@ -1,5 +1,6 @@
 from torch import nn
 
+
 # UNQ_C3 (UNIQUE CELL IDENTIFIER, DO NOT EDIT)
 # GRADED FUNCTION: Discriminator
 class Discriminator(nn.Module):
@@ -39,17 +40,13 @@ class Discriminator(nn.Module):
         # Build the neural block
         if not final_layer:
             return nn.Sequential(
-                #### START CODE HERE #### #
                 nn.Conv2d(input_channels, output_channels, kernel_size, stride),
                 nn.BatchNorm2d(output_channels),
                 nn.LeakyReLU(0.2)
-                #### END CODE HERE ####
             )
         else:  # Final Layer
             return nn.Sequential(
-                #### START CODE HERE #### #
                 nn.Conv2d(input_channels, output_channels, kernel_size, stride)
-                #### END CODE HERE ####
             )
 
     def forward(self, image):
