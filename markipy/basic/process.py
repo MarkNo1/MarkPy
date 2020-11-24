@@ -19,17 +19,16 @@ class Process(Logger):
         self.cmd = cmd
 
     def _clean_out_line(self, line):
-        return str(line, 'utf-8').replace('\r', '').replace('\n', '')
+        return str(line).replace('\r', '').replace('\n', '')
 
     def _read_stream(self, stream, cb):
         while True:
             line = stream.readline()
             if line:
-                print(line)
-                cb(line)
+                cb(self._clean_out_line(line))
             else:
                 break
-            sleep(0.01)
+            sleep(0.005)
 
     def _stream_subprocess(self, cmd):
         process = Popen(cmd, stdout=PIPE, stderr=PIPE, universal_newlines=True)
@@ -54,7 +53,6 @@ class Process(Logger):
     def execute(self, cmd):
         self.log.debug(f'Process executing: {self.cyan(cmd)}')
         rc = self._stream_subprocess(cmd)
-
         return rc
 
     def start(self):
