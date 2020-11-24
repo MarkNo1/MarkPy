@@ -13,10 +13,8 @@ class Measure:
     last: int = 0
     count: int = 1
 
-    data: pd.DataFrame = None
-
     def __str__(self):
-        return f'{self.name}: {self.last} <{self.min},{self.mean},{self.max}> ns'
+        return f'{self.name}: {self.last * 1e-6} <{self.min * 1e-6},{self.mean * 1e-6},{self.max * 1e-6}> ms'
 
     def update(self, measure):
         if measure < self.min:
