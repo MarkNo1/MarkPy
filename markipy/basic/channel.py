@@ -1,13 +1,17 @@
 from queue import Queue
+from threading import Lock
 
 
 class Channel:
 
-    def __init__(self, size=12500):
+    def __init__(self, size=12500, n_producer=1):
         self.queue_size = size
         self.finish = False
         self.channel = Queue(self.queue_size)
         self.empty = Queue.empty
+        self.n_producer = n_producer
+        self.producer_completed = 0
+        self.channel_lock = Lock()
 
     def get(self, timeout=5):
         try:
@@ -22,7 +26,10 @@ class Channel:
         self.channel.task_done()
 
     def set_finish(self):
-        self.finish = True
+        with self.channel_lock:
+            self.producer_completed += 1
+            if self.n_producer == self.producer_completed:
+                self.finish = True
 
     def get_finish(self):
         return self.finish
