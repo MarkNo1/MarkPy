@@ -15,7 +15,7 @@ setup(
     name='markipy',
     author='Marco T.',
     url='https://github.com/MarkNo1/MarkPy',
-    version='0.1.4',
+    version='0.1.5',
     license=license,
     description='MarkPy LIB',
     long_description=readme,

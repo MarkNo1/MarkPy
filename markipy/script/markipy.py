@@ -14,10 +14,8 @@ def Main():
 
     if args.pip_up:
         py = args.pip_up
-        p_build = Process(file_log='Dist.Build', cmd=[py, 'setup.py', 'sdist'], console=True)
+        p_build = Process(file_log='Dist.Build', cmd=[py, 'setup.py', 'bdist'], console=True)
         p_upload = Process(file_log='Pip.Upload', cmd=[py, '-m', 'twine', 'upload', 'dist/*'], console=True)
 
         p_build.start()
         p_upload.start()
-
-

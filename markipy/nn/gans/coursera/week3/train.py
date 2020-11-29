@@ -86,8 +86,8 @@ def weights_init(m):
 
 def train():
     z_dim = 64
-    display_step = 500
-    batch_size = 256
+    display_step = 300
+    batch_size = 64
     # A learning rate of 0.0002 works well on DCGAN
     lr = 0.0002
 
@@ -110,6 +110,7 @@ def train():
     dataloader = DataLoader(
         MNIST(DEFAULT_DATA_PATH / 'MNIST', download=True, transform=transform),
         batch_size=batch_size,
+        pin_memory=True,
         shuffle=True)
 
     gen = Generator(z_dim).to(device)
