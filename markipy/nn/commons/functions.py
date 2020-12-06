@@ -3,7 +3,7 @@ import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import torch
 
-DEFAULT_TENSOR_DEVICE = torch.device('cuda')
+DEFAULT_TENSOR_DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28), nrow=5, show=True):
@@ -18,7 +18,7 @@ def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28), nrow=5, sh
         plt.show()
 
 
-def make_noise(n_samples, dimensions, device='cuda'):
+def make_noise(n_samples, dimensions, device=DEFAULT_TENSOR_DEVICE):
     """
     Function for creating noise vectors: Given the dimensions (n_samples, z_dim),
     creates a tensor of that shape filled with random numbers from the normal distribution.

@@ -68,3 +68,4 @@ def get_noise(n_samples, input_dim, device='gpu'):
         device: the device type
     '''
     return torch.randn(n_samples, input_dim, device=device)
+

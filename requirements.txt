@@ -19,3 +19,4 @@ jupyter
 tensorboard
 pytorch_model_summary
 torchsummary
+torchvision

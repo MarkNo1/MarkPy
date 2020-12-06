@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 from markipy.nn import DEFAULT_DATA_PATH
 
+from ..common import get_MNIST_dataloader
 from ..common import show_tensor_images, get_one_hot_labels, combine_vectors
 from .gen import Generator, get_noise
 from .dis import Discriminator
@@ -52,15 +53,7 @@ def train():
     lr = 0.0002
     device = 'cuda'
 
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((0.5,), (0.5,)),
-    ])
-
-    dataloader = DataLoader(
-        MNIST('.', download=False, transform=transform),
-        batch_size=batch_size,
-        shuffle=True)
+    dataloader = get_MNIST_dataloader(batch_size)
 
     generator_input_dim, discriminator_im_chan = get_input_dimensions(z_dim, mnist_shape, n_classes)
 
