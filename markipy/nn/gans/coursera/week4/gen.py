@@ -58,7 +58,7 @@ class Generator(nn.Module):
         return self.gen(x)
 
 
-def get_noise(n_samples, input_dim, device='cpu'):
+def get_noise(n_samples, input_dim, device='gpu'):
     '''
     Function for creating noise vectors: Given the dimensions (n_samples, input_dim)
     creates a tensor of that shape filled with random numbers from the normal distribution.

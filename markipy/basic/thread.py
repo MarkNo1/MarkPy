@@ -108,7 +108,8 @@ class ThreadProducer(Logger, threading.Thread):
             self.log.error(f"Error -> {e}")
 
     def set_finish(self):
-        self.channel.wait_completion_task()
+        if self.channel is not None:
+            self.channel.wait_completion_task()
         self.finish = True
         self.cleanup()
 
