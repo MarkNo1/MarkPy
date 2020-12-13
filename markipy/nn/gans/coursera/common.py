@@ -11,18 +11,18 @@ from markipy import makedirs
 from markipy.nn import DEFAULT_DATA_PATH
 
 
-def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28), filename=None):
+def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28), filename=None, nrow=5):
     '''
     Function for visualizing images: Given a tensor of images, number of images, and
     size per image, plots and prints the images in an uniform grid.
     '''
     image_tensor = (image_tensor + 1) / 2
     image_unflat = image_tensor.detach().cpu()
-    image_grid = make_grid(image_unflat[:num_images], nrow=5)
+    image_grid = make_grid(image_unflat[:num_images], nrow=nrow)
     plt.imshow(image_grid.permute(1, 2, 0).squeeze())
     if filename is not None:
         # Image results
-        images_path = '/tmp/coursera/mnist/week3/'
+        images_path = '/tmp/coursera/mnist/week4/'
         makedirs(images_path, exist_ok=True)
         plt.savefig(filename, format='jpg')
     else:
@@ -65,8 +65,8 @@ def combine_vectors(x, y):
         with the shape (n_samples, n_classes), but you shouldn't assume this in your code.
     '''
     # Note: Make sure this function outputs a float no matter what inputs it receives
-    combined = torch.cat((x, y), 1)
-    return combined.float()
+    combined = torch.cat((x.float(), y.float()), 1)
+    return combined
 
 
 def get_MNIST_dataloader(batch_size=32):
@@ -80,6 +80,7 @@ def get_MNIST_dataloader(batch_size=32):
         batch_size=batch_size,
         pin_memory=True,
         shuffle=True)
+
 
 # def interpolate_class(first_number, second_number, n_interpolation):
 #     interpolation_noise = get_noise(n_view, z_dim, device=device).repeat(n_interpolation, 1)
@@ -106,3 +107,46 @@ def get_MNIST_dataloader(batch_size=32):
 #     noise_and_labels = combine_vectors(interpolation_noise, interpolation_label.to(device))
 #     fake = gen(noise_and_labels)
 #     show_tensor_images(fake, num_images=n_interpolation, nrow=int(math.sqrt(n_interpolation)), show=False)
+
+
+def calculate_updated_noise(noise, weight):
+    '''
+    Function to return noise vectors updated with stochastic gradient ascent.
+    Parameters:
+        noise: the current noise vectors. You have already called the backwards function on the target class
+          so you can access the gradient of the output class with respect to the noise by using noise.grad
+        weight: the scalar amount by which you should weight the noise gradient
+    '''
+    #### START CODE HERE ####
+    new_noise = noise + (noise.grad * weight)
+    #### END CODE HERE ####
+    return new_noise
+
+
+def get_score(current_classifications, original_classifications, target_indices, other_indices, penalty_weight):
+    '''
+    Function to return the score of the current classifications, penalizing changes
+    to other classes with an L2 norm.
+    Parameters:
+        current_classifications: the classifications associated with the current noise
+        original_classifications: the classifications associated with the original noise
+        target_indices: the index of the target class
+        other_indices: the indices of the other classes
+        penalty_weight: the amount that the penalty should be weighted in the overall score
+    '''
+    # Steps: 1) Calculate the change between the original and current classifications (as a tensor)
+    #           by indexing into the other_indices you're trying to preserve, like in x[:, features].
+    #        2) Calculate the norm (magnitude) of changes per example.
+    #        3) Multiply the mean of the example norms by the penalty weight.
+    #           This will be your other_class_penalty.
+    #           Make sure to negate the value since it's a penalty!
+    #        4) Take the mean of the current classifications for the target feature over all the examples.
+    #           This mean will be your target_score.
+    #### START CODE HERE ####
+    # Calculate the norm (magnitude) of changes per example and multiply by penalty weight
+    other_class_penalty = - (
+                original_classifications[:, other_indices] - current_classifications[:, other_indices]).norm(dim=1)
+    # Take the mean of the current classifications for the target feature
+    target_score = (current_classifications[:, target_indices]).mean() + other_class_penalty.mean() * penalty_weight
+    #### END CODE HERE ####
+    return target_score
