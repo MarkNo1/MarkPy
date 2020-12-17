@@ -14,7 +14,7 @@ _folder_ = {'class': 'Folder', 'version': 3}
 class File(Logger):
 
     def __init__(self, file_path, console=False, log_path=DEFAULT_LOG_PATH, auto_create=True):
-        Logger.__init__(self, console=console, file_log=f'File{file_path}', log_path=log_path)
+        Logger.__init__(self, console=console, file_log=f'File-{Path(file_path).name}', log_path=log_path)
         self._init_atom_register_class(_file_)
 
         self.__file__ = Path(file_path)
@@ -23,7 +23,7 @@ class File(Logger):
 
         attach_mode = self._attach(status)
 
-        self.log.debug(f' File {attach_mode} -> {self.violet(self.__file__)}')
+        self.log.debug(f' File init {",".join(attach_mode)} -> {self.violet(self.__file__)}')
 
     @Performance.collect
     def _init(self):
@@ -56,11 +56,11 @@ class File(Logger):
         if 'ok' in mode:
             return_code += [self.orange('already-exist')]
 
-        if 'init_parent' in mode:
+        elif 'init_parent' in mode:
             self.make_parent()
             return_code += [self.green('init-parent')]
 
-        if 'init_file' in mode:
+        elif 'init_file' in mode:
             self._init()
             return_code += [self.green('init-file')]
         else:
@@ -115,7 +115,7 @@ class File(Logger):
 class Folder(Logger):
 
     def __init__(self, folder_path='./', console=False, log_path=DEFAULT_LOG_PATH, auto_create=True):
-        Logger.__init__(self, console=console, file_log=f'Folder{folder_path}', log_path=log_path)
+        Logger.__init__(self, console=console, file_log=f'Folder-{Path(folder_path).name}', log_path=log_path)
         Atom.__init__(self, _folder_['class'], _folder_['version'])
 
         self.__folder__ = Path(folder_path)
@@ -124,7 +124,7 @@ class Folder(Logger):
 
         attach_mode = self._attach(status)
 
-        self.log.debug(f' Folder {attach_mode} -> {self.lightviolet(self.__folder__)}')
+        self.log.debug(f' Folder init {",".join(attach_mode)} -> {self.lightviolet(self.__folder__)}')
 
     @Performance.collect
     def _init(self):
@@ -156,13 +156,13 @@ class Folder(Logger):
         if 'ok' in mode:
             return_code += [self.orange('already-exist')]
 
-        if 'init_parent' in mode:
+        elif 'init_parent' in mode:
             os.makedirs(self.__folder__.parent, exist_ok=True)
             return_code += [self.green('init-parent')]
 
-        if 'init_file' in mode:
+        elif 'init_folder' in mode:
             self._init()
-            return_code += [self.green('init-file')]
+            return_code += [self.green('init_folder-file')]
         else:
             return_code += [self.red('not-exist')]
 

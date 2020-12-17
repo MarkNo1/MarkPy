@@ -53,7 +53,8 @@ class Performance:
             ts = time.time_ns()
             result = method(*args, **kw)
             self.performance.new(method.__name__, time.time_ns() - ts)
-            self.log.debug(self.grey(self.performance.get(method.__name__)))
+            if hasattr(self, 'log'):
+                self.log.debug(self.grey(self.performance.get(method.__name__)))
             return result
 
         return measure
