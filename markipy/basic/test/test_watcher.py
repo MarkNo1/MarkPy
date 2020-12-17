@@ -52,3 +52,7 @@ class TestWatcher(unittest.TestCase):
 
     def test_folder_watcher(self):
         pass
+
+
+if __name__ == '__main__':
+    unittest.main()

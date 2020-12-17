@@ -65,3 +65,7 @@ class TestYaml(unittest.TestCase):
         yml = Yaml(target_file, log_path=LOG_DIR)
         cfg = yml.load_from_variable(YAML_CFG_TEST, do=True)
         self.assertEqual(compare_target_config(cfg), True)
+
+
+if __name__ == '__main__':
+    unittest.main()

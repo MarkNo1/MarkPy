@@ -38,3 +38,7 @@ class TestPerformance(unittest.TestCase):
         pn.test_performance_child()
         pn.test_performance_nephew()
         self.assertEqual(pn.performance.stats['test_performance_nephew'].name, 'test_performance_nephew')
+
+
+if __name__ == '__main__':
+    unittest.main()

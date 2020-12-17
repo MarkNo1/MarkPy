@@ -26,3 +26,7 @@ class TestProcess(unittest.TestCase):
         ps = PS(cmd=ps_cmd)
         ps.start()
         ps.log.debug(ps.ps)
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -46,3 +46,5 @@ class TestThreads(unittest.TestCase):
         self.assertListEqual(p.produced, c.consumed)
 
 
+if __name__ == '__main__':
+    unittest.main()

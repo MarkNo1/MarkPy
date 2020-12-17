@@ -44,3 +44,5 @@ class TestStyle(unittest.TestCase):
         self.assertEqual(n._get_class_details(_nephew_['class']).version, _nephew_['version'])
 
 
+if __name__ == '__main__':
+    unittest.main()

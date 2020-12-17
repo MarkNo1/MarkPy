@@ -12,3 +12,6 @@ class TestChannel(unittest.TestCase):
         var_channel = c.get()
         self.assertEqual(var, var_channel)
 
+
+if __name__ == '__main__':
+    unittest.main()

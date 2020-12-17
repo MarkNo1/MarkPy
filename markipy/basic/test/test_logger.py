@@ -12,7 +12,6 @@ LOG_DIR = WRK_DIR / 'logs'
 ensure_folder(WRK_DIR)
 ensure_folder(LOG_DIR)
 
-
 _logger_child_ = {'class': 'LoggerChild', 'version': 2}
 _logger_nephew_ = {'class': 'LoggerNephew', 'version': 3}
 
@@ -25,7 +24,7 @@ class LoggerChild(Logger):
 
 class LoggerNephew(LoggerChild):
     def __init__(self, console, file_log):
-        LoggerChild.__init__(self, console=console, file_log=file_log )
+        LoggerChild.__init__(self, console=console, file_log=file_log)
         self._init_atom_register_class(_logger_nephew_)
 
 
@@ -84,3 +83,6 @@ class TestFileLogger(unittest.TestCase):
         n.log.debug("end child")
         z.log.debug("end nephew")
 
+
+if __name__ == '__main__':
+    unittest.main()

@@ -64,17 +64,5 @@ class TestFolder(unittest.TestCase):
         self.assertEqual(os.path.exists(WRK_DIR / 'folder_nephew_unittest'), True)
 
 
-# if __name__ == '__main__':
-#     # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=DEFAULT_UNITTEST_FOLDER))
-#     from unittest import TestLoader, TestSuite
-#     from HtmlTestRunner import HTMLTestRunner
-#
-#     file_tests = TestLoader().loadTestsFromTestCase(TestFile)
-#     folder_tests = TestLoader().loadTestsFromTestCase(TestFolder)
-#
-#     suite = TestSuite([file_tests, folder_tests])
-#
-#
-#     runner = HTMLTestRunner(output=DEFAULT_UNITTEST_FOLDER)
-#
-#     runner.run(suite)
+if __name__ == '__main__':
+    unittest.main()
