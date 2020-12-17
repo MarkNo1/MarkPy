@@ -1,7 +1,6 @@
-import unittest
-import os
+from .common import unittest
+
 from time import sleep
-import HtmlTestRunner
 
 from markipy.basic import File
 from markipy.basic import Watcher
@@ -53,8 +52,3 @@ class TestWatcher(unittest.TestCase):
 
     def test_folder_watcher(self):
         pass
-
-
-
-if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='/tmp/markpy_unittest/'))

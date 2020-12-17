@@ -1,6 +1,5 @@
-import unittest
+from .common import unittest
 
-from markipy.basic import collection
 from markipy.basic.yml import do_load
 
 YAML_CFG_TEST = '''

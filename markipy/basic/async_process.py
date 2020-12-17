@@ -1,4 +1,3 @@
-from pathlib import Path
 import asyncio
 from asyncio.subprocess import PIPE
 
@@ -17,7 +16,8 @@ class AsyncProcess(Logger):
         self.loop = None
         self.cmd = cmd
 
-    def _clean_out_line(self, line):
+    @staticmethod
+    def _clean_out_line(line):
         return str(line, 'utf-8').replace('\r', '').replace('\n', '')
 
     async def _read_stream(self, stream, cb):

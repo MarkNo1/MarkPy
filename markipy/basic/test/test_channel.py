@@ -1,7 +1,4 @@
-import unittest
-import os
-from time import sleep
-import HtmlTestRunner
+from .common import unittest
 
 from markipy.basic import Channel
 
@@ -15,6 +12,3 @@ class TestChannel(unittest.TestCase):
         var_channel = c.get()
         self.assertEqual(var, var_channel)
 
-
-if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='/tmp/markpy_unittest/'))

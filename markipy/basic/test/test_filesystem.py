@@ -1,13 +1,12 @@
-import unittest
+from .common import unittest
 import os
-import HtmlTestRunner
 
-from markipy.basic import Atom
 from markipy.basic import File, Folder
 from markipy import DEFAULT_UNITTEST_FOLDER, ensure_folder
 
 WRK_DIR = DEFAULT_UNITTEST_FOLDER / 'filesytem'
 LOG_DIR = WRK_DIR / 'logs'
+
 ensure_folder(WRK_DIR)
 ensure_folder(LOG_DIR)
 
@@ -65,5 +64,17 @@ class TestFolder(unittest.TestCase):
         self.assertEqual(os.path.exists(WRK_DIR / 'folder_nephew_unittest'), True)
 
 
-if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=WRK_DIR / 'markpy_unittest/'))
+# if __name__ == '__main__':
+#     # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=DEFAULT_UNITTEST_FOLDER))
+#     from unittest import TestLoader, TestSuite
+#     from HtmlTestRunner import HTMLTestRunner
+#
+#     file_tests = TestLoader().loadTestsFromTestCase(TestFile)
+#     folder_tests = TestLoader().loadTestsFromTestCase(TestFolder)
+#
+#     suite = TestSuite([file_tests, folder_tests])
+#
+#
+#     runner = HTMLTestRunner(output=DEFAULT_UNITTEST_FOLDER)
+#
+#     runner.run(suite)

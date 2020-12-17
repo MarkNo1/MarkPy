@@ -1,4 +1,4 @@
-import unittest
+from .common import unittest
 
 from markipy.basic.style import _style_
 from markipy.basic.atom import _atom_
@@ -44,5 +44,3 @@ class TestStyle(unittest.TestCase):
         self.assertEqual(n._get_class_details(_nephew_['class']).version, _nephew_['version'])
 
 
-if __name__ == '__main__':
-    unittest.main()

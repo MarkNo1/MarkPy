@@ -1,6 +1,4 @@
-import unittest
-import time
-import HtmlTestRunner
+from .common import unittest
 
 from markipy.basic import Atom
 from markipy.basic import Performance
@@ -40,7 +38,3 @@ class TestPerformance(unittest.TestCase):
         pn.test_performance_child()
         pn.test_performance_nephew()
         self.assertEqual(pn.performance.stats['test_performance_nephew'].name, 'test_performance_nephew')
-
-
-if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='/tmp/markpy_unittest/'))

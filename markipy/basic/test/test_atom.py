@@ -1,6 +1,5 @@
-import unittest
+from .common import unittest
 
-import time
 from markipy.basic import Atom
 from markipy.basic.atom import _atom_
 

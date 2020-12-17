@@ -29,3 +29,5 @@ from .terminator import Terminator
 from .hdf import Hdf
 
 from .jupy import Jupy
+
+from . import test

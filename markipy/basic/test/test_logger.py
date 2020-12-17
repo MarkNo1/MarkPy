@@ -1,6 +1,4 @@
-import unittest
-
-import HtmlTestRunner
+from .common import unittest
 
 from markipy.basic.style import _style_
 from markipy.basic.atom import _atom_
@@ -86,6 +84,3 @@ class TestFileLogger(unittest.TestCase):
         n.log.debug("end child")
         z.log.debug("end nephew")
 
-
-if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='/tmp/markpy_unittest/'))

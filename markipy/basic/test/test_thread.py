@@ -1,7 +1,6 @@
-import unittest
-import os
+from .common import unittest
+
 from time import sleep
-import HtmlTestRunner
 
 from markipy.basic import Channel
 from markipy.basic import ThreadConsumer, ThreadProducer, GeneralThread
@@ -47,5 +46,3 @@ class TestThreads(unittest.TestCase):
         self.assertListEqual(p.produced, c.consumed)
 
 
-if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='/tmp/markpy_unittest/'))

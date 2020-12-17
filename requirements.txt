@@ -21,3 +21,4 @@ pytorch_model_summary
 torchsummary
 torchvision
 seaborn
+html-testRunner

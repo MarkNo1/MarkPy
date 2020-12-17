@@ -1,4 +1,4 @@
-import unittest
+from .common import unittest
 
 from markipy.basic.yml import Yaml
 from markipy import DEFAULT_UNITTEST_FOLDER, ensure_folder
@@ -19,6 +19,10 @@ val_6: "@do hash('a6')"
 val_7: "@do dict(hash=hash('b7'))"
 '''
 
+
+# To - do
+# common lib for test:
+# fx -> compare(self, a , b)
 
 def compare(a, b):
     res = a == b
@@ -43,7 +47,7 @@ def compare_target_config(cfg):
         return False
 
 
-class TestCollection(unittest.TestCase):
+class TestYaml(unittest.TestCase):
 
     def test_load_configuration_from_file(self):
         target_file = WRK_DIR / 'unittest-yaml.yml'
@@ -53,4 +57,11 @@ class TestCollection(unittest.TestCase):
 
         yml = Yaml(target_file, log_path=LOG_DIR)
         cfg = yml.load(do=True)
+        self.assertEqual(compare_target_config(cfg), True)
+
+    def test_load_configuration_from_variable(self):
+        target_file = WRK_DIR / 'unittest-yaml-variable.yml'
+
+        yml = Yaml(target_file, log_path=LOG_DIR)
+        cfg = yml.load_from_variable(YAML_CFG_TEST, do=True)
         self.assertEqual(compare_target_config(cfg), True)

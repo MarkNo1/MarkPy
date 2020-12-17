@@ -1,5 +1,4 @@
-import unittest
-import HtmlTestRunner
+from .common import unittest
 
 from markipy.basic import AsyncProcess
 
@@ -27,7 +26,3 @@ class TestProcess(unittest.TestCase):
         ps = PS(cmd=ps_cmd)
         ps.start()
         ps.log.debug(ps.ps)
-
-
-if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='/tmp/markpy_unittest/'))
