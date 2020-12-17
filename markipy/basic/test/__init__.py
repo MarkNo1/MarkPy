@@ -7,6 +7,7 @@ from .test_filesystem import TestFile, TestFolder
 from .test_process import TestProcess
 from .test_style import TestStyle
 from .test_thread import TestThreads
+from .test_watcher import TestWatcher
 from .test_yaml import TestYaml
 
 

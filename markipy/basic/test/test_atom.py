@@ -1,10 +1,12 @@
-from .common import unittest
+from .common import unittest, get_unittest_work_log_dirs
 
 from markipy.basic import Atom
 from markipy.basic.atom import _atom_
 
 _child_ = {'class': 'Child', 'version': 2}
 _nephew_ = {'class': 'Nephew', 'version': 3}
+
+WRK_DIR, LOG_DIR = get_unittest_work_log_dirs('atom')
 
 
 class Child(Atom):

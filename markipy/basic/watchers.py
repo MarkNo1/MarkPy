@@ -22,11 +22,11 @@ class Watcher(Logger, FileSystemEventHandler):
         if Path(path).is_dir():
             path = Path(path)
             self.target_file = None
-            log_file = f'FolderWatcher.{path}'
+            log_file = f'Folder-Watcher.{Path(path).name}'
         else:
             self.target_file = Path(path)
             path = Path(path).parent
-            log_file = f'FileWatcher.{path}'
+            log_file = f'File-Watcher.{Path(path).name}'
 
         self.path = path
         self.recursive = recursive

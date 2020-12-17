@@ -1,9 +1,11 @@
-from .common import unittest
+from .common import unittest, get_unittest_work_log_dirs
 
 from time import sleep
 
 from markipy.basic import Channel
 from markipy.basic import ThreadConsumer, ThreadProducer, GeneralThread
+
+WRK_DIR, LOG_DIR = get_unittest_work_log_dirs('thread')
 
 _producer_ = {'class': 'Producer', 'version': 1}
 _consumer_ = {'class': 'Consumer', 'version': 1}
@@ -11,7 +13,7 @@ _consumer_ = {'class': 'Consumer', 'version': 1}
 
 class Producer(ThreadProducer):
     def __init__(self, channel):
-        ThreadProducer.__init__(self, channel=channel, task_name='Unittest.Thread.Producer')
+        ThreadProducer.__init__(self, channel=channel, task_name='Unittest.TProducer', log_path=LOG_DIR)
         self._init_atom_register_class(_producer_)
         self.produced = []
 
@@ -25,7 +27,7 @@ class Producer(ThreadProducer):
 
 class Consumer(ThreadConsumer):
     def __init__(self, channel):
-        ThreadConsumer.__init__(self, channel=channel, task_name='Unittest.Thread.Consumer')
+        ThreadConsumer.__init__(self, channel=channel, task_name='Unittest.TConsumer', log_path=LOG_DIR)
         self._init_atom_register_class(_producer_)
         self.consumed = []
 

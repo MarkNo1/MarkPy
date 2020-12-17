@@ -1,14 +1,9 @@
-from .common import unittest
+from .common import unittest, get_unittest_work_log_dirs
 import os
 
 from markipy.basic import File, Folder
-from markipy import DEFAULT_UNITTEST_FOLDER, ensure_folder
 
-WRK_DIR = DEFAULT_UNITTEST_FOLDER / 'filesytem'
-LOG_DIR = WRK_DIR / 'logs'
-
-ensure_folder(WRK_DIR)
-ensure_folder(LOG_DIR)
+WRK_DIR, LOG_DIR = get_unittest_work_log_dirs('filesystem')
 
 _File_child_ = {'class': 'FileChild', 'version': 2}
 _File_nephew_ = {'class': 'FileNephew', 'version': 3}

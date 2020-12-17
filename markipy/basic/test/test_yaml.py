@@ -1,12 +1,9 @@
-from .common import unittest
+from .common import unittest, get_unittest_work_log_dirs
 
 from markipy.basic.yml import Yaml
-from markipy import DEFAULT_UNITTEST_FOLDER, ensure_folder
 
-WRK_DIR = DEFAULT_UNITTEST_FOLDER / 'yaml'
-LOG_DIR = WRK_DIR / 'logs'
-ensure_folder(WRK_DIR)
-ensure_folder(LOG_DIR)
+WRK_DIR, LOG_DIR = get_unittest_work_log_dirs('yaml')
+
 
 YAML_CFG_TEST = '''
 name: to-init
@@ -19,10 +16,6 @@ val_6: "@do hash('a6')"
 val_7: "@do dict(hash=hash('b7'))"
 '''
 
-
-# To - do
-# common lib for test:
-# fx -> compare(self, a , b)
 
 def compare(a, b):
     res = a == b

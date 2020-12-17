@@ -1,6 +1,8 @@
-from .common import unittest
+from .common import unittest, get_unittest_work_log_dirs
 
 from markipy.basic import Channel
+
+WRK_DIR, LOG_DIR = get_unittest_work_log_dirs('channel')
 
 
 class TestChannel(unittest.TestCase):
