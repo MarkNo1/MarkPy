@@ -1,10 +1,11 @@
-from .base_meta import BaseMeta
+from dataclasses import dataclass
+
 from ..time import Time
+from .base_meta import BaseMeta
 
 
-class BaseClass(object):
-    def __init__(self, meta_class: BaseMeta):
-        self._meta_class = meta_class
+@dataclass
+class BaseClass(BaseMeta):
 
     def __del__(self):
-        self._meta_class._class_deletion_date = Time.now()
+        self._class_deletion_date = Time.now()

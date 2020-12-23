@@ -1,1 +1,2 @@
-from .base import Base
+from .base import BaseClass, BaseMeta
+from .time import Time

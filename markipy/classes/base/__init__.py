@@ -1,1 +1,2 @@
-from .base import BaseClass, BaseMeta
+from .base_meta import BaseMeta
+from .base import BaseClass
