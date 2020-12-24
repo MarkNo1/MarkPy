@@ -19,3 +19,4 @@ ensure_folder(DEFAULT_LOG_PATH)
 from . import basic
 from . import script
 from . import gui
+from . import classes

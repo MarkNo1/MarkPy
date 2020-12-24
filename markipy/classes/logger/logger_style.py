@@ -1,7 +1,7 @@
-from dataclasses import dataclass
+import dataclasses
 import emoji
 
-from .logger_meta import LoggerMeta
+from ..base import safe_init_meta_class
 
 
 def colorize(color_code, text):
@@ -19,8 +19,8 @@ def get_color_table():
             for c in range(48)]
 
 
-@dataclass
-class LoggerStyle(LoggerMeta):
+@dataclasses.dataclass(unsafe_hash=True, init=False)
+class LoggerStyleMeta:
     _log_colors = get_color_table()
     _log_colors_len = len(_log_colors)
 
@@ -48,6 +48,9 @@ class LoggerStyle(LoggerMeta):
                 emoticon += '\n'
             emoticon += f'\t{i}: {e}'
         print(emoticon)
+
+    def __init__(self, **kwargs):
+        safe_init_meta_class(self, kwargs)
 
     def red(self, text):
         return self.color(79, text)

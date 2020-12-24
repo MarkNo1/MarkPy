@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from ..time import Time
 from .base_meta import BaseMeta
 
-
 @dataclass
 class BaseClass(BaseMeta):
 

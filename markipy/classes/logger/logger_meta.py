@@ -1,14 +1,14 @@
-from dataclasses import dataclass
+import dataclasses
 from enum import Enum
 from logging import Formatter, StreamHandler, FileHandler, Logger, LoggerAdapter
 
 from markipy import DEFAULT_LOG_PATH
 from ..path import Path
-from ..base import BaseMeta
+from ..base import safe_init_meta_class
 
 
-@dataclass
-class LoggerMeta(BaseMeta):
+@dataclasses.dataclass(unsafe_hash=True, init=False)
+class LoggerMeta:
     _class_name = 'LoggerMeta'
 
     class Mode(Enum):
@@ -42,3 +42,5 @@ class LoggerMeta(BaseMeta):
     _log_file_format: Formatter = Formatter(
         '[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d %(levelname).4s: [%(class_name)sV%(class_version)s]\t%(message)s')
 
+    def __init__(self, **kwargs):
+        safe_init_meta_class(self, kwargs)

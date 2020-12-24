@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from ..base import BaseMeta
-from .logger_style import LoggerStyle
+from .logger_style import LoggerStyleMeta
 from .logger_meta import LoggerMeta
 
 from logging import StreamHandler, FileHandler, LoggerAdapter
@@ -12,12 +12,14 @@ from datetime import date
 
 
 @dataclass
-class Logger(LoggerStyle):
+class Logger(BaseMeta, LoggerMeta, LoggerStyleMeta):
     def __init__(self, **kwargs):
         if '_class_name' not in kwargs:
             kwargs.update(dict(_class_name='Logger'))
         # Root Console Log
-        LoggerStyle.__init__(self, **kwargs)
+        BaseMeta.__init__(self, **kwargs)
+        LoggerMeta.__init__(self, **kwargs)
+        LoggerStyleMeta.__init__(self, **kwargs)
 
         if self._log_mode == self.Mode.console:
             self._log_logger = logging.getLogger()
