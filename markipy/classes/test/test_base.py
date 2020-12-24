@@ -27,6 +27,10 @@ class TestBaseClass(unittest.TestCase):
         self.assertEqual(base2._class_version, '0.0.2')
         self.assertEqual(base2._class_deletion_date, 'nan')
 
+    def test_hashes(self):
+        base1 = BaseClass(_class_name='BaseClass1', _class_version='0.0.1')
+        hash(base1)
+
 
 if __name__ == '__main__':
     unittest.main()

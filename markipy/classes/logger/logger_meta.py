@@ -1,6 +1,7 @@
 import dataclasses
 from enum import Enum
 from logging import Formatter, StreamHandler, FileHandler, Logger, LoggerAdapter
+from random import randint
 
 from markipy import DEFAULT_LOG_PATH
 from ..path import Path
@@ -9,8 +10,6 @@ from ..base import safe_init_meta_class
 
 @dataclasses.dataclass(unsafe_hash=True, init=False)
 class LoggerMeta:
-    _class_name = 'LoggerMeta'
-
     class Mode(Enum):
         console = 1
         file = 2
@@ -30,17 +29,22 @@ class LoggerMeta:
     _log_mode: Mode = Mode.console
     _log_level: Level = Level.DEBUG
     _log_rotation: str = 'd'
+    _log_file_name: str = 'LoggerMeta.log'
+    _log_file_path: Path = _log_path / _log_file_name
 
     _log_logger: Logger = None
     _log_console_handler: StreamHandler = None
     _log_file_handler: FileHandler = None
-    # Final log to call
+
+    # Final logger to call
     log: LoggerAdapter = None
 
     _log_console_format: Formatter = Formatter(
-        '[%(asctime)s] %(levelname).4s: [%(class_name)sV%(class_version)s]\t%(message)s')
+        '%(asctime)s <%(class_name)s> %(levelname).4s: \t%(message)s')
     _log_file_format: Formatter = Formatter(
-        '[%(asctime)s] <%(pathname)s-%(lineno)d> %(process)d %(levelname).4s: [%(class_name)sV%(class_version)s]\t%(message)s')
+        '%(asctime)s <%(pathname)s-%(lineno)d> %(process)d <%(class_name)s> %(levelname).4s:\t%(message)s')
+
+    _log_rnd_id: int = randint(0, 1000)
 
     def __init__(self, **kwargs):
         safe_init_meta_class(self, kwargs)

@@ -1,4 +1,5 @@
 import dataclasses
+from random import randint
 
 from ..time import Time
 from ..path import Path
@@ -19,6 +20,7 @@ class BaseMeta:
     _class_deletion_date: str = "nan"
     _class_creation_path: Path = Path().cwd()
     _class_working_path: Path = Path.cwd()
+    _class_rnd_id: int = randint(0, 1000)
 
     def __init__(self, **kwargs):
         safe_init_meta_class(self, kwargs)
