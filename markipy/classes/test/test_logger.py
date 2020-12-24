@@ -1,5 +1,6 @@
 import logging
 from logging.handlers import TimedRotatingFileHandler
+from pathlib import Path
 
 from markipy.classes.test import unittest
 from markipy.classes.logger import LoggerStyleMeta, LoggerMeta, Logger
@@ -55,7 +56,15 @@ class TestLoggerClass(unittest.TestCase):
         ls = Logger(_log_mode=Logger.Mode.file)
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
         self.assertEqual(ls._log_file_name, 'LoggerMeta.log')
-        self.assertEqual(ls._log_file_path, DEFAULT_LOG_PATH / 'LoggerMeta.log')
         self.assertEqual(ls._log_mode, LoggerMeta.Mode.file)
         isinstance(ls.log, logging.LoggerAdapter)
         isinstance(ls._log_console_handler, TimedRotatingFileHandler)
+
+    def test_file_logger_custom_file(self):
+        ls = Logger(_log_mode=Logger.Mode.file, _log_path=Path('/tmp'), _log_file_name='TestFileLogger.log')
+        self.assertEqual(ls._log_path, Path('/tmp'))
+        self.assertEqual(ls._log_file_name, 'TestFileLogger.log')
+        self.assertEqual(ls._log_mode, LoggerMeta.Mode.file)
+        isinstance(ls.log, logging.LoggerAdapter)
+        isinstance(ls._log_console_handler, TimedRotatingFileHandler)
+        ls.log.debug("TEST")

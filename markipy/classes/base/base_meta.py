@@ -12,6 +12,13 @@ def safe_init_meta_class(cls, kwargs):
             setattr(cls, k, v)
 
 
+def update_kwargs_param_if_needed(kwargs, new_kwargs):
+    for k, v in new_kwargs.items():
+        if k not in kwargs:
+            kwargs.update({k: v})
+    return kwargs
+
+
 @dataclasses.dataclass(unsafe_hash=True, init=False)
 class BaseMeta:
     _class_name: str = 'BaseMeta'
