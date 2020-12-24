@@ -108,3 +108,15 @@ class LoggerStyleMeta:
 
     def denied(self):
         return self.emoji(2169)
+
+    def error(self, text):
+        return self.red(text)
+
+    def success(self, text):
+        return self.green(text)
+
+    def warning(self, text):
+        return self.orange(text)
+
+    def highlight(self, text):
+        return self.blue(text)

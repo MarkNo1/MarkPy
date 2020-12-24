@@ -58,7 +58,7 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(ls._log_file_name, 'LoggerMeta.log')
         self.assertEqual(ls._log_mode, LoggerMeta.Mode.file)
         isinstance(ls.log, logging.LoggerAdapter)
-        isinstance(ls._log_console_handler, TimedRotatingFileHandler)
+        isinstance(ls._log_file_handler, TimedRotatingFileHandler)
 
     def test_file_logger_custom_file(self):
         ls = Logger(_log_mode=Logger.Mode.file, _log_path=Path('/tmp'), _log_file_name='TestFileLogger.log')
@@ -66,5 +66,16 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(ls._log_file_name, 'TestFileLogger.log')
         self.assertEqual(ls._log_mode, LoggerMeta.Mode.file)
         isinstance(ls.log, logging.LoggerAdapter)
+        isinstance(ls._log_file_handler, TimedRotatingFileHandler)
+        ls.log.debug("TEST")
+
+    def test_console_and_file_logger(self):
+        ls = Logger(_log_mode=Logger.Mode.console_and_file, _log_path=Path('/tmp'),
+                    _log_file_name='TestConsoleFileLogger.log')
+        self.assertEqual(ls._log_path, Path('/tmp'))
+        self.assertEqual(ls._log_file_name, 'TestConsoleFileLogger.log')
+        self.assertEqual(ls._log_mode, LoggerMeta.Mode.console_and_file)
+        isinstance(ls.log, logging.LoggerAdapter)
+        isinstance(ls._log_console_handler, TimedRotatingFileHandler)
         isinstance(ls._log_console_handler, TimedRotatingFileHandler)
         ls.log.debug("TEST")
