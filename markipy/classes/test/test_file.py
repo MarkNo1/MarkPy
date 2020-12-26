@@ -8,6 +8,7 @@ ws = dict(_class_working_path=Path('/tmp/unittest/'))
 
 class TestTextFile(unittest.TestCase):
     file_name = "TextFile.txt"
+    file_name_dfl = 'TextFileDefault.txt'
 
     def test_file_text_initialization(self):
         ft = TextFile(**ws, _file_name=self.file_name, _file_mode=YamlFile.FileMode.write)
@@ -28,6 +29,15 @@ class TestTextFile(unittest.TestCase):
         var = ft.read()
         ft.close()
         self.assertEqual(var, "TEST")
+
+    def test_default_open_file_text_write(self):
+        ft = TextFile(**ws, _file_mode=TextFile.FileMode.write, _file_name=self.file_name_dfl, _file_default_open=True)
+        ft.write("TEST-2")
+
+    def test_default_open_file_text_read(self):
+        ft = TextFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=self.file_name_dfl, _file_default_open=True)
+        var = ft.read()
+        self.assertEqual(var, "TEST-2")
 
 
 YAML_CFG_TEST = '''

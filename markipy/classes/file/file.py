@@ -21,6 +21,9 @@ class File(Logger, FileMeta, FileInterface):
         self._file_pre_attach_control()
         self.attach()
 
+        if self._file_default_open and not self._is_file_open:
+            self.open()
+
     def _file_pre_attach_control(self):
         if self._file_path.is_dir():
             raise FileException.AttachToFolder(self)

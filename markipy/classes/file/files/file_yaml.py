@@ -35,5 +35,6 @@ class YamlFile(File):
         return True
 
     def _file_close(self) -> bool:
+        self._file.flush()
         self._file.close()
         return True
