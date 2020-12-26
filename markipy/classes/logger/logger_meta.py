@@ -31,6 +31,7 @@ class LoggerMeta:
     _log_level: LoggerLevel = LoggerLevel.DEBUG
     _log_rotation: str = 'd'
     _log_file_name: str = 'LoggerMeta.log'
+    _log_file_path: Path = _log_path / _log_file_name
 
     _log_logger: Logger = None
     _log_console_handler: StreamHandler = None

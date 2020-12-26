@@ -1,5 +1,6 @@
 import logging
 from logging.handlers import TimedRotatingFileHandler
+from logging import StreamHandler
 from pathlib import Path
 
 from markipy.classes.test import unittest
@@ -49,24 +50,24 @@ class TestLoggerClass(unittest.TestCase):
         ls = Logger(_log_mode=Logger.LoggerMode.console)
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
-        isinstance(ls.log, logging.LoggerAdapter)
-        isinstance(ls._log_console_handler, logging.StreamHandler)
+        self.assertEqual(isinstance(ls.log, logging.LoggerAdapter), True)
+        self.assertEqual(isinstance(ls._log_console_handler, logging.StreamHandler), True)
 
     def test_file_logger(self):
         ls = Logger(_log_mode=Logger.LoggerMode.file)
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
         self.assertEqual(ls._log_file_name, 'LoggerMeta.log')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.file)
-        isinstance(ls.log, logging.LoggerAdapter)
-        isinstance(ls._log_file_handler, TimedRotatingFileHandler)
+        self.assertEqual(isinstance(ls.log, logging.LoggerAdapter), True)
+        self.assertEqual(isinstance(ls._log_file_handler, TimedRotatingFileHandler), True)
 
     def test_file_logger_custom_file(self):
         ls = Logger(_log_mode=Logger.LoggerMode.file, _log_path=Path('/tmp'), _log_file_name='TestFileLogger.log')
         self.assertEqual(ls._log_path, Path('/tmp'))
         self.assertEqual(ls._log_file_name, 'TestFileLogger.log')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.file)
-        isinstance(ls.log, logging.LoggerAdapter)
-        isinstance(ls._log_file_handler, TimedRotatingFileHandler)
+        self.assertEqual(isinstance(ls.log, logging.LoggerAdapter), True)
+        self.assertEqual(isinstance(ls._log_file_handler, TimedRotatingFileHandler), True)
         ls.log.debug("TEST")
 
     def test_console_and_file_logger(self):
@@ -75,9 +76,10 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(ls._log_path, Path('/tmp'))
         self.assertEqual(ls._log_file_name, 'TestConsoleFileLogger.log')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console_and_file)
-        isinstance(ls.log, logging.LoggerAdapter)
-        isinstance(ls._log_console_handler, TimedRotatingFileHandler)
-        ls.log.debug("TEST")
+        self.assertEqual(isinstance(ls.log, logging.LoggerAdapter), True)
+        self.assertEqual(isinstance(ls._log_console_handler, StreamHandler), True)
+        self.assertEqual(isinstance(ls._log_file_handler, TimedRotatingFileHandler), True)
+        ls.log.debug("TEST-1")
 
     def test_file_from_other_logger(self):
         ol = Logger(_log_mode=Logger.LoggerMode.file, _log_path=Path('/tmp/unittest'),
