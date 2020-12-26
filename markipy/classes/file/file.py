@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from ..base import update_kwargs_param_if_needed
 from ..logger import Logger
 from .file_interface import FileInterface
 from .file_exceptions import FileException
