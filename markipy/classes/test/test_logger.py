@@ -77,5 +77,21 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(ls._log_mode, LoggerMeta.Mode.console_and_file)
         isinstance(ls.log, logging.LoggerAdapter)
         isinstance(ls._log_console_handler, TimedRotatingFileHandler)
-        isinstance(ls._log_console_handler, TimedRotatingFileHandler)
         ls.log.debug("TEST")
+
+    def test_file_from_other_logger(self):
+        ol = Logger(_log_mode=Logger.Mode.console_and_file, _log_path=Path('/tmp/unittest'),
+                    _log_file_name='TestOtherLogger.log')
+
+        lc = Logger(**ol.share_logger(), _class_name='SharedLogger')
+
+        self.assertEqual(ol._log_path, lc._log_path)
+        self.assertEqual(ol._log_file_name, lc._log_file_name)
+        self.assertEqual(ol._log_logger, lc._log_logger)
+        self.assertEqual(ol._log_console_handler, lc._log_console_handler)
+        ol.log.debug("TEST-Original-Logger-1")
+        lc.log.debug("TEST-Shared-Logger-1")
+        ol.log.debug("TEST-Original-Logger-2")
+        lc.log.debug("TEST-Shared-Logger-2")
+        lc.log.debug("TEST-Shared-Logger-3")
+        ol.log.debug("TEST-Original-Logger-3")

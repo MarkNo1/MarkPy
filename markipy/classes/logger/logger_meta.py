@@ -14,6 +14,7 @@ class LoggerMeta:
         console = 1
         file = 2
         console_and_file = 3
+        from_other_logger = 4
 
     class Level(Enum):
         CRITICAL = 50
@@ -47,3 +48,10 @@ class LoggerMeta:
 
     def __init__(self, **kwargs):
         safe_init_meta_class(self, kwargs)
+
+    def share_logger(self) -> dict:
+        shared = dict(_log_mode=self.Mode.from_other_logger)
+        for k, v in self.__dict__.items():
+            if '_log' in k and 'mode' not in k:
+                shared.update({k: v})
+        return shared

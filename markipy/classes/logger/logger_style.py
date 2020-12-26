@@ -19,12 +19,16 @@ def get_color_table():
             for c in range(48)]
 
 
+def get_emoji_table():
+    return [emo for name, emo in emoji.unicode_codes.EMOJI_UNICODE.items()]
+
+
 @dataclasses.dataclass(unsafe_hash=True, init=False)
 class LoggerStyleMeta:
     _log_colors = get_color_table()
     _log_colors_len = len(_log_colors)
 
-    _log_emoji = [emo for name, emo in emoji.unicode_codes.EMOJI_UNICODE.items()]
+    _log_emoji = get_emoji_table()
     _log_emoji_len = len(_log_emoji)
 
     def color(self, color_id, text):
