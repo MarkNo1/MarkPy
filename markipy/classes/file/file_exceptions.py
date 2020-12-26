@@ -22,3 +22,11 @@ class FileException:
     class ReadModeNotEnabled(Exception):
         def __init__(self, cls):
             cls.log.error(f"File cannot be read: {cls.red(cls._file_path)}")
+
+    class FileDoNotExist(Exception):
+        def __init__(self, cls):
+            cls.log.error(f"File doesn't exist: {cls.red(cls._file_path)}")
+
+    class FileNotOpenedYet(Exception):
+        def __init__(self, cls):
+            cls.log.error(f"File is not yet opened: {cls.red(cls._file_path)}")

@@ -1,1 +1,1 @@
-from .files import TextFile
+from .files import TextFile, YamlFile

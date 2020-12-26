@@ -21,6 +21,7 @@ class FileMeta:
     _file: object = None
     _file_mode: FileMode = FileMode.read
     _is_file_open: bool = False
+    _file_default_open: bool = False
 
     def __init__(self, **kwargs):
         safe_init_meta_class(self, kwargs)

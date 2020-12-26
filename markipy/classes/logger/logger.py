@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ..base import BaseClass, update_kwargs_param_if_needed
+from ..base import BaseClass
 from .logger_style import LoggerStyleMeta
 from .logger_meta import LoggerMeta
 
@@ -12,8 +12,11 @@ from logging.handlers import TimedRotatingFileHandler
 
 @dataclass(init=False, unsafe_hash=True)
 class Logger(BaseClass, LoggerMeta, LoggerStyleMeta):
+
+    _class_name = 'Logger'
+
     def __init__(self, **kwargs):
-        kwargs = update_kwargs_param_if_needed(kwargs, {'_class_name': 'Logger'})
+
         BaseClass.__init__(self, **kwargs)
         LoggerMeta.__init__(self, **kwargs)
         LoggerStyleMeta.__init__(self, **kwargs)
