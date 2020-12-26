@@ -19,7 +19,7 @@ class Logger(BaseClass, LoggerMeta, LoggerStyleMeta):
         LoggerStyleMeta.__init__(self, **kwargs)
 
         # Console Logger
-        if self._log_mode == self.Mode.console:
+        if self._log_mode == self.LoggerMode.console:
             self._log_logger = logging.getLogger()
             self._log_logger.setLevel(self._log_level.value)
             self._log_console_handler = StreamHandler()
@@ -28,31 +28,30 @@ class Logger(BaseClass, LoggerMeta, LoggerStyleMeta):
             self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
 
         # File Logger
-        if self._log_mode == self.Mode.file:
+        if self._log_mode == self.LoggerMode.file:
             self._log_logger = logging.getLogger(str(hash(self)))
             self._log_logger.setLevel(self._log_level.value)
             self._log_file_handler = TimedRotatingFileHandler(self._log_path / self._log_file_name,
-                                                              when=self._log_rotation, interval=1, backupCount=2)
+                                                              when=self._log_rotation, interval=1, backupCount=1)
             self._log_file_handler.doRollover()
             self._log_file_handler.setFormatter(self._log_file_format)
             self._log_logger.addHandler(self._log_file_handler)
             self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
 
         # File and Console Logger
-        if self._log_mode == self.Mode.console_and_file:
+        if self._log_mode == self.LoggerMode.console_and_file:
             self._log_logger = logging.getLogger(str(hash(self)))
             self._log_logger.setLevel(self._log_level.value)
             self._log_console_handler = StreamHandler()
             self._log_console_handler.setFormatter(self._log_console_format)
             self._log_logger.addHandler(self._log_console_handler)
             self._log_file_handler = TimedRotatingFileHandler(self._log_path / self._log_file_name,
-                                                              when=self._log_rotation, interval=1, backupCount=2)
+                                                              when=self._log_rotation, interval=1, backupCount=1)
             self._log_file_handler.doRollover()
             self._log_file_handler.setFormatter(self._log_file_format)
             self._log_logger.addHandler(self._log_file_handler)
             self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
 
         # File logger from already exist Logger
-        if self._log_mode == self.Mode.from_other_logger:
+        if self._log_mode == self.LoggerMode.from_other_logger:
             self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
-           

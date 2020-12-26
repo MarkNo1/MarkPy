@@ -10,13 +10,13 @@ from ..base import safe_init_meta_class
 
 @dataclasses.dataclass(unsafe_hash=True, init=False)
 class LoggerMeta:
-    class Mode(Enum):
+    class LoggerMode(Enum):
         console = 1
         file = 2
         console_and_file = 3
         from_other_logger = 4
 
-    class Level(Enum):
+    class LoggerLevel(Enum):
         CRITICAL = 50
         FATAL = CRITICAL
         ERROR = 40
@@ -27,8 +27,8 @@ class LoggerMeta:
         NOTSET = 0
 
     _log_path: Path = DEFAULT_LOG_PATH
-    _log_mode: Mode = Mode.console
-    _log_level: Level = Level.DEBUG
+    _log_mode: LoggerMode = LoggerMode.console
+    _log_level: LoggerLevel = LoggerLevel.DEBUG
     _log_rotation: str = 'd'
     _log_file_name: str = 'LoggerMeta.log'
 
@@ -50,7 +50,7 @@ class LoggerMeta:
         safe_init_meta_class(self, kwargs)
 
     def share_logger(self) -> dict:
-        shared = dict(_log_mode=self.Mode.from_other_logger)
+        shared = dict(_log_mode=self.LoggerMode.from_other_logger)
         for k, v in self.__dict__.items():
             if '_log' in k and 'mode' not in k:
                 shared.update({k: v})

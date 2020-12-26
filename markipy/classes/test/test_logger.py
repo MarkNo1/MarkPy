@@ -15,7 +15,7 @@ class TestLoggerClass(unittest.TestCase):
     def test_logger(self):
         ls = Logger()
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.console)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
     def test_logger_inheritance(self):
         class Test(Logger):
@@ -23,7 +23,7 @@ class TestLoggerClass(unittest.TestCase):
 
         ls = Test()
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.console)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
     def test_logger_inheritance_with_arguments(self):
         class TestArgs(Logger):
@@ -33,7 +33,7 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
         self.assertEqual(ls._class_name, 'TestLogsArgs')
         self.assertEqual(ls._class_version, '0.0.3')
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.console)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
     def test_logger_inheritance_with_wrong_arguments(self):
         class TestArgsWrong(Logger):
@@ -43,44 +43,44 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
         self.assertEqual(ls._class_name, 'TestLogsArgs')
         self.assertEqual(ls._class_version, '0.0.3')
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.console)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
     def test_console_logger(self):
-        ls = Logger(_log_mode=Logger.Mode.console)
+        ls = Logger(_log_mode=Logger.LoggerMode.console)
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.console)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
         isinstance(ls.log, logging.LoggerAdapter)
         isinstance(ls._log_console_handler, logging.StreamHandler)
 
     def test_file_logger(self):
-        ls = Logger(_log_mode=Logger.Mode.file)
+        ls = Logger(_log_mode=Logger.LoggerMode.file)
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
         self.assertEqual(ls._log_file_name, 'LoggerMeta.log')
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.file)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.file)
         isinstance(ls.log, logging.LoggerAdapter)
         isinstance(ls._log_file_handler, TimedRotatingFileHandler)
 
     def test_file_logger_custom_file(self):
-        ls = Logger(_log_mode=Logger.Mode.file, _log_path=Path('/tmp'), _log_file_name='TestFileLogger.log')
+        ls = Logger(_log_mode=Logger.LoggerMode.file, _log_path=Path('/tmp'), _log_file_name='TestFileLogger.log')
         self.assertEqual(ls._log_path, Path('/tmp'))
         self.assertEqual(ls._log_file_name, 'TestFileLogger.log')
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.file)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.file)
         isinstance(ls.log, logging.LoggerAdapter)
         isinstance(ls._log_file_handler, TimedRotatingFileHandler)
         ls.log.debug("TEST")
 
     def test_console_and_file_logger(self):
-        ls = Logger(_log_mode=Logger.Mode.console_and_file, _log_path=Path('/tmp'),
+        ls = Logger(_log_mode=Logger.LoggerMode.console_and_file, _log_path=Path('/tmp'),
                     _log_file_name='TestConsoleFileLogger.log')
         self.assertEqual(ls._log_path, Path('/tmp'))
         self.assertEqual(ls._log_file_name, 'TestConsoleFileLogger.log')
-        self.assertEqual(ls._log_mode, LoggerMeta.Mode.console_and_file)
+        self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console_and_file)
         isinstance(ls.log, logging.LoggerAdapter)
         isinstance(ls._log_console_handler, TimedRotatingFileHandler)
         ls.log.debug("TEST")
 
     def test_file_from_other_logger(self):
-        ol = Logger(_log_mode=Logger.Mode.console_and_file, _log_path=Path('/tmp/unittest'),
+        ol = Logger(_log_mode=Logger.LoggerMode.file, _log_path=Path('/tmp/unittest'),
                     _log_file_name='TestOtherLogger.log')
 
         lc = Logger(**ol.share_logger(), _class_name='SharedLogger')
