@@ -10,9 +10,12 @@ import logging
 from logging.handlers import TimedRotatingFileHandler
 
 
+def has_logger_class(cls):
+    return hasattr(cls, 'log')
+
+
 @dataclass(init=False, unsafe_hash=True)
 class Logger(BaseClass, LoggerMeta, LoggerStyleMeta):
-
     _class_name = 'Logger'
 
     def __init__(self, **kwargs):

@@ -1,14 +1,19 @@
 from dataclasses import dataclass, field
+from ..base import safe_init_meta_class
 
 ms: int = int(1e-6)
 
-@dataclass
-class PerfMeta:
+
+@dataclass(init=False)
+class PerformanceMeta:
     _perf_statistics: dict = field(default_factory=dict)
 
+    def __init__(self, **kwargs):
+        safe_init_meta_class(self, kwargs)
+        self._perf_statistics = dict()
 
 @dataclass
-class PerfMetaMeasure:
+class PerfMeasureMeta:
     min: int = int(1e12)
     mean: int = 0
     total: int = 0
