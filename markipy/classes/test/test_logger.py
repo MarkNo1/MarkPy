@@ -81,7 +81,7 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(isinstance(ls._log_file_handler, TimedRotatingFileHandler), True)
         ls.log.debug("TEST-1")
 
-    def test_file_from_other_logger(self):
+    def test_file_shared_logger(self):
         ol = Logger(_log_mode=Logger.LoggerMode.file, _log_path=Path('/tmp/unittest'),
                     _log_file_name='TestOtherLogger.log')
 

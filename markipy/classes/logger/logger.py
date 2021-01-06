@@ -61,5 +61,6 @@ class Logger(BaseClass, LoggerMeta, LoggerStyleMeta):
             self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
 
         # File logger from already exist Logger
-        if self._log_mode == self.LoggerMode.from_other_logger:
+        if self._log_mode == self.LoggerMode.shared_logger:
             self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
+

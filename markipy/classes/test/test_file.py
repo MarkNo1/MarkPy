@@ -2,40 +2,43 @@ from markipy.classes.test import unittest
 
 from markipy.classes.path import Path
 from markipy.classes.file import TextFile, YamlFile
+from markipy.classes.folder import Folder
 
 ws = dict(_class_working_path=Path('/tmp/unittest/'))
 
+file_name = "TextFile.txt"
+file_name_dfl = 'TextFileDefault.txt'
+file_name_yml = "YamlFile.yml"
+
+
+def test_write(filename, text):
+    f = Folder(_folder_path='/tmp/unittest', _folder_auto_make=True)
+    ft = TextFile(**ws, _file_mode=TextFile.FileMode.write, _file_name=filename)
+    ft.open()
+    ft.write(text)
+    ft.close()
+
 
 class TestTextFile(unittest.TestCase):
-    file_name = "TextFile.txt"
-    file_name_dfl = 'TextFileDefault.txt'
 
     def test_file_text_initialization(self):
-        ft = TextFile(**ws, _file_name=self.file_name, _file_mode=YamlFile.FileMode.write)
+        ft = TextFile(**ws, _file_name=file_name, _file_mode=YamlFile.FileMode.write)
         self.assertEqual(ft._class_name, 'TextFile')
-        self.assertEqual(ft._file_name, self.file_name)
+        self.assertEqual(ft._file_name, file_name)
         self.assertEqual(ft._class_working_path, Path('/tmp/unittest/'))
-        self.assertEqual(ft._file_path, Path('/tmp/unittest/') / self.file_name)
-
-    def test_file_text_write(self):
-        ft = TextFile(**ws, _file_mode=TextFile.FileMode.write, _file_name=self.file_name)
-        ft.open()
-        ft.write("TEST")
-        ft.close()
+        self.assertEqual(ft._file_path, Path('/tmp/unittest/') / file_name)
 
     def test_file_text_read(self):
-        ft = TextFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=self.file_name)
+        test_write(file_name, 'TEST')
+        ft = TextFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=file_name)
         ft.open()
         var = ft.read()
         ft.close()
         self.assertEqual(var, "TEST")
 
-    def test_default_open_file_text_write(self):
-        ft = TextFile(**ws, _file_mode=TextFile.FileMode.write, _file_name=self.file_name_dfl, _file_default_open=True)
-        ft.write("TEST-2")
-
     def test_default_open_file_text_read(self):
-        ft = TextFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=self.file_name_dfl, _file_default_open=True)
+        test_write(file_name_dfl, 'TEST-2')
+        ft = TextFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=file_name_dfl, _file_default_open=True)
         var = ft.read()
         self.assertEqual(var, "TEST-2")
 
@@ -75,24 +78,26 @@ def compare_target_config(cfg):
         return False
 
 
+def test_file_yaml_write(filename):
+    f = Folder(_folder_path='/tmp/unittest', _folder_auto_make=True)
+    ft = YamlFile(**ws, _file_mode=YamlFile.FileMode.write, _file_name=filename)
+    ft.open()
+    ft.write(YAML_CFG_TEST)
+    ft.close()
+
+
 class TestYamlFile(unittest.TestCase):
-    file_name = "YamlFile.yml"
 
     def test_file_yaml_initialization(self):
-        ft = YamlFile(**ws, _file_name=self.file_name, _file_mode=YamlFile.FileMode.write)
+        ft = YamlFile(**ws, _file_name=file_name_yml, _file_mode=YamlFile.FileMode.write)
         self.assertEqual(ft._class_name, 'YamlFile')
-        self.assertEqual(ft._file_name, self.file_name)
+        self.assertEqual(ft._file_name, file_name_yml)
         self.assertEqual(ft._class_working_path, Path('/tmp/unittest/'))
-        self.assertEqual(ft._file_path, Path('/tmp/unittest/') / self.file_name)
-
-    def test_file_yaml_write(self):
-        ft = YamlFile(**ws, _file_mode=YamlFile.FileMode.write, _file_name=self.file_name)
-        ft.open()
-        ft.write(YAML_CFG_TEST)
-        ft.close()
+        self.assertEqual(ft._file_path, Path('/tmp/unittest/') / file_name_yml)
 
     def test_file_yaml_read(self):
-        ft = YamlFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=self.file_name)
+        test_file_yaml_write(file_name_yml)
+        ft = YamlFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=file_name_yml)
         ft.open()
         cfg = ft.read()
         ft.close()
