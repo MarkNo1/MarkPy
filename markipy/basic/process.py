@@ -28,7 +28,7 @@ class Process(Logger):
                 cb(self._clean_out_line(line))
             else:
                 break
-            sleep(0.005)
+            sleep(0.05)
 
     def _stream_subprocess(self, cmd):
         process = Popen(cmd, stdout=PIPE, stderr=PIPE, universal_newlines=True)

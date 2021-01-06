@@ -1,7 +1,7 @@
 from markipy.classes.test import unittest
 
 from markipy.classes.path import Path
-from markipy.classes.communication import MessageQueue
+from markipy.classes.communication.channels import MessageQueue
 
 ws = dict(_class_working_path=Path('/tmp/unittest/'))
 

@@ -12,7 +12,7 @@ class CommunicationInterface(CommunicationMeta, metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def _com_send(self, var, block, timeout):
+    def _com_send(self, obj, block, timeout):
         pass
 
     @abstractmethod

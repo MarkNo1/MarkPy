@@ -22,6 +22,9 @@ class Communication(CommunicationInterface, Logger):
     def is_communication_completed(self):
         return self._com_completed
 
+    def set_communication_completed(self):
+        self._com_completed = True
+
     def send_ack_message_processed(self):
         try:
             return self._com_send_ack_message_processed()
@@ -38,9 +41,9 @@ class Communication(CommunicationInterface, Logger):
                 self.log.error(f"Error in receive method: {Ex}")
             return None
 
-    def send(self, var, block=False, timeout=COMMUNICATION_DEFAULT_TIME_OUT_SECS):
+    def send(self, obj, block=False, timeout=COMMUNICATION_DEFAULT_TIME_OUT_SECS):
         try:
-            return self._com_send(var, block, timeout)
+            return self._com_send(obj, block, timeout)
         except Exception as Ex:
             if has_logger_class(self):
                 self.log.error(f"Error in send method: {Ex}")

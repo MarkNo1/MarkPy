@@ -1,4 +1,4 @@
-from markipy.classes import BaseClass
+from markipy.classes.base import BaseClass
 from markipy.classes.test import unittest
 
 

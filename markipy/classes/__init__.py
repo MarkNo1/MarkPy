@@ -1,3 +1,5 @@
-from .base import BaseClass, BaseMeta
-from .logger import Logger, LoggerMeta, LoggerStyleMeta
-from .time import Time
+from . import base
+from . import logger
+from . import communication
+from . import thread
+from . import time
