@@ -1,4 +1,5 @@
 import threading
+from dataclasses import dataclass
 
 from .thread_meta import ThreadMeta
 from .thread_interface import ThreadInterface
@@ -6,6 +7,7 @@ from .thread_interface import ThreadInterface
 from ..logger import Logger
 
 
+@dataclass(init=False, unsafe_hash=True)
 class Thread(Logger, ThreadMeta, ThreadInterface, threading.Thread):
     _class_name = 'Thread'
 
@@ -21,7 +23,7 @@ class Thread(Logger, ThreadMeta, ThreadInterface, threading.Thread):
         self._thread_init()
         self._thread_task()
         self._thread_cleanup()
-        self._thread_completed = True
+        self.set_thread_completed()
 
     def set_thread_completed(self):
         self._thread_completed = True

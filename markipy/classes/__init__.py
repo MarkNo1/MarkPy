@@ -3,3 +3,4 @@ from . import logger
 from . import communication
 from . import thread
 from . import time
+from . import subprocess

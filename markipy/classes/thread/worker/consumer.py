@@ -19,7 +19,7 @@ class ThreadConsumer(Thread):
                 else:
                     if self._thread_com_channel.is_communication_completed():
                         self.set_thread_completed()
-                        self._thread_cleanup()
+            self._thread_cleanup()
 
         except Exception as Ex:
             self.log.error(f'Error in execution: {Ex}')

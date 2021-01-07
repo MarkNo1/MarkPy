@@ -97,7 +97,7 @@ class TestYamlFile(unittest.TestCase):
 
     def test_file_yaml_read(self):
         test_file_yaml_write(file_name_yml)
-        ft = YamlFile(**ws, _file_mode=TextFile.FileMode.read, _file_name=file_name_yml)
+        ft = YamlFile(**ws, _file_mode=YamlFile.FileMode.read, _file_name=file_name_yml)
         ft.open()
         cfg = ft.read()
         ft.close()
