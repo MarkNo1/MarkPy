@@ -4,7 +4,6 @@ from ..thread import Thread
 
 @dataclass(unsafe_hash=True, init=False)
 class ThreadProducer(Thread):
-    _class_name = 'ThreadProducer'
 
     def run(self):
         self._thread_init()

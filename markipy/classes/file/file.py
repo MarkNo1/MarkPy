@@ -8,7 +8,6 @@ from .file_meta import FileMeta
 
 @dataclass(init=False, unsafe_hash=True)
 class File(Logger, FileMeta, FileInterface):
-    _class_name = 'File'
 
     def __init__(self, **kwargs):
         Logger.__init__(self, **kwargs)

@@ -10,7 +10,6 @@ from .folder_exceptions import FolderException
 
 @dataclass(init=False, unsafe_hash=True)
 class Folder(Logger, FolderMeta):
-    _class_name = 'Folder'
 
     def __init__(self, **kwargs):
         Logger.__init__(self, **kwargs)

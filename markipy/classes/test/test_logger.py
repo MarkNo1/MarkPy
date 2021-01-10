@@ -30,9 +30,9 @@ class TestLoggerClass(unittest.TestCase):
         class TestArgs(Logger):
             pass
 
-        ls = TestArgs(_class_name='TestLogsArgs', _class_version='0.0.3')
+        ls = TestArgs(_class_name='TestArgs', _class_version='0.0.3')
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
-        self.assertEqual(ls._class_name, 'TestLogsArgs')
+        self.assertEqual(ls._class_name, 'TestArgs')
         self.assertEqual(ls._class_version, '0.0.3')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
@@ -40,9 +40,9 @@ class TestLoggerClass(unittest.TestCase):
         class TestArgsWrong(Logger):
             pass
 
-        ls = TestArgsWrong(_class_name='TestLogsArgs', _class_version='0.0.3', ALBERO=28)
+        ls = TestArgsWrong(_class_name='TestArgsWrong', _class_version='0.0.3', ALBERO=28)
         self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
-        self.assertEqual(ls._class_name, 'TestLogsArgs')
+        self.assertEqual(ls._class_name, 'TestArgsWrong')
         self.assertEqual(ls._class_version, '0.0.3')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 

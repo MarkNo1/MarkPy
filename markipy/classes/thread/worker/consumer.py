@@ -4,7 +4,6 @@ from ..thread import Thread
 
 @dataclass(unsafe_hash=True, init=False)
 class ThreadConsumer(Thread):
-    _class_name = 'ThreadConsumer'
 
     def run(self):
         self._thread_init()

@@ -16,7 +16,6 @@ def has_logger_class(cls):
 
 @dataclass(init=False, unsafe_hash=True)
 class Logger(BaseClass, LoggerMeta, LoggerStyleMeta):
-    _class_name = 'Logger'
 
     def __init__(self, **kwargs):
 

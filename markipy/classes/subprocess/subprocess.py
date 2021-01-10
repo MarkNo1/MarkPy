@@ -13,7 +13,6 @@ def clean_process_stdout_line(line):
 
 @dataclass(init=False, unsafe_hash=True)
 class SubProcess(Logger, SubProcessMeta):
-    _class_name = 'SubProcess'
 
     def __init__(self, **kwargs):
         Logger.__init__(self, **kwargs)

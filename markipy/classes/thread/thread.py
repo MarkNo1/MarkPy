@@ -9,7 +9,6 @@ from ..logger import Logger
 
 @dataclass(init=False, unsafe_hash=True)
 class Thread(Logger, ThreadMeta, ThreadInterface, threading.Thread):
-    _class_name = 'Thread'
 
     def __init__(self, **kwargs):
         Logger.__init__(self, **kwargs)

@@ -5,8 +5,6 @@ from ..file import File
 @dataclass(init=False, unsafe_hash=True)
 class TextFile(File):
 
-    _class_name = 'TextFile'
-
     def _file_attach_init(self) -> bool:
         return True
 

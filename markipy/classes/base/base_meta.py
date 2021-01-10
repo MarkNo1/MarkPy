@@ -10,6 +10,7 @@ def safe_init_meta_class(cls, kwargs):
     for k, v in kwargs.items():
         if k in names:
             setattr(cls, k, v)
+    setattr(cls, '_class_name', cls.__class__.__name__)
 
 
 def update_kwargs_param_if_needed(kwargs, new_kwargs):

@@ -18,8 +18,6 @@ def do_load_yaml(cfg):
 @dataclass(init=False, unsafe_hash=True)
 class YamlFile(File):
 
-    _class_name = 'YamlFile'
-
     def _file_attach_init(self) -> bool:
         return True
 

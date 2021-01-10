@@ -6,7 +6,6 @@ from ..communication import Communication
 
 @dataclass(unsafe_hash=True, init=False)
 class MessageQueue(Communication):
-    _class_name = 'MessageQueue'
     _com_channel: Queue = None
 
     def __init__(self, **kwargs):
