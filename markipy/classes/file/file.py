@@ -14,7 +14,8 @@ class File(Logger, FileMeta, FileInterface):
         FileMeta.__init__(self, **kwargs)
         FileInterface.__init__(self)
 
-        self._file_path = self._class_working_path / self._file_name
+        if self._file_path is None:
+            self._file_path = self._class_working_path / self._file_name
 
         self._file_pre_attach_control()
         self.attach()

@@ -1,7 +1,7 @@
 import sys
 import inspect
 
-from markipy import DEFAULT_UNITTEST_FOLDER
+from markipy import _unittest_default_dir
 from markipy.basic.test import *
 
 
@@ -26,7 +26,7 @@ def registered_test_suite():
 
 
 def unittest_markipy():
-    HTMLTestRunner(output=DEFAULT_UNITTEST_FOLDER, combine_reports=True).run(registered_test_suite())
+    HTMLTestRunner(output=_unittest_default_dir, combine_reports=True).run(registered_test_suite())
 
 
 if __name__ == '__main__':

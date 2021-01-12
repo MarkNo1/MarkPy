@@ -1,20 +1,15 @@
-import threading
 from dataclasses import dataclass
 
-from .thread_meta import ThreadMeta
-from .thread_interface import ThreadInterface
-
 from ..logger import Logger
+from .thread_abc import ThreadABC
 
 
 @dataclass(init=False, unsafe_hash=True)
-class Thread(Logger, ThreadMeta, ThreadInterface, threading.Thread):
+class Thread(Logger, ThreadABC):
 
     def __init__(self, **kwargs):
         Logger.__init__(self, **kwargs)
-        ThreadMeta.__init__(self, **kwargs)
-        ThreadInterface.__init__(self)
-        threading.Thread.__init__(self)
+        ThreadABC.__init__(self, **kwargs)
 
         self.setDaemon(self._thread_daemon)
 

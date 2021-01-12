@@ -2,7 +2,7 @@ from markipy.classes.test import unittest
 
 from markipy.classes.path import Path
 from markipy.classes.file import TextFile
-from markipy.classes.communication.channels import MessageQueue
+from markipy.classes.communication.channels.int import MessageQueue
 
 from markipy.classes.thread import Thread
 from markipy.classes.thread.worker import ThreadProducer, ThreadConsumer

@@ -3,9 +3,9 @@ from enum import Enum
 from logging import Formatter, StreamHandler, FileHandler, Logger, LoggerAdapter
 from random import randint
 
-from markipy import DEFAULT_LOG_PATH
+from markipy import _log_default_dir
 from ..path import Path
-from ..base import safe_init_meta_class
+from ..base import safe_init_meta
 
 
 @dataclasses.dataclass(unsafe_hash=True, init=False)
@@ -26,7 +26,7 @@ class LoggerMeta:
         DEBUG = 10
         NOTSET = 0
 
-    _log_path: Path = DEFAULT_LOG_PATH
+    _log_path: Path = _log_default_dir
     _log_mode: LoggerMode = LoggerMode.console
     _log_level: LoggerLevel = LoggerLevel.DEBUG
     _log_rotation: str = 'd'
@@ -48,7 +48,7 @@ class LoggerMeta:
     _log_rnd_id: int = randint(0, 1000)
 
     def __init__(self, **kwargs):
-        safe_init_meta_class(self, kwargs)
+        safe_init_meta(self, kwargs)
 
     def share_logger(self) -> dict:
         shared = dict(_log_mode=self.LoggerMode.shared_logger)

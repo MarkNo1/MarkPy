@@ -5,7 +5,7 @@ from pathlib import Path
 
 from markipy.classes.test import unittest
 from markipy.classes.logger import LoggerStyleMeta, LoggerMeta, Logger
-from markipy import DEFAULT_LOG_PATH
+from markipy import _log_default_dir
 
 
 class TestLoggerClass(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestLoggerClass(unittest.TestCase):
 
     def test_logger(self):
         ls = Logger()
-        self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
+        self.assertEqual(ls._log_path, _log_default_dir)
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
     def test_logger_inheritance(self):
@@ -23,7 +23,7 @@ class TestLoggerClass(unittest.TestCase):
             pass
 
         ls = Test()
-        self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
+        self.assertEqual(ls._log_path, _log_default_dir)
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
     def test_logger_inheritance_with_arguments(self):
@@ -31,7 +31,7 @@ class TestLoggerClass(unittest.TestCase):
             pass
 
         ls = TestArgs(_class_name='TestArgs', _class_version='0.0.3')
-        self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
+        self.assertEqual(ls._log_path, _log_default_dir)
         self.assertEqual(ls._class_name, 'TestArgs')
         self.assertEqual(ls._class_version, '0.0.3')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
@@ -41,21 +41,21 @@ class TestLoggerClass(unittest.TestCase):
             pass
 
         ls = TestArgsWrong(_class_name='TestArgsWrong', _class_version='0.0.3', ALBERO=28)
-        self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
+        self.assertEqual(ls._log_path, _log_default_dir)
         self.assertEqual(ls._class_name, 'TestArgsWrong')
         self.assertEqual(ls._class_version, '0.0.3')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
 
     def test_console_logger(self):
         ls = Logger(_log_mode=Logger.LoggerMode.console)
-        self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
+        self.assertEqual(ls._log_path, _log_default_dir)
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.console)
         self.assertEqual(isinstance(ls.log, logging.LoggerAdapter), True)
         self.assertEqual(isinstance(ls._log_console_handler, logging.StreamHandler), True)
 
     def test_file_logger(self):
         ls = Logger(_log_mode=Logger.LoggerMode.file)
-        self.assertEqual(ls._log_path, DEFAULT_LOG_PATH)
+        self.assertEqual(ls._log_path, _log_default_dir)
         self.assertEqual(ls._log_file_name, 'LoggerMeta.log')
         self.assertEqual(ls._log_mode, LoggerMeta.LoggerMode.file)
         self.assertEqual(isinstance(ls.log, logging.LoggerAdapter), True)

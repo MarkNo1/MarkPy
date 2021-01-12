@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from ..path import Path
-from ..base import safe_init_meta_class
+from ..base import safe_init_meta
 
 
 @dataclass(init=False, unsafe_hash=True)
@@ -24,4 +24,4 @@ class FileMeta:
     _file_default_open: bool = False
 
     def __init__(self, **kwargs):
-        safe_init_meta_class(self, kwargs)
+        safe_init_meta(self, kwargs)

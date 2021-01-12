@@ -22,7 +22,7 @@ def test_write(filename, text):
 class TestTextFile(unittest.TestCase):
 
     def test_file_text_initialization(self):
-        ft = TextFile(**ws, _file_name=file_name, _file_mode=YamlFile.FileMode.write)
+        ft = TextFile(**ws, _file_name=file_name, _file_mode=TextFile.FileMode.write)
         self.assertEqual(ft._class_name, 'TextFile')
         self.assertEqual(ft._file_name, file_name)
         self.assertEqual(ft._class_working_path, Path('/tmp/unittest/'))

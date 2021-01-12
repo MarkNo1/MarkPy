@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from threading import Lock
 
-from ..base import safe_init_meta_class
+from ..base import safe_init_meta
 
 
 @dataclass(unsafe_hash=True, init=False)
@@ -15,4 +15,4 @@ class CommunicationMeta:
     _com_producer_lock = Lock()
 
     def __init__(self, **kwargs):
-        safe_init_meta_class(self, kwargs)
+        safe_init_meta(self, kwargs)

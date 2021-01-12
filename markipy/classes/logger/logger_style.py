@@ -1,7 +1,7 @@
 import dataclasses
 import emoji
 
-from ..base import safe_init_meta_class
+from ..base import safe_init_meta
 
 
 def colorize(color_code, text):
@@ -54,7 +54,7 @@ class LoggerStyleMeta:
         print(emoticon)
 
     def __init__(self, **kwargs):
-        safe_init_meta_class(self, kwargs)
+        safe_init_meta(self, kwargs)
 
     def red(self, text):
         return self.color(79, text)

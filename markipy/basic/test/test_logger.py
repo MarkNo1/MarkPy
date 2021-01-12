@@ -5,7 +5,7 @@ from markipy.basic.atom import _atom_
 from markipy.basic.logger import _logger_
 from markipy.basic import Logger
 
-from markipy import DEFAULT_UNITTEST_FOLDER, ensure_folder
+from markipy import _unittest_default_dir
 
 WRK_DIR, LOG_DIR = get_unittest_work_log_dirs('logger')
 

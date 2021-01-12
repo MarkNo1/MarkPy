@@ -1,22 +1,16 @@
 from pathlib import Path
 from os import makedirs
 
-
-def ensure_folder(folder: Path):
-    if not folder.exists():
-        makedirs(folder, exist_ok=True)
-
-
 # DEFAULT PACKAGE FOLDER
-DEFAULT_PACKAGE_FOLDER = Path().home() / '.markipy'
-DEFAULT_UNITTEST_FOLDER = DEFAULT_PACKAGE_FOLDER / 'unittest'
-DEFAULT_LOG_PATH = DEFAULT_PACKAGE_FOLDER / 'logs'
+_markipy_default_package_dir = Path().home() / '.markipy'
+_unittest_default_dir = _markipy_default_package_dir / 'unittest'
+_log_default_dir = _markipy_default_package_dir / 'logs'
 
-ensure_folder(DEFAULT_PACKAGE_FOLDER)
-ensure_folder(DEFAULT_UNITTEST_FOLDER)
-ensure_folder(DEFAULT_LOG_PATH)
+makedirs(_unittest_default_dir, exist_ok=True)
+makedirs(_log_default_dir, exist_ok=True)
 
-from . import basic
-from . import script
-from . import gui
 from . import classes
+
+# from . import basic
+# from . import script
+# from . import gui

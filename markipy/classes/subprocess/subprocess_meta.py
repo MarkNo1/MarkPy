@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from subprocess import Popen
 
 from ..communication import Communication
-from ..base import safe_init_meta_class
+from ..base import safe_init_meta
 
 
 @dataclass(init=False, unsafe_hash=True)
@@ -15,4 +15,4 @@ class SubProcessMeta:
     _process_completed: bool = False
 
     def __init__(self, **kwargs):
-        safe_init_meta_class(self, kwargs)
+        safe_init_meta(self, kwargs)

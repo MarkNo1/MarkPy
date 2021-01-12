@@ -7,16 +7,16 @@ with open('README.md') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
-    license = f.read()
+    this_license = f.read()
 
 PKG_NAME = 'markipy'
 
 setup(
-    name='markipy',
+    name=PKG_NAME,
     author='Marco T.',
     url='https://github.com/MarkNo1/MarkPy',
-    version='0.1.6',
-    license=license,
+    version='2.1.6',
+    license=this_license,
     description='MarkPy LIB',
     long_description=readme,
     packages=find_namespace_packages(include=[PKG_NAME, f'{PKG_NAME}.*']),

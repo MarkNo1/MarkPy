@@ -57,29 +57,29 @@ class Watcher(Logger, FileSystemEventHandler):
         if event.src_path == str(self.target_file):
             if isinstance(event, FileMovedEvent):
                 self.task_file_moved(event)
-            if isinstance(event, FileModifiedEvent):
+            elif isinstance(event, FileModifiedEvent):
                 self.task_file_modified(event)
-            if isinstance(event, FileCreatedEvent):
+            elif isinstance(event, FileCreatedEvent):
                 self.task_file_created(event)
-            if isinstance(event, FileDeletedEvent):
+            elif isinstance(event, FileDeletedEvent):
                 self.task_file_deleted(event)
 
     def dispatch_folder(self, event):
         if isinstance(event, FileMovedEvent):
             self.task_file_moved(event)
-        if isinstance(event, FileModifiedEvent):
+        elif isinstance(event, FileModifiedEvent):
             self.task_file_modified(event)
-        if isinstance(event, FileCreatedEvent):
+        elif isinstance(event, FileCreatedEvent):
             self.task_file_created(event)
-        if isinstance(event, FileDeletedEvent):
+        elif isinstance(event, FileDeletedEvent):
             self.task_file_deleted(event)
-        if isinstance(event, DirMovedEvent):
+        elif isinstance(event, DirMovedEvent):
             self.task_dir_moved(event)
-        if isinstance(event, DirModifiedEvent):
+        elif isinstance(event, DirModifiedEvent):
             self.task_dir_modified(event)
-        if isinstance(event, DirCreatedEvent):
+        elif isinstance(event, DirCreatedEvent):
             self.task_dir_created(event)
-        if isinstance(event, DirDeletedEvent):
+        elif isinstance(event, DirDeletedEvent):
             self.task_dir_deleted(event)
 
     def task_file_moved(self, event):

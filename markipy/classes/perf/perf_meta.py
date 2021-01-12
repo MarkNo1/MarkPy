@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from ..base import safe_init_meta_class
+from ..base import safe_init_meta
 
 ms: int = int(1e-6)
 
@@ -9,7 +9,7 @@ class PerformanceMeta:
     _perf_statistics: dict = field(default_factory=dict)
 
     def __init__(self, **kwargs):
-        safe_init_meta_class(self, kwargs)
+        safe_init_meta(self, kwargs)
         self._perf_statistics = dict()
 
 @dataclass

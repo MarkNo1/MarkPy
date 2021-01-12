@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum
+from time import sleep
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.events import FileMovedEvent, DirMovedEvent
@@ -11,35 +11,45 @@ from watchdog.observers import Observer
 from .watcher_meta import WatcherMeta
 from .watcher_interface import WatcherInterface
 
+from ..thread.worker import ThreadProducer
+from ..communication.channels.int import MessageQueue
 from ..logger import Logger
+from ..base import update_kwargs_param_if_needed
 
 
 @dataclass(init=False, unsafe_hash=True)
-class Watcher(Logger, WatcherMeta, WatcherInterface, FileSystemEventHandler):
+class Watcher(WatcherMeta, WatcherInterface, FileSystemEventHandler, ThreadProducer):
 
     def __init__(self, **kwargs):
-        Logger.__init__(self, **kwargs)
         WatcherMeta.__init__(self, **kwargs)
         WatcherInterface.__init__(self)
         FileSystemEventHandler.__init__(self)
 
-        # Target File Mode
+        update_kwargs_param_if_needed()
+
+        ThreadProducer.__init__(self)
+
         if self._watcher_file is not None:
             self._watcher_path = self._watcher_file.parent
 
-    def start(self):
+    def _process_init(self):
         self._watcher_observer = Observer()
         self._watcher_observer.schedule(self, path=str(self._watcher_path), recursive=self._watcher_recursive)
+
+    def _process_task(self):
         self._watcher_observer.start()
+        while not self._watcher_completed:
+            sleep(1)
+        self._watcher_observer.stop()
+
+    def _process_cleanup(self):
+        if self._watcher_observer is not None:
+            self._watcher_observer.join()
 
     def stop(self):
-        self._watcher_observer.stop()
-        self._watcher_observer.join()
+        self._watcher_completed = True
 
-    def __del__(self):
-        self.stop()
-
-    def _watcher_dispatch(self, event):
+    def dispatch(self, event):
         if self._watcher_file is not None:
             self._watcher_dispatch_target_file(event)
         else:

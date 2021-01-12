@@ -5,7 +5,7 @@ from ..time import Time
 from ..path import Path
 
 
-def safe_init_meta_class(cls, kwargs):
+def safe_init_meta(cls, kwargs):
     names = set([f.name for f in dataclasses.fields(cls)])
     for k, v in kwargs.items():
         if k in names:
@@ -31,4 +31,4 @@ class BaseMeta:
     _class_rnd_id: int = randint(0, 1000)
 
     def __init__(self, **kwargs):
-        safe_init_meta_class(self, kwargs)
+        safe_init_meta(self, kwargs)

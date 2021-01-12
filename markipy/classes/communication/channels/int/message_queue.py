@@ -1,7 +1,7 @@
 from queue import Queue
 from dataclasses import dataclass
 
-from ..communication import Communication
+from ...communication import Communication
 
 
 @dataclass(unsafe_hash=True, init=False)
@@ -30,3 +30,6 @@ class MessageQueue(Communication):
 
     def is_buffer_empty(self):
         return self._com_channel.empty()
+
+    def __len__(self):
+        self._com_channel.qsize()
