@@ -1,9 +1,10 @@
 import logging
+import unittest
+
 from logging.handlers import TimedRotatingFileHandler
 from logging import StreamHandler
 from pathlib import Path
 
-from markipy.classes.test import unittest
 from markipy.classes.logger import LoggerStyleMeta, LoggerMeta, Logger
 from markipy import _log_default_dir
 
@@ -80,6 +81,7 @@ class TestLoggerClass(unittest.TestCase):
         self.assertEqual(isinstance(ls._log_console_handler, StreamHandler), True)
         self.assertEqual(isinstance(ls._log_file_handler, TimedRotatingFileHandler), True)
         ls.log.debug("TEST-1")
+
 
     def test_file_shared_logger(self):
         ol = Logger(_log_mode=Logger.LoggerMode.file, _log_path=Path('/tmp/unittest'),

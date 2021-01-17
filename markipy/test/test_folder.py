@@ -1,4 +1,4 @@
-from markipy.classes.test import unittest
+import unittest
 
 from markipy.classes.path import Path
 from markipy.classes.folder import Folder

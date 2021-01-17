@@ -28,7 +28,7 @@ class Yaml(File):
                 with open(self.__file__, 'r') as fd:
                     return do_load(fd)
         else:
-            raise YamlFileDoesntExist(self)
+            raise YmlFileDoesntExist(self)
 
     def load_from_variable(self, cfg, do=False):
         self.write(cfg)
@@ -36,6 +36,6 @@ class Yaml(File):
 
 
 # Exceptions
-class YamlFileDoesntExist(Exception):
+class YmlFileDoesntExist(Exception):
     def __init__(self, yaml_class: Yaml):
         yaml_class.log.error(f"Yaml file doesn't exist {yaml_class.red(yaml_class.__file__)}")

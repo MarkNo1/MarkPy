@@ -1,5 +1,5 @@
 from markipy.classes.base import BaseClass
-from markipy.classes.test import unittest
+import unittest
 
 
 class TestBaseClass(unittest.TestCase):
