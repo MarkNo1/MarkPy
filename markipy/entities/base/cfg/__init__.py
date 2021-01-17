@@ -1,2 +1,1 @@
-from .file import File
-from .files import TextFile, YmlFile
+from .configuration import Configuration
