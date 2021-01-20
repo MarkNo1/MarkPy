@@ -9,7 +9,7 @@ from random import randint
 import emoji
 
 from markipy import _log_default_dir, makedirs
-from ..class_meta import ClassMeta
+from ..meta import Meta
 from ..path import Path
 
 
@@ -41,8 +41,8 @@ def has_logger_class(cls):
 
 
 @dataclass(init=False, unsafe_hash=True)
-class Logger(ClassMeta):
-    _class_log_path: Path = _log_default_dir
+class Logger(Meta):
+    _class_log_path: Path = '@do.Path.cwd()'
 
     class LoggerMode(Enum):
         console = 1
@@ -60,23 +60,23 @@ class Logger(ClassMeta):
         DEBUG = 10
         NOTSET = 0
 
-    _log_mode: LoggerMode = LoggerMode.console
-    _log_level: LoggerLevel = LoggerLevel.DEBUG
+    _log_mode_: LoggerMode = LoggerMode.console
+    _log_level_: LoggerLevel = LoggerLevel.DEBUG
     _log_rotation: str = 'd'
     _log_file_path: Path = None
 
-    _log_logger: Logger = None
-    _log_console_handler: StreamHandler = None
-    _log_file_handler: FileHandler = None
+    _log_logger_: Logger = None
+    _log_console_handler_: StreamHandler = None
+    _log_file_handler_: FileHandler = None
 
     _log_if_exist_use_it: bool = True
 
     # Final logger to call
-    log: LoggerAdapter = None
+    _log_: LoggerAdapter = None
 
-    _log_console_format: Formatter = Formatter(
+    _log_console_format_: Formatter = Formatter(
         '%(asctime)s <%(class_name)s> %(levelname).4s: \t%(message)s')
-    _log_file_format: Formatter = Formatter(
+    _log_file_format_: Formatter = Formatter(
         '%(asctime)s <%(pathname)s-%(lineno)d> %(process)d <%(class_name)s> %(levelname).4s:\t%(message)s')
 
     _log_colors = COLOR_TABLE
@@ -88,8 +88,7 @@ class Logger(ClassMeta):
     _log_rnd_id: int = randint(0, 1000)
 
     def __init__(self, **kwargs):
-        ClassMeta.__init__(self, **kwargs)
-
+        Meta.__init__(self, **kwargs)
         self._safe_init_(kwargs)
 
         if not Path(self._class_log_path).exists():
@@ -99,49 +98,53 @@ class Logger(ClassMeta):
             self._log_file_path = Path(self._class_log_path) / Path(f'{self._class_name}.log')
 
         if self._log_if_exist_use_it:
-            if has_logger_class(self) and self._log_logger is not None:
-                self._log_mode = self.LoggerMode.shared_logger
+            if has_logger_class(self) and self._log_logger_ is not None:
+                self._log_mode_ = self.LoggerMode.shared_logger
 
         # Console Logger
-        if self._log_mode == self.LoggerMode.console:
-            self._log_logger = logging.getLogger(str(hash(self)))
-            self._log_logger.setLevel(self._log_level.value)
-            self._log_console_handler = StreamHandler()
-            self._log_console_handler.setFormatter(self._log_console_format)
-            self._log_logger.addHandler(self._log_console_handler)
-            self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
+        if self._log_mode_ == self.LoggerMode.console:
+            self._log_logger_ = logging.getLogger(str(hash(self)))
+            self._log_logger_.setLevel(self._log_level_.value)
+            self._log_console_handler_ = StreamHandler()
+            self._log_console_handler_.setFormatter(self._log_console_format_)
+            self._log_logger_.addHandler(self._log_console_handler_)
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self.log = self._log_
 
         # File Logger
-        if self._log_mode == self.LoggerMode.file:
-            self._log_logger = logging.getLogger(str(hash(self)))
-            self._log_logger.setLevel(self._log_level.value)
-            self._log_file_handler = TimedRotatingFileHandler(self._log_file_path, when=self._log_rotation, interval=1,
+        if self._log_mode_ == self.LoggerMode.file:
+            self._log_logger_ = logging.getLogger(str(hash(self)))
+            self._log_logger_.setLevel(self._log_level_.value)
+            self._log_file_handler_ = TimedRotatingFileHandler(self._log_file_path, when=self._log_rotation, interval=1,
                                                               backupCount=5)
-            self._log_file_handler.doRollover()
-            self._log_file_handler.setFormatter(self._log_file_format)
-            self._log_logger.addHandler(self._log_file_handler)
-            self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
+            self._log_file_handler_.doRollover()
+            self._log_file_handler_.setFormatter(self._log_file_format_)
+            self._log_logger_.addHandler(self._log_file_handler_)
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self.log = self._log_
 
         # File and Console Logger
-        if self._log_mode == self.LoggerMode.console_and_file:
-            self._log_logger = logging.getLogger(str(hash(self)))
-            self._log_logger.setLevel(self._log_level.value)
-            self._log_console_handler = StreamHandler()
-            self._log_console_handler.setFormatter(self._log_console_format)
-            self._log_logger.addHandler(self._log_console_handler)
-            self._log_file_handler = TimedRotatingFileHandler(self._log_file_path,
+        if self._log_mode_ == self.LoggerMode.console_and_file:
+            self._log_logger_ = logging.getLogger(str(hash(self)))
+            self._log_logger_.setLevel(self._log_level_.value)
+            self._log_console_handler_ = StreamHandler()
+            self._log_console_handler_.setFormatter(self._log_console_format_)
+            self._log_logger_.addHandler(self._log_console_handler_)
+            self._log_file_handler_ = TimedRotatingFileHandler(self._log_file_path,
                                                               when=self._log_rotation, interval=1, backupCount=5)
-            self._log_file_handler.doRollover()
-            self._log_file_handler.setFormatter(self._log_file_format)
-            self._log_logger.addHandler(self._log_file_handler)
-            self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
+            self._log_file_handler_.doRollover()
+            self._log_file_handler_.setFormatter(self._log_file_format_)
+            self._log_logger_.addHandler(self._log_file_handler_)
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self.log = self._log_
 
         # File logger from already exist Logger
-        if self._log_mode == self.LoggerMode.shared_logger:
-            self.log = LoggerAdapter(self._log_logger, dict(class_name=self._class_name))
+        if self._log_mode_ == self.LoggerMode.shared_logger:
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self.log = self._log_
 
     def share_logger(self) -> dict:
-        shared = dict(_log_mode=self.LoggerMode.shared_logger)
+        shared = dict(_log_mode_=self.LoggerMode.shared_logger)
         for k, v in self.__dict__.items():
             if '_log' in k and 'mode' not in k:
                 shared.update({k: v})

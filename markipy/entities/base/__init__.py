@@ -1,4 +1,4 @@
-from .class_meta import ClassMeta
+from .meta import Meta
 from .cfg import Configuration
 from .time import Time
 from .path import Path
