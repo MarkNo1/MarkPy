@@ -12,6 +12,7 @@ makedirs(_log_default_dir, exist_ok=True)
 
 from . import classes
 from . import entities
+from . import meta
 
 # from . import basic
 # from . import script

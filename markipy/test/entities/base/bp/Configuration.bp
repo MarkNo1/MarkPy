@@ -1,0 +1,13 @@
+Path: !!python/name:pathlib.Path ''
+Time: !!python/name:markipy.entities.base.time.time.Time ''
+_bp_path: '@do.self._meta_cwd_path / "bp"'
+_cfg_filename: Configuration
+_cfg_path: '@do.self._meta_cwd_path / "cfg"'
+_cfg_sync: true
+_cfg_sync_date: '@do.self.Time.now()'
+_meta_creation_date: '@do.self.Time.now()'
+_meta_cwd_path: '@do.self.Path.cwd()'
+_meta_deletion_date: nan
+_meta_name: Configuration
+_meta_rid: '@do.self._meta_get_rid(0, 1000)'
+_meta_version: 4.0.1

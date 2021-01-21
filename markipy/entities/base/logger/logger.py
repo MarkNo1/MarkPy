@@ -45,10 +45,10 @@ class Logger(Meta):
     _class_log_path: Path = '@do.Path.cwd()'
 
     class LoggerMode(Enum):
-        console = 1
-        file = 2
-        console_and_file = 3
-        shared_logger = 4
+        console = 'console'
+        file = 'file'
+        console_and_file = 'console_and_file'
+        shared_logger = 'shared'
 
     class LoggerLevel(Enum):
         CRITICAL = 50
@@ -63,7 +63,8 @@ class Logger(Meta):
     _log_mode_: LoggerMode = LoggerMode.console
     _log_level_: LoggerLevel = LoggerLevel.DEBUG
     _log_rotation: str = 'd'
-    _log_file_path: Path = None
+    _log_filename: str = 'Logger'
+    _log_path: Path = '@do.self._meta_cwd_path / "log"'
 
     _log_logger_: Logger = None
     _log_console_handler_: StreamHandler = None
@@ -94,9 +95,6 @@ class Logger(Meta):
         if not Path(self._class_log_path).exists():
             makedirs(self._class_log_path, exist_ok=True)
 
-        if self._log_file_path is None:
-            self._log_file_path = Path(self._class_log_path) / Path(f'{self._class_name}.log')
-
         if self._log_if_exist_use_it:
             if has_logger_class(self) and self._log_logger_ is not None:
                 self._log_mode_ = self.LoggerMode.shared_logger
@@ -108,19 +106,19 @@ class Logger(Meta):
             self._log_console_handler_ = StreamHandler()
             self._log_console_handler_.setFormatter(self._log_console_format_)
             self._log_logger_.addHandler(self._log_console_handler_)
-            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._meta_name))
             self.log = self._log_
 
         # File Logger
         if self._log_mode_ == self.LoggerMode.file:
             self._log_logger_ = logging.getLogger(str(hash(self)))
             self._log_logger_.setLevel(self._log_level_.value)
-            self._log_file_handler_ = TimedRotatingFileHandler(self._log_file_path, when=self._log_rotation, interval=1,
+            self._log_file_handler_ = TimedRotatingFileHandler(self.get_log_path(), when=self._log_rotation, interval=1,
                                                               backupCount=5)
             self._log_file_handler_.doRollover()
             self._log_file_handler_.setFormatter(self._log_file_format_)
             self._log_logger_.addHandler(self._log_file_handler_)
-            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._meta_name))
             self.log = self._log_
 
         # File and Console Logger
@@ -130,18 +128,21 @@ class Logger(Meta):
             self._log_console_handler_ = StreamHandler()
             self._log_console_handler_.setFormatter(self._log_console_format_)
             self._log_logger_.addHandler(self._log_console_handler_)
-            self._log_file_handler_ = TimedRotatingFileHandler(self._log_file_path,
+            self._log_file_handler_ = TimedRotatingFileHandler(self.get_log_path(),
                                                               when=self._log_rotation, interval=1, backupCount=5)
             self._log_file_handler_.doRollover()
             self._log_file_handler_.setFormatter(self._log_file_format_)
             self._log_logger_.addHandler(self._log_file_handler_)
-            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._meta_name))
             self.log = self._log_
 
         # File logger from already exist Logger
         if self._log_mode_ == self.LoggerMode.shared_logger:
-            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._class_name))
+            self._log_ = LoggerAdapter(self._log_logger_, dict(class_name=self._meta_name))
             self.log = self._log_
+
+    def get_log_path(self):
+        return self._log_path / f'{self._log_filename}.log'
 
     def share_logger(self) -> dict:
         shared = dict(_log_mode_=self.LoggerMode.shared_logger)
